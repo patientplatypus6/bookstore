@@ -1,0 +1,77 @@
+-----JAVASCRIPT-----
+// console.log('inside click of ButtonState')
+
+// console.log('value of this.buttonObj: ', this.buttonObj)
+// this.buttonObj = {test: 1}
+// var localButtonArray = toJS(this.buttonArray);
+// localButtonArray['none'] = 1;
+// var tempArray = toJS(this.buttonArray);
+// 
+// console.log('value of tempArray: ', tempArray)
+
+// localButtonArray.forEach((buttonObj, i)=>{
+//   console.log('value of this.buttonArray:', this.buttonArray)
+//   console.log('value of button')
+//   if(buttonObj.hasOwnProperty(buttonName)){
+//     buttonObj[buttonName]++
+//   }else{
+//     buttonObj[buttonName] = 1
+//   }
+//   console.log('value of buttonObj', buttonObj)
+//   tempArray[i] = buttonObj
+// })
+// this.buttonArray = tempArray;
+// console.log('value of buttonArray: ', this.buttonArray)
+// console.log('value fo clicked: ', this.clicked)
+// if(this.buttonObj.hasOwnProperty(buttonName)){
+//   console.log('inside hasOwnProperty')
+//   this.buttonObj = {test: 1}
+//   // this.buttonObj[buttonName] = this.buttonObj[buttonName]
+// }else{
+//   console.log('inside else Statement')
+//   this.buttonObj = {test: 2}
+//   // this.buttonObj[buttonName] = 1
+// }
+
+
+class ObjectHolder{
+  constructor(){
+    this.myObject = {};
+  }
+  append(name, value){
+    this.myObject[name] = value;
+  }
+  retrieve(name){
+    return this.myObject[name]
+  }
+}
+
+
+// import { createSlice } from '@reduxjs/toolkit'
+
+// export const buttonSlice = createSlice({
+//   name: 'counter',
+//   initialState: {
+//     value: 0,
+//   },
+//   reducers: {
+//     increment: (state) => {
+//       // Redux Toolkit allows us to write "mutating" logic in reducers. It
+//       // doesn't actually mutate the state because it uses the Immer library,
+//       // which detects changes to a "draft state" and produces a brand new
+//       // immutable state based off those changes
+//       state.value += 1
+//     },
+//     decrement: (state) => {
+//       state.value -= 1
+//     },
+//     incrementByAmount: (state, action) => {
+//       state.value += action.payload
+//     },
+//   },
+// })
+
+// // Action creators are generated for each case reducer function
+// export const { increment, decrement, incrementByAmount } = buttonSlice.actions
+
+// export default buttonSlice.reducer
