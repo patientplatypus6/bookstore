@@ -1,4 +1,4 @@
-package art.kotlin_server
+package art.kotlin_server.model
 
 data class Message(val id: String?, val text: String)
 

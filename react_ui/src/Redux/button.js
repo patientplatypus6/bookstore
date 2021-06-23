@@ -4,28 +4,23 @@ export const buttonSlice = createSlice({
   name: 'counter',
   initialState: {
     buttons: [], 
-    clicks: [], 
-    value: 0
+    toggles: []
   },
   reducers: {
-    click: (state, action) => {
-      let buttonName = action.payload['buttonName']
-      let buttons = action.payload['buttons']
+    toggle: (state, action) => {
+      let {buttonName, buttons} = action.payload
       var elementIndex = buttons.findIndex(element=>element==buttonName)
-      console.log('value of elementIndex: ', elementIndex)
-      console.log(elementIndex)
       if(elementIndex==-1){
         state.buttons.push(buttonName)
-        state.clicks.push(1)
+        state.toggles.push(true)
       }else{
-        state.clicks[elementIndex]++
+        state.toggles[elementIndex] = !state.toggles[elementIndex]
       }
     },
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { click, buttonCount } = buttonSlice.actions
+export const { toggle, buttonCount } = buttonSlice.actions
 
 export default buttonSlice.reducer
 

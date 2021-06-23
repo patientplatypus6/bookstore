@@ -1,0 +1,37 @@
+sudo systemctl start mysql
+sudo systemctl status mysql
+systemctl status mysqld
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('Fvnjty0b');
+UPDATE user SET Password=PASSWORD('Fvnjty0b') WHERE User='root'; 
+FLUSH PRIVILEGES; 
+exit;
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'Fvnjty0b' WITH GRANT OPTION;
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+show variables where variable_name = 'port';
+sudo systemctl stop mysql
+sudo mysqld_safe --skip-grant-tables &
+mysql --version
+mysql_native_password
+sudo cat /etc/mysql/debian.cnf
+sudo mysql -u debian-sys-maint -p  
+sudo mysql -u root -p
+
+CREATE USER 'patientplatypus'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Fvnjty0b';
+GRANT ALL PRIVILEGES ON *.* TO 'superuser'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+SHOW GRANTS FOR 'superuser';
+
+GRANT ALL PRIVILEGES ON stargazer_library.* TO 'patientplatypus'@'localhost';
+ 
+
+sudo apt-get remove --purge mysql-server mysql-client mysql-common
+sudo apt-get autoremove
+sudo apt-get autoclean
+
+sudo apt-get update
+sudo apt-get install mysql-server mysql-client mysql-common
+sudo mysql_secure_installation 
+
+CREATE USER 'water'@'localhost' IDENTIFIED BY 'drink';

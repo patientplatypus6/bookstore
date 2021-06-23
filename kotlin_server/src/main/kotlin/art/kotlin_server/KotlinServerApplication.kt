@@ -1,11 +1,16 @@
 package art.kotlin_server
 
+import art.kotlin_server.model.*
+
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.data.annotation.Id
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestBody
+import javax.validation.Valid
 
 @SpringBootApplication
 class KotlinServerApplication
@@ -31,7 +36,17 @@ public class RequestTest{
 		)
 		return comment
 	}
+	
+	@PostMapping("/post")
+	fun postCustomer(@Valid @RequestBody comment: Comment): String{
+		println("value of customer $comment")
+		val author = comment.author;
+		println("value of author $author")
+		return "dfs"
+	}
 }
+
+
 
 @RestController
 class MessageResource {
@@ -42,25 +57,5 @@ class MessageResource {
 		Message("3", "Sailor!"),
 	)
 }
-
-
-
-// @RestController
-// @RequestMapping("/home")
-// public class IndexController {
-//     @RequestMapping("/")
-//     String get() {
-//         //mapped to hostname:port/home/
-//         return "Hello from get";
-//     }
-//     @RequestMapping("/index")
-//     String index() {
-//         //mapped to hostname:port/home/index/
-//         return "Hello from index";
-//     }
-// }
-// @RequestMapping("/comment2")
-// val returnString = ReturnString(string = "hello")
-// return returnString
 
 

@@ -75,3 +75,24 @@ class ObjectHolder{
 // export const { increment, decrement, incrementByAmount } = buttonSlice.actions
 
 // export default buttonSlice.reducer
+
+
+
+// @RestController
+// @RequestMapping("/home")
+// public class IndexController {
+//     @RequestMapping("/")
+//     String get() {
+//         //mapped to hostname:port/home/
+//         return "Hello from get";
+//     }
+//     @RequestMapping("/index")
+//     String index() {
+//         //mapped to hostname:port/home/index/
+//         return "Hello from index";
+//     }
+// }
+// @RequestMapping("/comment2")
+// val returnString = ReturnString(string = "hello")
+// return returnString
+

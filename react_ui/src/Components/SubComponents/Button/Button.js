@@ -3,23 +3,38 @@ import './button.css'
 import { observer } from "mobx-react";
 // import {ButtonState} from '../../../MobXDEP/StateDEP';
 import {
-  click
+  toggle
 } from '../../../Redux/button.js'
 import { useSelector, useDispatch } from 'react-redux'
 
 const Button = ({buttonName}) => {
   const buttons = useSelector((state) => state.button.buttons)
-  const clicks = useSelector((state) => state.button.clicks)
+  const toggles = useSelector((state) => state.button.toggles)
   const dispatch = useDispatch()
+  const [localButton, setLocalButton] = useState({buttonName: 0})
+
+  useEffect(() => {
+    console.log('value of buttons: ', buttons)
+    console.log('value of clicks: ', toggles)
+    toggles.forEach((toggleTF, index)=>{
+      if(toggleTF && buttons[index]==buttonName){
+        //button actions go here 
+        //create button action js file
+        //and async with the dispatch
+        dispatch(toggle({buttonName, buttons}))
+      }
+    })
+  });
+
   return(
     <>
     <div>
-      {buttons}{clicks}
+      {buttons}{JSON.stringify(toggles)}
     </div>
     <div className='button'
       onClick={()=>{
         console.log('inside onclick')
-        dispatch(click({buttonName, buttons}))
+        dispatch(toggle({buttonName, buttons}))
       }}
     >  
       {buttonName}

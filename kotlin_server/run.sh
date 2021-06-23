@@ -1,5 +1,5 @@
 #!/bin/bash
 #mvn package
 #mvn exec
-mvn clean install
-mvn spring-boot:run
+sudo mvn clean install
+sudo mvn spring-boot:run
