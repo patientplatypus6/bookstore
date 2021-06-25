@@ -48,14 +48,14 @@ public class RequestTest{
 
 
 
-@RestController
-class MessageResource {
-	@GetMapping
-	fun index(): List<Message> = listOf(
-		Message("1", "Hello!"),
-		Message("2", "There!"),
-		Message("3", "Sailor!"),
-	)
-}
+// @RestController
+// class MessageResource {
+// 	@GetMapping
+// 	fun index(): List<Message> = listOf(
+// 		Message("1", "Hello!"),
+// 		Message("2", "There!"),
+// 		Message("3", "Sailor!"),
+// 	)
+// }
 
 

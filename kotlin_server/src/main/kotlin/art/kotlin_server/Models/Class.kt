@@ -1,6 +1,6 @@
 package art.kotlin_server.model
 
-data class Message(val id: String?, val text: String)
+// data class Message(val id: String?, val text: String)
 
 data class Comment(
   val author: String,
