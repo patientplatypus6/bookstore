@@ -16,18 +16,18 @@ import javax.persistence.Table
 
 @RestController
 @Entity 
-@Table(name = "order")
-data class Order (
+@Table(name="userorder")
+data class UserOrder (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
     @get: NotBlank
     val message: String="",
 
-    @OneToMany(mappedBy = "order", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userorder", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
     val addressList: List<Address>? = null,
 
-    @OneToMany(mappedBy = "order", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userorder", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
     val revenueCostList: List<RevenueCost>? = null,
 
     @ManyToOne(cascade = arrayOf(CascadeType.ALL))
@@ -35,14 +35,19 @@ data class Order (
   	var user:User? =null,
 
     @get: NotBlank
-    val orderDate:Long=ModelUtility().CurrentMilliseconds(),
+    val userOrderDate:Long=ModelUtility().CurrentMilliseconds(),
   
     @get: NotBlank
     val shipDate:Long=ModelUtility().CurrentMilliseconds(),
 
     @get: NotBlank
-    val messageDate:Long=ModelUtility().CurrentMilliseconds(),
-
-    @get: NotBlank
-    val orderNumber:Long=-1
+    val userOrderNumber:Long=-1
 )
+
+
+// @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+// val hashtags: List<ListItem>? = null,
+
+// @ManyToOne(cascade = arrayOf(CascadeType.ALL))
+// @JoinColumn(name = "book_id")
+//   var book:Book? = null,

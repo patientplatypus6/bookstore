@@ -1,0 +1,3 @@
+curl -i -H "Content-Type: application/json" -X POST -d '{"author": "How to learn Spring framework", "content": "Resources to learn Spring framework"}' http://localhost:8080/test/post
+
+curl -i -H 'Accept: application/json' http://localhost:8080/api/articles

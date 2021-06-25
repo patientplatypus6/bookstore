@@ -8,31 +8,30 @@ import javax.validation.constraints.NotBlank
 import org.springframework.web.bind.annotation.RestController
 import art.kotlin_server.utility.ModelUtility
 
+import art.kotlin_server.model.Book
 
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 
-@RestController
+@RestController 
 @Entity
-@Table(name="message")
-data class Message (
+@Table(name="listitem")
+data class ListItem (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
     @get: NotBlank
-    val messagecontent: String="",
-  
-    @get: NotBlank
-    val messageDate:Long=0,
+    val stringItem: String = "",
 
     @get: NotBlank
-    val messageresponseID: Long = -1,
+    val longItem: Long = 0,
 
     @get: NotBlank
-    val messagefrom: String="",
+    val dateItem: Long = 0,
 
     @ManyToOne(cascade = arrayOf(CascadeType.ALL))
-    @JoinColumn(name = "user_id")
-	  var user:User? =null
+    @JoinColumn(name = "book_id")
+	  var book:Book? = null,
+
 )

@@ -6,6 +6,8 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 // import javax.persistence.*
 // import java.util.List
+// import javax.persistence.Access;
+// import javax.persistence.AccessType;
 import kotlin.collections.mutableListOf
 import javax.validation.constraints.NotBlank
 import org.springframework.web.bind.annotation.RestController
@@ -15,6 +17,8 @@ import javax.persistence.ManyToOne
 import javax.persistence.JoinColumn
 import javax.persistence.Table
 
+
+
 import java.util.*
 
 // import art.kotlin_server.model.RevenueCost
@@ -22,6 +26,8 @@ import java.util.*
 @RestController 
 @Entity
 @Table(name="book")
+// @Access(AccessType.FIELD)
+// @Access(AccessType.FIELD)
 data class Book (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -30,13 +36,7 @@ data class Book (
     val title: String = "",
 
     @get: NotBlank
-    val authors: MutableList<String> = mutableListOf<String>(),
-
-    @get: NotBlank
     val publish: String = "",
-
-    @get: NotBlank
-    val copyrightDateList: MutableList<Long> = mutableListOf<Long>(),
 
     @get: NotBlank
     val currentCopyright:Long = 0,
@@ -56,9 +56,15 @@ data class Book (
     @get: NotBlank
     val copyNumber:Long=1,
 
-    @get: NotBlank
-    val hashtagList: MutableList<String> = mutableListOf<String>(),
-
     @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
     val revenueCostList: List<RevenueCost>? = null,
+
+    @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+    val authors: List<ListItem>? = null,
+
+    @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+    val copyrights: List<ListItem>? = null,
+
+    @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
+    val hashtags: List<ListItem>? = null,
 )

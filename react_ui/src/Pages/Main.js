@@ -26,12 +26,14 @@ import About from '../Pages/Library/About'
 import Message from '../Pages/User/Message'
 import OrderHistory from '../Pages/User/OrderHistory'
 import UserInfo from '../Pages/User/UserInfo'
+import ActionHandler from '../Redux/actionhandler.js'
 
 class Main extends React.Component{
   render(){
     return(
       <Router>
       <div>
+        <ActionHandler/>
         <nav>
           <ul>
             <li>

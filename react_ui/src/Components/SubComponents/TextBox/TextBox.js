@@ -1,25 +1,45 @@
-import React, {Component} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import './textbox.css'
 
-class TextBox extends Component{
-  state={
-    textvalue: ''
-  }
+import{ 
+  modify
+} from '../../../Redux/inputtext'
 
-  render(){
-    return(
+import { observer} from "mobx-react-lite";
+import { useDispatch, useSelector } from 'react-redux';
+
+const TextBox = observer(({title})=>{
+  const texts = useSelector((state)=>state.inputtext.texts)
+  const titles = useSelector((state)=>state.inputtext.titles)
+  const dispatch = useDispatch()
+
+  useEffect(() => {});
+  
+  return(
+    <>
+      <input 
+        className='inputBox'
+      />
       <div>
         <textarea 
           className='textbox'
-          rows="4" cols="50"
-          value={this.state.textvalue} 
+          rows="4" cols="50" 
+          value={texts[titles.findIndex(element=>element==title)]}
           onChange={(e)=>{
-            this.setState({textvalue: e.target.value})
+            var titleindex = titles.findIndex(element=>element==title)
+            var payload = 
+            {
+              titleindex,
+              title,
+              text: e.target.value 
+            }
+            dispatch(modify(payload))
           }}
         />
       </div>
-    );
-  }
-}
+    </>
+  )
+
+})
 
 export default TextBox;

@@ -38,7 +38,7 @@ data class RevenueCost (
 	  var book:Book? = null,
 
     @ManyToOne(cascade = arrayOf(CascadeType.ALL))
-    @JoinColumn(name = "order_id")
-	  var order:Order? = null
+    @JoinColumn(name = "userorder_id")
+	  var userorder:UserOrder? = null
 
 )

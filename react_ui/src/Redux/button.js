@@ -20,7 +20,7 @@ export const buttonSlice = createSlice({
   },
 })
 
-export const { toggle, buttonCount } = buttonSlice.actions
+export const { toggle } = buttonSlice.actions
 
 export default buttonSlice.reducer
 

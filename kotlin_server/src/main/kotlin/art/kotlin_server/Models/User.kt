@@ -29,12 +29,12 @@ data class User (
     val name:String="",
 
     @OneToMany(mappedBy = "user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
-    val Addresses: List<Address>? = null,
+    val addresses: List<Address>? = null,
 
     @OneToMany(mappedBy = "user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
-    val Orders: List<Order>? = null,
+    val userOrders: List<UserOrder>? = null,
 
     @OneToMany(mappedBy = "user", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
-    val Messages: List<Message>? = null,
+    val messages: List<Message>? = null,
     
 )
