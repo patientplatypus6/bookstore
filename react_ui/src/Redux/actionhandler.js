@@ -23,10 +23,8 @@ const ActionHandler = () => {
   const titles = useSelector((state)=>state.inputtext.titles)
 
   const handlefetch = (payload, buttonName) => {
-    console.log('inside handlefetch and value of payload: ', payload)
     const fetchasync = async () => {
       var fetchresult = await fetchrequest(payload)
-      dispatch(toggle({buttonName, buttons}))
     }
     fetchasync();
   }
@@ -35,8 +33,8 @@ const ActionHandler = () => {
     var inputtitles = ['booktitle']
     var payload = {}
     inputtitles.forEach(inputtitle=>{
-      var textindex = titles.findIndex(element=>element==inputtitle)!=-1
-      if(textindex){
+      var textindex = titles.findIndex(element=>element==inputtitle)
+      if(textindex!=-1){
         payload.inputtitle = texts[textindex]
       }
     })
@@ -46,10 +44,9 @@ const ActionHandler = () => {
   useEffect(()=>{
     console.log('inside actionhandler useeffect')
     toggles.forEach((toggleTF, index)=>{
-      console.log('value of toggleindex; ', index)
-      console.log("value of toggleTF: ", toggleTF)
       if(toggleTF && buttons[index]=='addbook'){
-        addbook()        
+        addbook()  
+        dispatch(toggle({buttonName: 'addbook', buttons }))     
       }
     })
   })
