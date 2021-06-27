@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Button from '../Components/SubComponents/Button/Button'
 import InputBox from '../Components/SubComponents/InputBox/InputBox'
 import TextBox from '../Components/SubComponents/TextBox/TextBox'
-import { observer, useObserver} from "mobx-react";
+// import { observer, useObserver} from "mobx-react";
 import {
   BrowserRouter as Router,
   Switch,

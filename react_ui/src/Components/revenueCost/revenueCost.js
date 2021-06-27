@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
 import './revenueCost.css'
-import { observer} from "mobx-react-lite";
-import { toJS } from "mobx"
+// import { observer} from "mobx-react-lite";
+// import { toJS } from "mobx"
 import InputBox from '../../Components/SubComponents/InputBox/InputBox'
 import Button from '../../Components/SubComponents/Button/Button'
 

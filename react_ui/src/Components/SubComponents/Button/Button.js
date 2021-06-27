@@ -1,6 +1,6 @@
-  import React, {Component,  useState, useEffect} from 'react';
+import React, {Component,  useState, useEffect} from 'react';
 import './button.css'
-import { observer } from "mobx-react";
+// import { observer } from "mobx-react";
 // import {ButtonState} from '../../../MobXDEP/StateDEP';
 import {
   toggle

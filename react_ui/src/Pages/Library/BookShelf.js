@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
 import './library.css'
-import { observer} from "mobx-react-lite";
-import { toJS } from "mobx"
+// import { observer} from "mobx-react-lite";
+// import { toJS } from "mobx"
 
 const BookShelf = () => {
   useEffect(()=>{

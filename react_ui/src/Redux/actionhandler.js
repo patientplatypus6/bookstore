@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
 // import './admin.css'
-import { observer} from "mobx-react-lite";
-import { toJS } from "mobx"
+// import { observer} from "mobx-react-lite";
+// import { toJS } from "mobx"
 import { useSelector, useDispatch } from 'react-redux'
 import {
   toggle

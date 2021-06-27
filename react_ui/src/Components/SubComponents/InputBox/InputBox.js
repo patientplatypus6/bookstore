@@ -1,14 +1,14 @@
 import React, {Component, useState, useEffect} from 'react';
 import './inputbox.css'
-import { observer} from "mobx-react-lite";
-import { toJS } from "mobx"
+// import { observer} from "mobx-react-lite";
+// import { toJS } from "mobx"
 
 import{ 
   modify
 } from '../../../Redux/inputtext'
 import { useDispatch, useSelector } from 'react-redux';
 
-const InputBox = observer(({title}) => {
+const InputBox = ({title}) => {
 
   const texts = useSelector((state)=>state.inputtext.texts)
   const titles = useSelector((state)=>state.inputtext.titles)
@@ -34,6 +34,6 @@ const InputBox = observer(({title}) => {
       />
     </>
   )
-});
+};
 
 export default InputBox;

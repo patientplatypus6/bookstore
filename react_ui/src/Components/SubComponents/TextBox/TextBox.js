@@ -5,10 +5,10 @@ import{
   modify
 } from '../../../Redux/inputtext'
 
-import { observer} from "mobx-react-lite";
+// import { observer} from "mobx-react-lite";
 import { useDispatch, useSelector } from 'react-redux';
 
-const TextBox = observer(({title})=>{
+const TextBox = ({title})=>{
   const texts = useSelector((state)=>state.inputtext.texts)
   const titles = useSelector((state)=>state.inputtext.titles)
   const dispatch = useDispatch()
@@ -40,6 +40,6 @@ const TextBox = observer(({title})=>{
     </>
   )
 
-})
+}
 
 export default TextBox;
