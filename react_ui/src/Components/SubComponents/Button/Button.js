@@ -7,27 +7,22 @@ import {
 } from '../../../Redux/button.js'
 import { useSelector, useDispatch } from 'react-redux'
 
-const Button = ({buttonName}) => {
+const Button = ({buttonName, displayName}) => {
+
   const buttons = useSelector((state) => state.button.buttons)
   const toggles = useSelector((state) => state.button.toggles)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    // toggles.forEach((toggleTF, index)=>{
-    //   if(toggleTF && buttons[index]==buttonName){
-    //     dispatch(toggle({buttonName, buttons}))
-    //   }
-    // })
-  });
+  useEffect(() => {});
 
   return(
     <>
     <div className='button'
       onClick={()=>{
-        dispatch(toggle({buttonName, buttons}))
+        dispatch(toggle({buttonName, displayName, buttons}))
       }}
     >  
-      {buttonName}
+      {displayName}
     </div>
     </>
   )

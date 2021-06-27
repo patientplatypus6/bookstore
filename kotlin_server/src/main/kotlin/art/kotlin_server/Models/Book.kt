@@ -36,28 +36,28 @@ data class Book (
     val title: String = "",
 
     @get: NotBlank
-    val publish: String = "",
+    val subtitle:String="", 
 
     @get: NotBlank
-    val currentCopyright:Long = 0,
+    val publisher: String = "",
+
+    @get: NotBlank
+    val currentcopyright:Long = 0,
     
     @get: NotBlank
     val edition:Long = 1,
 
     @get: NotBlank
-    val subTitle:String="", 
-
-    @get: NotBlank
-    val authorBio:String="",
+    val authorbio:String="",
 
     @get: NotBlank
     val synopsis:String="",
 
     @get: NotBlank
-    val copyNumber:Long=1,
+    val copynumber:Long=1,
 
     @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
-    val revenueCostList: List<RevenueCost>? = null,
+    val revenuecostlist: List<RevenueCost>? = null,
 
     @OneToMany(mappedBy = "book", cascade = arrayOf(CascadeType.ALL), fetch = FetchType.EAGER)
     val authors: List<ListItem>? = null,

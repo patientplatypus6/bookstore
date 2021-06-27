@@ -1,17 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const buttonSlice = createSlice({
-  name: 'counter',
+  name: 'button',
   initialState: {
     buttons: [], 
+    displays: [],
     toggles: []
   },
   reducers: {
     toggle: (state, action) => {
-      let {buttonName, buttons} = action.payload
+      let {buttonName, displayName, buttons} = action.payload
       var elementIndex = buttons.findIndex(element=>element==buttonName)
       if(elementIndex==-1){
         state.buttons.push(buttonName)
+        state.displays.push(displayName)
         state.toggles.push(true)
       }else{
         state.toggles[elementIndex] = !state.toggles[elementIndex]

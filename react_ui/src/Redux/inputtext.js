@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const inputtextSlice = createSlice({
-  name: 'counter',
+  name: 'inputtext',
   initialState: {
     texts: [], 
-    titles: []
+    titles: [],
   },
   reducers: {
     modify: (state, action) => {
@@ -12,15 +12,20 @@ export const inputtextSlice = createSlice({
       if(titleindex==-1){
         state.texts.push(text)
         state.titles.push(title)
-
       }else{
         state.texts[titleindex]=text; 
       }
     },
+    clear: (state, action) =>{
+      let {titleindex, title} = action.payload 
+      if(titleindex!=-1){
+        state.texts[titleindex] = ""
+      }
+    }
   },
 })
 
-export const { modify } = inputtextSlice.actions
+export const { modify, clear } = inputtextSlice.actions
 
 export default inputtextSlice.reducer
 

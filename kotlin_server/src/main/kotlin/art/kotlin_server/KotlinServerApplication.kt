@@ -48,11 +48,27 @@ public class RequestTest{
 
 	@PostMapping("/post")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	fun postCustomer(@Valid @RequestBody comment: Comment): String{
+	fun postCustomer(@RequestBody comment: Comment): Comment{
 		println("value of customer $comment")
 		val author = comment.author;
 		println("value of author $author")
-		return "dfs"
+		val returncomment = Comment(
+			author = comment.author,
+			content = comment.content
+		)
+		return returncomment
+	}
+
+
+	@PostMapping("/addbook")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	fun addBook(@Valid @RequestBody book: Book): Comment{
+		println("value of book: ${book}")
+		val comment = Comment(
+			author = "test",
+			content = "test",
+		)
+		return comment
 	}
 }
 
