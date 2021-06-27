@@ -11,18 +11,66 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestBody
-import javax.validation.Valid
+// import org.json.JSONObject
+import javax.validation.Valid	
 
-import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.stereotype.Component
+@SpringBootApplication
+class KotlinServerApplication
 
-import org.springframework.web.server.ServerWebExchange
-import org.springframework.web.server.WebFilter
-import org.springframework.web.server.WebFilterChain
-import reactor.core.publisher.Mono
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.EnableWebFlux
+fun main(args: Array<String>) {
+	runApplication<KotlinServerApplication>(*args)
+}
+
+@RestController
+@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+@RequestMapping("/test")
+public class RequestTest{
+	
+	@GetMapping
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	fun stringfunc():Comment{
+		val comment = Comment(
+			author = "test",
+			content = "test",
+		)
+		return comment
+	}
+
+	@RequestMapping("/comment")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	fun getComment() : Comment {
+		val comment = Comment(
+			author = "test",
+			content = "test",
+		)
+		return comment
+	}
+
+	@PostMapping("/post")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	fun postCustomer(@Valid @RequestBody comment: Comment): String{
+		println("value of customer $comment")
+		val author = comment.author;
+		println("value of author $author")
+		return "dfs"
+	}
+}
+
+
+
+
+
+// @Configuration
+// @Profile("development")
+// public class DevCorsConfiguration:WebMvcConfigurer {
+//     override fun addCorsMappings(registry: CorsRegistry) {
+// 			registry.addMapping("/**")
+// 				.allowedOrigins("*") // any host or put domain(s) here
+// 				.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") 
+// 				// put the http verbs you want allow
+// 				.allowedHeaders("Authorization") // put the http headers you want allow
+//     }
+// }
 
 // @Configuration
 // @EnableWebFlux
@@ -58,47 +106,18 @@ import org.springframework.web.reactive.config.EnableWebFlux
 // 	}
 // }
 
-@SpringBootApplication
-class KotlinServerApplication
+// import org.springframework.http.HttpMethod
+// import org.springframework.http.HttpStatus
+// import org.springframework.stereotype.Component
 
-fun main(args: Array<String>) {
-	runApplication<KotlinServerApplication>(*args)
-}
+// import org.springframework.web.server.ServerWebExchange
+// import org.springframework.web.server.WebFilter
+// import org.springframework.web.server.WebFilterChain
+// import org.springframework.context.annotation.Configuration
 
-@RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-@RequestMapping("/test")
-public class RequestTest{
-
-	// @CrossOrigin(origins = ["*"], allowedHeaders=["*"], maxAge = 3600)
-	@GetMapping
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	fun stringfunc():String{
-		println("inside the index of requesttest")
-		return "some string"
-	}
-
-	// @CrossOrigin(origins = ["*"], allowedHeaders=["*"], maxAge = 3600)
-	@RequestMapping("/comment")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	fun getComment() : Comment {
-		val comment = Comment(
-			author = "test",
-			content = "test",
-		)
-		return comment
-	}
-	
-	// @CrossOrigin(origins = ["*"], allowedHeaders=["*"], maxAge = 3600)
-	@PostMapping("/post")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	fun postCustomer(@Valid @RequestBody comment: Comment): String{
-		println("value of customer $comment")
-		val author = comment.author;
-		println("value of author $author")
-		return "dfs"
-	}
-}
+// import org.springframework.context.annotation.Profile;
+// import org.springframework.web.servlet.config.annotation.CorsRegistry;
+// import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 
