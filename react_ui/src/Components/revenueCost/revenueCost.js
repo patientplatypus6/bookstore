@@ -18,10 +18,27 @@ const RevenueCost = ({indexval, rcname}) => {
 
   const indexvals = useSelector((state)=>state.revenuecost.indexvals)
   const rcnames = useSelector((state)=>state.revenuecost.rcnames)
+  const rcdescriptions = useSelector((state)=>state.revenuecost.rcdescriptions)
+  const rcvalues = useSelector((state)=>state.revenuecost.rcvalues)
+  const rcdates = useSelector((state)=>state.revenuecost.rcdates)
+
+
+
+
 
   useEffect(()=>{
 
   })
+
+  const inputHandler = (name, value) => {
+    var indexvalindex = indexvals.findIndex(element=>element==indexval)
+    var payload = {
+      name, 
+      index: indexvalindex,
+      value
+    }
+    dispatch(modifyrc(payload))
+  }
 
   return(
     <div>
@@ -42,18 +59,7 @@ const RevenueCost = ({indexval, rcname}) => {
           className='inputBox'
           value={rcnames[indexvals.findIndex(element=>element==indexval)]}
           onChange={(e)=>{
-            console.log('value of e.target.value: ', e.target.value)
-            console.log('rcnames[indexvals.findIndex(element=>element==indexval)]: ', 
-            rcnames[indexvals.findIndex(element=>element==indexval)]
-            )
-            var indexvalindex = indexvals.findIndex(element=>element==indexval)
-            var payload = 
-            {
-              name: 'rcnames',
-              index: indexvalindex,
-              value: e.target.value
-            }
-            dispatch(modifyrc(payload))
+            inputHandler('rcnames', e.target.value)
           }}
         />
       </div>
@@ -61,20 +67,38 @@ const RevenueCost = ({indexval, rcname}) => {
       <div>
         Revenue Cost Description
         <br/>
-        <InputBox title='subtitle'/>
+        <input 
+          className='inputBox'
+          value={rcdescriptions[indexvals.findIndex(element=>element==indexval)]}
+          onChange={(e)=>{
+            inputHandler('rcdescriptions', e.target.value)
+          }}
+        />
       </div>
       <br/>
       <div>
         Revenue Cost Value
         <br/>
-        <InputBox title='publisher'/>
+        <input 
+          className='inputBox'
+          value={rcvalues[indexvals.findIndex(element=>element==indexval)]}
+          onChange={(e)=>{
+            inputHandler('rcvalues', e.target.value)
+          }}
+        />
       </div>
       <br/>
       <div>
         Revenue Cost Date
         <br/>
-        <InputBox title='currentcopyright'/>
-      </div>
+        <input 
+          className='inputBox'
+          value={rcdates[indexvals.findIndex(element=>element==indexval)]}
+          onChange={(e)=>{
+            inputHandler('rcdates', e.target.value)
+          }}
+        />
+      </div>  
       <br/>
       <div>
         <Button buttonName='deleterevenuecost' displayName='Delete Revenue Cost Entry'/>
