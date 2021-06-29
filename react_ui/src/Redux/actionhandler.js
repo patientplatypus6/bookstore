@@ -70,6 +70,11 @@ const ActionHandler = () => {
     console.log('inside addrevenuecost')
     dispatch(addrc())
   }
+  
+  const deleterevenuecost = () => {
+    console.log('inside deleterevenuecost')
+    dispatch(removerc())
+  }
 
   useEffect(()=>{
     console.log('inside actionhandler useeffect')
@@ -82,6 +87,12 @@ const ActionHandler = () => {
         addrevenuecost()  
         dispatch(toggle({buttonName: 'addrevenuecost', displayName: 'Add Revenue Cost', buttons }))     
       }
+      if(toggleTF && buttons[index].includes("deleterevenuecost")){
+        console.log('inside deleterevenuecost')
+        deleterevenuecost()  
+        dispatch(toggle({buttonName: buttons[index], displayName: 'Delete Revenue Cost', buttons }))     
+      }
+      // deleterevenuecost
     })
   })
   

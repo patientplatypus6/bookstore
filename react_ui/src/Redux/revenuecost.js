@@ -20,12 +20,12 @@ export const revenuecostSlice = createSlice({
       state.indexvals.push(Date.now())
     }, 
     removerc: (state, actions) => {
-
+      console.log('inside removerc')
     }, 
     modifyrc: (state, actions) => {
       console.log('value of actions.payload: ', actions.payload)
       state[actions.payload.name][actions.payload.index]=actions.payload.value
-    }
+    },
     // modify: (state, action) => {
     //   let {titleindex, title, text} = action.payload
     //   if(titleindex==-1){

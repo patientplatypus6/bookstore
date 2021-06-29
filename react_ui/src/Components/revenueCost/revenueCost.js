@@ -23,9 +23,6 @@ const RevenueCost = ({indexval, rcname}) => {
   const rcdates = useSelector((state)=>state.revenuecost.rcdates)
 
 
-
-
-
   useEffect(()=>{
 
   })
@@ -101,7 +98,10 @@ const RevenueCost = ({indexval, rcname}) => {
       </div>  
       <br/>
       <div>
-        <Button buttonName='deleterevenuecost' displayName='Delete Revenue Cost Entry'/>
+        <Button 
+          buttonName={"deleterevenuecost"+indexval.toString()} 
+          displayName='Delete Revenue Cost Entry'
+        />
       </div>
       <br/>
     </div>
