@@ -40,17 +40,44 @@ const ActionHandler = () => {
   }
 
   const addbook = () => {
-    var inputtitles = ['booktitle']
+    var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'edition', 'authorbio', 'synopsis', 'isbn']
     var payload = {}
     payload.body = {}
     payload.requestType = "post"
-    payload.uri = "addbook"
+    payload.uri = "book/addbook"
 
+    var tempArray = []
     //add book values to payload
     inputtitles.forEach(inputtitle=>{
       var textindex = titles.findIndex(element=>element==inputtitle)
       if(textindex!=-1){
-        payload.body.title = texts[textindex]
+        if(inputtitle=='title'){
+          payload.body.title=texts[textindex]
+        }
+        if(inputtitle=='uniqueid'){
+          payload.body.uniqueid=texts[textindex]
+        }
+        if(inputtitle=='subtitle'){
+          payload.body.subtitle=texts[textindex]
+        }
+        if(inputtitle=='publisher'){
+          payload.body.publisher=texts[textindex]
+        }
+        if(inputtitle=='currentcopyright'){
+          payload.body.currentcopyright=texts[textindex]
+        }
+        if(inputtitle=='edition'){
+          payload.body.edition=texts[textindex]
+        }
+        if(inputtitle=='authorbio'){
+          payload.body.authorbio=texts[textindex]
+        }
+        if(inputtitle=='synopsis'){
+          payload.body.synopsis=texts[textindex]
+        }
+        if(inputtitle=='isbn'){
+          payload.body.isbn=texts[textindex]
+        }
       }
     })
 

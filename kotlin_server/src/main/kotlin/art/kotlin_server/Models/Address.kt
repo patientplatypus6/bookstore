@@ -20,7 +20,7 @@ data class Address (
     val id: Long = 0,
 
     @get: NotBlank
-    val addressType: String = "Shipping",
+    val addresstype: String = "Shipping",
 
     @get: NotBlank
     val street: String = "Default",

@@ -48,9 +48,14 @@ const AddBook = () => {
       </div>
       <br/>
       <div>
+        ISBN
+        <br/>
+        <InputBox title='isbn'/>
+      </div>
+      <div>
         Title
         <br/>
-        <InputBox title='booktitle'/>
+        <InputBox title='title'/>
       </div>
       <br/>
       <div>
@@ -86,13 +91,7 @@ const AddBook = () => {
       <div>
         Synopsis
         <br/>
-        <InputBox title='authorbio'/>
-      </div>
-      <br/>
-      <div>
-        Copy Number
-        <br/>
-        <InputBox title='authorbio'/>
+        <InputBox title='synopsis'/>
       </div>
       <br/>
       {revenuecostHandler()}

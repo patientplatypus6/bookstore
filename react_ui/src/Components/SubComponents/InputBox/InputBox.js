@@ -22,6 +22,8 @@ const InputBox = ({title}) => {
         className='inputBox'
         value={texts[titles.findIndex(element=>element==title)]}
         onChange={(e)=>{
+          console.log('value of titles: ', titles)
+          console.log('value of texts: ', texts)
           var titleindex = titles.findIndex(element=>element==title)
           var payload = 
           {

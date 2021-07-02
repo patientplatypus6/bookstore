@@ -20,6 +20,10 @@ import org.springframework.data.r2dbc.connectionfactory.init.ConnectionFactoryIn
 import org.springframework.data.r2dbc.connectionfactory.init.CompositeDatabasePopulator
 import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 
 @SpringBootApplication
 class KotlinServerApplication
@@ -30,13 +34,34 @@ fun main(args: Array<String>) {
 
 @Configuration
 class Config {
+	
+	// @Value("classpath:data/resource-data.txt")
+	// Resource resourceFile;
+
+	// val sqlFile = this::class.java.classLoader.getResource("sql/schema.sql").readText()
+
+
+	// @Value("classpath:sql/schema.sql")
+	// var sqlFile: String = ""
+
+	@Autowired
+	private lateinit var resourceLoader: ResourceLoader
+
+
+		fun getResourceSQL(path: String): Resource {
+			// return object {}.javaClass.getResource(path).readText()
+			// return object {}.javaClass.getResourceAsStream(path)
+			return resourceLoader.getResource(path)
+		}
 
     @Bean
     fun initializer(connectionFactory: ConnectionFactory): ConnectionFactoryInitializer {
         val initializer = ConnectionFactoryInitializer()
         initializer.setConnectionFactory(connectionFactory)
         val populator = CompositeDatabasePopulator()
-        populator.addPopulators(ResourceDatabasePopulator(ClassPathResource("./sql/schema.sql")))
+        // populator.addPopulators(ResourceDatabasePopulator(ClassPathResource("sql/schema.sql")))
+				// populator.addPopulators(ResourceDatabasePopulator($sqlFile))
+				populator.addPopulators(ResourceDatabasePopulator(getResourceSQL("/sql/schema.sql")))
         initializer.setDatabasePopulator(populator)
         return initializer
     }
