@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody
 
 import platypus.bookstore.classes.general.Comment
 import platypus.bookstore.classes.db.Books
+import platypus.bookstore.classes.db.BooksHandler
+import platypus.bookstore.repos.books.BookRepository
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -62,12 +64,13 @@ public class RequestBook{
 
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	fun addbook(@RequestBody book:Books):Comment{
+	suspend fun addbook(@RequestBody book:Books):Comment{
     println("value of book $book")
 		val comment = Comment(
 			author = "test",
 			content = "test",
 		)
+		BooksHandler(BookRepository).addBook(book)
 		return comment
 	}
 }

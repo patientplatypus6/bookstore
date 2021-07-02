@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS books
     currentedition INT NOT NULL,
     authorbio TEXT NOT NULL,
     synopsis TEXT NOT NULL,
-    ISBN TEXT NOT NULL,
+    isbn TEXT NOT NULL,
     dateordered INT, 
     dateshipped INT
 );
