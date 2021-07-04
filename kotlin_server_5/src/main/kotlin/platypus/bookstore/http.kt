@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestBody
 
 import platypus.bookstore.classes.general.Comment
-import platypus.bookstore.classes.db.Books
+import platypus.bookstore.classes.db.books.Books
 import platypus.bookstore.classes.db.BooksHandler
 import platypus.bookstore.repos.books.BookRepository
+import platypus.bookstore.services.books.BookService
+import org.springframework.stereotype.Component
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -51,17 +53,6 @@ public class RequestBook{
 		return comment
 	}
 
-  // @PostMapping("/addbook")
-	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	// fun addbook():Comment{
-  //   println("value of book")
-	// 	val comment = Comment(
-	// 		author = "test",
-	// 		content = "test",
-	// 	)
-	// 	return comment
-	// }
-
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbook(@RequestBody book:Books):Comment{
@@ -70,7 +61,14 @@ public class RequestBook{
 			author = "test",
 			content = "test",
 		)
-		BooksHandler(BookRepository).addBook(book)
+		// var bookshandler = new BooksHandler();
+		// bookshandler.addbook(book)
+		// var bookshandler = new 
+		// BooksHandler.addbook(book)
+		// var booksservice = BooksService();	
+		var bookshandler = BooksHandler();
+		bookshandler.findBooks();
+		// bookshandler.addbook(book)
 		return comment
 	}
 }
@@ -82,3 +80,15 @@ public class RequestBook{
 public class RequestRevenueCost{
 
 }
+
+
+// @PostMapping("/addbook")
+// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+// fun addbook():Comment{
+//   println("value of book")
+// 	val comment = Comment(
+// 		author = "test",
+// 		content = "test",
+// 	)
+// 	return comment
+// }

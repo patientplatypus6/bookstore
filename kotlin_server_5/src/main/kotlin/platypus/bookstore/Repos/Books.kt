@@ -14,27 +14,26 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.data.r2dbc.repository.Query  
 import org.springframework.data.repository.query.Param //is this right? may be necessary to use r2dbc
-import platypus.bookstore.classes.db.Books
+import platypus.bookstore.classes.db.books.Books
+import org.springframework.stereotype.Repository
 
+@Repository
 interface BookRepository : CoroutineCrudRepository<Books, Long> {
-    // language=SQL
-    @Query("""
-    INSERT INTO BOOKS (title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :authorbio, :synopsis, :isbn);
-    """)
-    suspend fun save(
-      @Param(:title) title: String, 
-      @Param(:subtitle) subtitle: String, 
-      @Param(:publisher) publisher: String, 
-      @Param(:currentcopyright) currentcopyright: String, 
-      @Param(:authorbio) authorbio: String, 
-      @Param(:synopsis) synopsis: String, 
-      @Param(:isbn) isbn: String
-    )
+    // @Query("""
+    // INSERT INTO BOOKS (title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :authorbio, :synopsis, :isbn);
+    // """)
+    // suspend fun save(title: String, subtitle: String, publisher: String, currentcopyright: String, authorbio: String, synopsis: String, isbn: String
+    // ):String
 
     @Query("""
-    SELECT * FROM BOOKS;
+      select * from books
     """)
-    suspend fun findBooks():<List>Books
+    suspend fun findBooks():List<Books>
+
+    // @Query("""
+    // SELECT * FROM BOOKS;
+    // """)
+    // suspend fun findAll():<List>Books
 
   // fun findBySlug(slug: String): Article?
   // fun findAllByOrderByAddedAtDesc(): Iterable<Article>

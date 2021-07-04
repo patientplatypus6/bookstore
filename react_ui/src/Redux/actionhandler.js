@@ -42,7 +42,17 @@ const ActionHandler = () => {
   const addbook = () => {
     var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'edition', 'authorbio', 'synopsis', 'isbn']
     var payload = {}
-    payload.body = {}
+    payload.body = {
+      title: "", 
+      uniqueid: "", 
+      subtitle: "",
+      publisher: "", 
+      currentcopyright: "", 
+      edition: "", 
+      authorbio: "", 
+      synopsis: "", 
+      isbn: ""
+    }
     payload.requestType = "post"
     payload.uri = "book/addbook"
 
