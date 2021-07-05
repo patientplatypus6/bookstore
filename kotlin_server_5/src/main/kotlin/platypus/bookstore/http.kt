@@ -52,19 +52,21 @@ public class RequestBook(private val bookRepo: BookRepository){
 		return comment
 	}
 
+	@GetMapping("/findbooks")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbooks():List<Books>{
+		var bookshandler = BooksHandler(bookRepo)
+		var totalbooks: List<Books> = bookshandler.findBooks()
+		return totalbooks;
+	}
+
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addbook(@RequestBody book:Books):Comment{
+	suspend fun addbook(@RequestBody book:Books):List<Books>{
     println("value of book $book")
-		val comment = Comment(
-			author = "test",
-			content = "test",
-		)
 		var bookshandler = BooksHandler(bookRepo);
-		// bookshandler.findBooks();
-		// bookRepo.findBooks();
-		bookshandler.addBook(book)
-		return comment
+		var totalbooks:List<Books> = bookshandler.addBook(book)
+		return totalbooks
 	}
 }
 

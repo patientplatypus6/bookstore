@@ -1,9 +1,6 @@
 package platypus.bookstore.classes.db
 
-// import org.springframework.data.r2dbc.repository.Query  
-// import platypus.bookstore.repos.books.BookRepository
 import platypus.bookstore.repos.books.BookRepository
-// import platypus.bookstore.services.books.BookService
 import platypus.bookstore.classes.db.books.Books
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.web.reactive.function.server.*
@@ -17,42 +14,42 @@ import org.springframework.data.domain.Persistable
 @ComponentScan("platypus.bookstore")
 class BooksHandler(val bookRepo: BookRepository){
   
-  suspend fun findBooks(){
+  suspend fun findBooks():List<Books>{
     println("findBooks")
-    val books = bookRepo.findBooks();
+    val books:List<Books> = bookRepo.findBooks();
     println("value of books $books")
+    return books;
   }
 
-  suspend fun addBook(book: Books){
+  suspend fun addBook(book: Books):List<Books>{
     println("addBooks")
-    val title:String = book.title;
-    val subtitle:String = book.subtitle;
-    val publisher:String = book.publisher;
-    val currentcopyright:String = book.currentcopyright;
-    val bookedition:String = book.bookedition;
-    val uniqueid:String = book.uniqueid;
-    val authorbio:String = book.authorbio;
-    val synopsis:String = book.synopsis;
-    val isbn:String = book.isbn;
-
-    println("----------")
-    println("---BOOK---")
-    println("$book")
-    println("title $title")
-    println("subtitle $subtitle")
-    println("publisher $publisher")
-    println("currentcopyright $currentcopyright")
-    println("bookedition $bookedition")
-    println("uniqueid $uniqueid")
-    println("authorbio $authorbio")
-    println("synopsis $synopsis")
-    println("isbn $isbn")
-    println("----------")
-
-    // val bookAdded:Unit = bookRepo.addBook(title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn);
     bookRepo.save(book);
-    // println("value of bookAdded: $bookAdded")
-    findBooks()
+    var bookList:List<Books> = findBooks()
+    return bookList;
   }
 
 } 
+
+// val title:String = book.title;
+// val subtitle:String = book.subtitle;
+// val publisher:String = book.publisher;
+// val currentcopyright:String = book.currentcopyright;
+// val bookedition:String = book.bookedition;
+// val uniqueid:String = book.uniqueid;
+// val authorbio:String = book.authorbio;
+// val synopsis:String = book.synopsis;
+// val isbn:String = book.isbn;
+
+// println("----------")
+// println("---BOOK---")
+// println("$book")
+// println("title $title")
+// println("subtitle $subtitle")
+// println("publisher $publisher")
+// println("currentcopyright $currentcopyright")
+// println("bookedition $bookedition")
+// println("uniqueid $uniqueid")
+// println("authorbio $authorbio")
+// println("synopsis $synopsis")
+// println("isbn $isbn")
+// println("----------")

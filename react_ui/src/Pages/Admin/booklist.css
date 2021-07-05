@@ -1,0 +1,35 @@
+table, td{
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+.columnHeaders{
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.tableHolder{
+  display: inline-block;
+  text-align: center;
+  /* width: 60%; */
+}
+
+.paginationHolder{
+  display: inline-block;
+  text-align: center;
+  width: 60%;
+}
+
+.button{
+  background: black;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  padding: 2px;
+  border: 2px solid blue;
+  border-radius: 2px;
+  font-family: monospace;
+}
+

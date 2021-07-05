@@ -15,11 +15,15 @@ import{
   removerc,
   modifyrc
 } from './revenuecost'
+import{
+  modifybooklistdb,
+  clearbooklistdb
+} from './booklistDB'
 import fetchrequest from '../api/fetch'
 
 const ActionHandler = () => {
 
-  const dispatch = useDispatch()
+  //REDUX SELECTORS
   
   const buttons = useSelector((state) => state.button.buttons)
   const toggles = useSelector((state) => state.button.toggles)
@@ -27,7 +31,12 @@ const ActionHandler = () => {
   const texts = useSelector((state)=>state.inputtext.texts)
   const titles = useSelector((state)=>state.inputtext.titles)
 
+  const booklist = useSelector((state)=>state.booklistdb.booklist)
+
+  //HANDLEFETCH
+
   const handlefetch = (payload) => {
+    console.log('inside handlefetch and value of payload: ', payload)
     const fetchasync = async () => {
       var fetchresult = await fetchrequest(payload)
       return fetchresult
@@ -35,8 +44,38 @@ const ActionHandler = () => {
     return fetchasync();
   }
 
+  //DISPATCHES
+
+  const dispatch = useDispatch()
+
   const clearText = (payload) => {
     dispatch(clear(payload))
+  }
+
+  const addtobooklist = (payload) => {
+    console.log('inside addtobooklist and value of payload: ', payload)
+    dispatch(modifybooklistdb(payload))
+  }
+
+  const addrevenuecost = () => {
+    console.log('inside addrevenuecost')
+    dispatch(addrc())
+  }
+  
+  const deleterevenuecost = () => {
+    console.log('inside deleterevenuecost')
+    dispatch(removerc())
+  }
+
+  //ACTION FUNCTIONS
+
+  const findbooks = () => {
+    var payload = {}
+    payload.uri='book/findbooks' 
+    payload.requestType='get'
+    handlefetch(payload).then(result=>{
+      addtobooklist(result)
+    })
   }
 
   const addbook = () => {
@@ -103,18 +142,12 @@ const ActionHandler = () => {
           clearText({titleindex: textindex, title: inputtitle})
         }
       })
+      //add result to booklistdb
+      addtobooklist(result)
     })
   }
-  
-  const addrevenuecost = () => {
-    console.log('inside addrevenuecost')
-    dispatch(addrc())
-  }
-  
-  const deleterevenuecost = () => {
-    console.log('inside deleterevenuecost')
-    dispatch(removerc())
-  }
+
+  //BUTTON LISTENERS
 
   useEffect(()=>{
     console.log('inside actionhandler useeffect')
@@ -122,6 +155,10 @@ const ActionHandler = () => {
       if(toggleTF && buttons[index]=='addbook'){
         addbook()  
         dispatch(toggle({buttonName: 'addbook', displayName:'Add Book', buttons }))     
+      }
+      if(toggleTF && buttons[index]=='findbooks'){
+        findbooks()  
+        dispatch(toggle({buttonName: 'findbooks', displayName:'Find Books', buttons }))     
       }
       if(toggleTF && buttons[index]=='addrevenuecost'){
         addrevenuecost()  
@@ -132,7 +169,6 @@ const ActionHandler = () => {
         deleterevenuecost()  
         dispatch(toggle({buttonName: buttons[index], displayName: 'Delete Revenue Cost', buttons }))     
       }
-      // deleterevenuecost
     })
   })
   
