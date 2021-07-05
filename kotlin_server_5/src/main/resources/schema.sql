@@ -1,8 +1,6 @@
 
 -- DROP TABLE IF EXISTS books;
 
-
-
 CREATE TABLE IF NOT EXISTS addresses
 (
     id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,12 +21,12 @@ CREATE TABLE books
     title VARCHAR(255) NOT NULL,
     subtitle  VARCHAR(255) NOT NULL,
     publisher  VARCHAR(255) NOT NULL, 
-    currentcopyright TEXT NOT NULL,
-    bookedition TEXT NOT NULL,
-    uniqueid TEXT NOT NULL,
-    authorbio TEXT NOT NULL,
-    synopsis TEXT NOT NULL,
-    isbn TEXT NOT NULL,
+    currentcopyright VARCHAR(65535) NOT NULL,
+    bookedition VARCHAR(65535) NOT NULL,
+    uniqueid VARCHAR(65535) NOT NULL,
+    authorbio VARCHAR(65535) NOT NULL,
+    synopsis VARCHAR(65535) NOT NULL,
+    isbn VARCHAR(65535) NOT NULL,
     dateordered INT, 
     dateshipped INT
 );
@@ -39,7 +37,7 @@ CREATE TABLE IF NOT EXISTS bookerratas
     bookid INT NOT NULL,
     fieldtypeVAR VARCHAR(255),
     --copyrights, authors, hashtags
-    fields VARCHAR(255) NOT NULL 
+    fields VARCHAR(65535) NOT NULL 
 );
 
 CREATE TABLE IF NOT EXISTS messages
@@ -48,7 +46,7 @@ CREATE TABLE IF NOT EXISTS messages
     messagecontent TEXT NOT NULL,
     messagedate DATE NOT NULL,
     messageresponseid INT NOT NULL,
-    messagefrom VARCHAR(255) NOT NULL,
+    messagefrom VARCHAR(65535) NOT NULL,
     userid INT NOT NULL
 );
 
@@ -58,7 +56,7 @@ CREATE TABLE IF NOT EXISTS revenuecosts
     bookid INT, 
     userorderid INT,
     rcname VARCHAR(255) NOT NULL,
-    rcdescription VARCHAR(255) NOT NULL,
+    rcdescription VARCHAR(65535) NOT NULL,
     rcvalue INT NOT NULL,
     rcdate DATE NOT NULL
 );
