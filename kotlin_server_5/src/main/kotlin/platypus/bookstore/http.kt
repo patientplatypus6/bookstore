@@ -12,7 +12,6 @@ import platypus.bookstore.classes.general.Comment
 import platypus.bookstore.classes.db.books.Books
 import platypus.bookstore.classes.db.BooksHandler
 import platypus.bookstore.repos.books.BookRepository
-import platypus.bookstore.services.books.BookService
 import org.springframework.stereotype.Component
 
 @RestController
@@ -41,7 +40,7 @@ public class RequestUser{
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/book")
-public class RequestBook{
+public class RequestBook(private val bookRepo: BookRepository){
   
   @GetMapping
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -61,14 +60,10 @@ public class RequestBook{
 			author = "test",
 			content = "test",
 		)
-		// var bookshandler = new BooksHandler();
-		// bookshandler.addbook(book)
-		// var bookshandler = new 
-		// BooksHandler.addbook(book)
-		// var booksservice = BooksService();	
-		var bookshandler = BooksHandler();
-		bookshandler.findBooks();
-		// bookshandler.addbook(book)
+		var bookshandler = BooksHandler(bookRepo);
+		// bookshandler.findBooks();
+		// bookRepo.findBooks();
+		bookshandler.addBook(book)
 		return comment
 	}
 }
@@ -80,15 +75,3 @@ public class RequestBook{
 public class RequestRevenueCost{
 
 }
-
-
-// @PostMapping("/addbook")
-// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-// fun addbook():Comment{
-//   println("value of book")
-// 	val comment = Comment(
-// 		author = "test",
-// 		content = "test",
-// 	)
-// 	return comment
-// }

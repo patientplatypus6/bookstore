@@ -40,18 +40,18 @@ const ActionHandler = () => {
   }
 
   const addbook = () => {
-    var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'edition', 'authorbio', 'synopsis', 'isbn']
+    var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'bookedition', 'authorbio', 'synopsis', 'isbn']
     var payload = {}
     payload.body = {
-      title: "", 
-      uniqueid: "", 
-      subtitle: "",
-      publisher: "", 
-      currentcopyright: "", 
-      edition: "", 
-      authorbio: "", 
-      synopsis: "", 
-      isbn: ""
+      title: "NONE", 
+      subtitle: "NONE",
+      publisher: "NONE",
+      currentcopyright: "NONE",
+      bookedition: "NONE", 
+      uniqueid: "NONE",  
+      authorbio: "NONE", 
+      synopsis: "NONE", 
+      isbn: "NONE"
     }
     payload.requestType = "post"
     payload.uri = "book/addbook"
@@ -76,8 +76,8 @@ const ActionHandler = () => {
         if(inputtitle=='currentcopyright'){
           payload.body.currentcopyright=texts[textindex]
         }
-        if(inputtitle=='edition'){
-          payload.body.edition=texts[textindex]
+        if(inputtitle=='bookedition'){
+          payload.body.bookedition=texts[textindex]
         }
         if(inputtitle=='authorbio'){
           payload.body.authorbio=texts[textindex]
@@ -87,6 +87,9 @@ const ActionHandler = () => {
         }
         if(inputtitle=='isbn'){
           payload.body.isbn=texts[textindex]
+          var tempid = texts[textindex]+Date.now().toString();
+          var stringtempid = tempid.toString()
+          payload.body.uniqueid=stringtempid
         }
       }
     })

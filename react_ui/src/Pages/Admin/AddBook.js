@@ -79,7 +79,7 @@ const AddBook = () => {
       <div>
         Edition
         <br/>
-        <InputBox title='edition'/>
+        <InputBox title='bookedition'/>
       </div>
       <br/>
       <div>

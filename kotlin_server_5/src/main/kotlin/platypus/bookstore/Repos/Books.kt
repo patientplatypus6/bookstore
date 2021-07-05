@@ -15,15 +15,17 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.data.r2dbc.repository.Query  
 import org.springframework.data.repository.query.Param //is this right? may be necessary to use r2dbc
 import platypus.bookstore.classes.db.books.Books
+import platypus.bookstore.classes.general.ResultString
 import org.springframework.stereotype.Repository
+// import org.springframework.data.domain.Persistable
 
 @Repository
 interface BookRepository : CoroutineCrudRepository<Books, Long> {
-    // @Query("""
-    // INSERT INTO BOOKS (title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :authorbio, :synopsis, :isbn);
-    // """)
-    // suspend fun save(title: String, subtitle: String, publisher: String, currentcopyright: String, authorbio: String, synopsis: String, isbn: String
-    // ):String
+      // @Query("""
+      // INSERT INTO BOOKS (title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :authorbio, :synopsis, :isbn);
+      // """)
+      // suspend fun addBook(title: String, subtitle: String, publisher: String, currentcopyright: String, authorbio: String, synopsis: String, isbn: String
+      // ):Unit
 
     @Query("""
       select * from books

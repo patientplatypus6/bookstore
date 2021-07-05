@@ -1,4 +1,7 @@
 
+-- DROP TABLE IF EXISTS books;
+
+
 
 CREATE TABLE IF NOT EXISTS addresses
 (
@@ -13,13 +16,16 @@ CREATE TABLE IF NOT EXISTS addresses
     userorderid INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS books
+DROP TABLE IF EXISTS books;
+CREATE TABLE books
 (
-    id     INT AUTO_INCREMENT PRIMARY KEY,
+    -- id     INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     subtitle  VARCHAR(255) NOT NULL,
     publisher  VARCHAR(255) NOT NULL, 
-    currentedition INT NOT NULL,
+    currentcopyright TEXT NOT NULL,
+    bookedition TEXT NOT NULL,
+    uniqueid TEXT NOT NULL,
     authorbio TEXT NOT NULL,
     synopsis TEXT NOT NULL,
     isbn TEXT NOT NULL,

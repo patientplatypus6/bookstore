@@ -3,74 +3,56 @@ package platypus.bookstore.classes.db
 // import org.springframework.data.r2dbc.repository.Query  
 // import platypus.bookstore.repos.books.BookRepository
 import platypus.bookstore.repos.books.BookRepository
-import platypus.bookstore.services.books.BookService
+// import platypus.bookstore.services.books.BookService
 import platypus.bookstore.classes.db.books.Books
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.web.reactive.function.server.*
 import org.springframework.data.r2dbc.repository.Query  
 import org.springframework.stereotype.Component
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Persistable
 
 @Component
-class BooksHandler(private val service: BookService){
-
-  // @Autowired
-  // lateinit private var service: BookService
-
+@ComponentScan("platypus.bookstore")
+class BooksHandler(val bookRepo: BookRepository){
+  
   suspend fun findBooks(){
-    println("hello")
-    val allBooks = service.findBooks()
-    println("value of allBooks: $allBooks")
+    println("findBooks")
+    val books = bookRepo.findBooks();
+    println("value of books $books")
   }
 
-  // var title: String = book.title
-  // var subtitle: String = book.subtitle
-  // var publisher: String = book.publisher
-  // var currentcopyright: String = book.currentcopyright
-  // var authorbio: String = book.currentcopyright
-  // var synopsis: String = book.synopsis
-  // var isbn: String = book.isbn
+  suspend fun addBook(book: Books){
+    println("addBooks")
+    val title:String = book.title;
+    val subtitle:String = book.subtitle;
+    val publisher:String = book.publisher;
+    val currentcopyright:String = book.currentcopyright;
+    val bookedition:String = book.bookedition;
+    val uniqueid:String = book.uniqueid;
+    val authorbio:String = book.authorbio;
+    val synopsis:String = book.synopsis;
+    val isbn:String = book.isbn;
 
-  // override suspend fun save( title:String,  subtitle:String,  publisher: String,  currentcopyright:String,  authorbio:String,  synopsis:String,  isbn:String){
-  //   return "saved"
-  // }
-  // @Query("""
-  // INSERT INTO BOOKS (title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :authorbio, :synopsis, :isbn);
-  // """)
-  // override suspend fun save(title: String, subtitle: String, publisher: String, currentcopyright: String, authorbio: String, synopsis: String, isbn: String
-  // ):String{
-  //   return "string"
-  // }
-  // override suspend fun save()
+    println("----------")
+    println("---BOOK---")
+    println("$book")
+    println("title $title")
+    println("subtitle $subtitle")
+    println("publisher $publisher")
+    println("currentcopyright $currentcopyright")
+    println("bookedition $bookedition")
+    println("uniqueid $uniqueid")
+    println("authorbio $authorbio")
+    println("synopsis $synopsis")
+    println("isbn $isbn")
+    println("----------")
 
-  // suspend fun addbook(book: Books){
-  //   println("inside addbook")
-  //   book.save()
-    // save()
-    // save(book.title, book.subtitle, book.publisher, book.currentcopyright, book.authorbio, book.synopsis, book.isbn)
-  // }
-  // override fun save()
-}
-// abstract class BooksAbstract(book:Books): BookRepository{
-//   abstract fun addbook(book:Books)
-//   // fun addBook(book:Books){
-//   //   println("inside addbook and value of $book");
-//   // }
-// }
+    // val bookAdded:Unit = bookRepo.addBook(title, subtitle, publisher, currentcopyright, authorbio, synopsis, isbn);
+    bookRepo.save(book);
+    // println("value of bookAdded: $bookAdded")
+    findBooks()
+  }
 
-// class BooksHandler: BooksAbstract{
-//   override fun addbook(book:Books){
-//     println("inside addbook")
-//   }
-// }
-
-  // suspend fun addBook(book:Books){
-  //   bookRepo.save(
-  //     book.title, 
-  //     book.subtitle, 
-  //     book.publisher, 
-  //     book.currentcopyright, 
-  //     book.authorbio, 
-  //     book.synopsis, 
-  //     book.isbn)
-  // }
+} 

@@ -12,11 +12,6 @@ export const inputtextSlice = createSlice({
       if(titleindex==-1){
         state.texts.push(text)
         state.titles.push(title)
-        if(title=="isbn"){
-          var uniqueid = text + Date.now().toString()
-          state.texts.push(uniqueid)
-          state.titles.push("uniqueid")
-        }
       }else{
         state.texts[titleindex]=text; 
       }
