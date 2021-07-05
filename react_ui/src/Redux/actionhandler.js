@@ -33,6 +33,9 @@ const ActionHandler = () => {
 
   const booklist = useSelector((state)=>state.booklistdb.booklist)
 
+  //pulling all value of revenuecost
+  const revenuecost = useSelector((state)=>state.revenuecost)
+
   //HANDLEFETCH
 
   const handlefetch = (payload) => {
@@ -62,9 +65,27 @@ const ActionHandler = () => {
     dispatch(addrc())
   }
   
-  const deleterevenuecost = () => {
-    console.log('inside deleterevenuecost')
-    dispatch(removerc())
+  const deleterevenuecost = (rcbuttonname) => {
+    let indexval = parseInt(rcbuttonname.replace('deleterevenuecost', ''))
+    let revenuecostcopy = {...revenuecost}
+    let newrevenuecost = {
+      rcnames: [], 
+      rcdescriptions: [], 
+      rcvalues: [], 
+      rcdates: [], 
+      indexvals: []
+    }
+    let deleteindex = revenuecostcopy.indexvals.findIndex(element=>element==indexval)
+    revenuecost.indexvals.map((rc,index)=>{
+      if(index!=deleteindex){
+        newrevenuecost.rcnames.push(revenuecost.rcnames[index])
+        newrevenuecost.rcdescriptions.push(revenuecost.rcdescriptions[index])
+        newrevenuecost.rcvalues.push(revenuecost.rcvalues[index])
+        newrevenuecost.rcdates.push(revenuecost.rcdates[index])
+        newrevenuecost.indexvals.push(revenuecost.indexvals[index])
+      }
+    })
+    dispatch(removerc(newrevenuecost))
   }
 
   //ACTION FUNCTIONS
@@ -166,7 +187,7 @@ const ActionHandler = () => {
       }
       if(toggleTF && buttons[index].includes("deleterevenuecost")){
         console.log('inside deleterevenuecost')
-        deleterevenuecost()  
+        deleterevenuecost(buttons[index])  
         dispatch(toggle({buttonName: buttons[index], displayName: 'Delete Revenue Cost', buttons }))     
       }
     })

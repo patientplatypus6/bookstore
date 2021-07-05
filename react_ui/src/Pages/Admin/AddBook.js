@@ -36,7 +36,16 @@ const AddBook = () => {
   }
 
   return(
-    <div>
+    <>
+    <div
+      style={{
+        background: 'grey', 
+        display: 'inline-block', 
+        padding: '20px', 
+        verticalAlign: 'top', 
+        marginRight: '20px'
+      }}
+    >
       <div
         style={{
           fontWeight: 'bold', 
@@ -44,14 +53,37 @@ const AddBook = () => {
           display: 'inline-block'
         }}
       >
-        AddBook
+        Upload Book List JSON
       </div>
+      <br/>
+      <br/>
+      <input type='file' multiple/>
+    </div>
+    <div
+      style={{
+        background: 'grey', 
+        display: 'inline-block', 
+        padding: '20px', 
+
+      }}
+    >
+      <div
+        style={{
+          fontWeight: 'bold', 
+          fontSize: '1.5rem', 
+          display: 'inline-block'
+        }}
+      >
+        Add Book
+      </div>
+      <br/>
       <br/>
       <div>
         ISBN
         <br/>
         <InputBox title='isbn'/>
       </div>
+      <br/>
       <div>
         Title
         <br/>
@@ -106,6 +138,7 @@ const AddBook = () => {
         <Button buttonName='addbook' displayName="Add Book"/>
       </div>
     </div>
+    </>
   )
 }
 

@@ -68,6 +68,17 @@ public class RequestBook(private val bookRepo: BookRepository){
 		var totalbooks:List<Books> = bookshandler.addBook(book)
 		return totalbooks
 	}
+
+  @PostMapping("/addbooks")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun addbooks(@RequestBody books:List<Books>):List<Books>{
+    println("value of book $books")
+		var bookshandler = BooksHandler(bookRepo);
+		var totalbooks:List<Books> = bookshandler.addBooks(books)
+		return totalbooks
+	}
+
+
 }
 
 

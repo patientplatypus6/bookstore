@@ -28,6 +28,15 @@ class BooksHandler(val bookRepo: BookRepository){
     return bookList;
   }
 
+  suspend fun addBooks(books: List<Books>):List<Books>{
+    println("addBooks")
+    for(book in books){
+      bookRepo.save(book);
+    }
+    var bookList:List<Books> = findBooks()
+    return bookList;
+  }
+
 } 
 
 // val title:String = book.title;
