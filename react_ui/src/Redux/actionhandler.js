@@ -184,8 +184,17 @@ const ActionHandler = () => {
           clearText({titleindex: textindex, title: inputtitle})
         }
       })
+
+      let newrevenuecost = {
+        rcnames: [], 
+        rcdescriptions: [], 
+        rcvalues: [], 
+        rcdates: [], 
+        indexvals: []
+      }
+      dispatch(removerc(newrevenuecost))
       //add result to booklistdb
-      addtobooklist(result)
+      // addtobooklist(result)
     })
   }
 

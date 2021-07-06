@@ -85,9 +85,9 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		return updatedBool
 	}
 
-	@PostMapping("")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend true {}
+	// @PostMapping("")
+	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	// suspend true {}
 
 
 }
