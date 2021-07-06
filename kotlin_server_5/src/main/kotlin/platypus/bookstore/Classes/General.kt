@@ -1,4 +1,4 @@
-package platypus.bookstore.classes.general
+package platypus.bookstore.classes
 
 
 data class Comment(

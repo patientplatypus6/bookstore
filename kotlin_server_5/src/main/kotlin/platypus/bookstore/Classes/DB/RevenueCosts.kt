@@ -1,4 +1,6 @@
-package platypus.bookstore.classes.db.revenuecosts
+
+
+package platypus.bookstore.classes.db
 
 data class RevenueCost(
   var uniqueid: String = "",

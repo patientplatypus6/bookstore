@@ -1,8 +1,8 @@
-package platypus.bookstore.handlers.revenuecostshandler
+package platypus.bookstore.handlers
 
-import platypus.bookstore.repos.revenuecost.RevenueCostRepository
-import platypus.bookstore.classes.db.books.Book
-import platypus.bookstore.classes.db.revenuecosts.RevenueCost
+import platypus.bookstore.repos.RevenueCostRepository
+import platypus.bookstore.classes.db.Book
+import platypus.bookstore.classes.db.RevenueCost
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.web.reactive.function.server.*
 import org.springframework.data.r2dbc.repository.Query  
@@ -20,10 +20,12 @@ class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
     return revenuecosts;
   }
 
-  suspend fun addRevenueCost(revenuecost: RevenueCost){
-    revenuecostRepo.save(revenuecost)
-    // var revenuecostlist:List<RevenueCost> = findRevenueCosts()
-    // return revenuecostlist
+  suspend fun addRevenueCost(revenuecost: RevenueCost):Boolean{
+    println("value of revenuecost: $revenuecost")
+
+    var revenueCostUpdated: Boolean = revenuecostRepo.savearevenuecost(revenuecost.uniqueid, revenuecost.bookuniqueid, revenuecost.userorderuniqueid, revenuecost.rcname, revenuecost.rcdescription, revenuecost.rcvalue, revenuecost.rcdate)
+    
+    return revenueCostUpdated;
   }
 
 } 

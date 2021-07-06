@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.json.JSONObject
 
-import platypus.bookstore.classes.general.Comment
-import platypus.bookstore.classes.db.books.Book
-import platypus.bookstore.classes.db.books.BookRC
-import platypus.bookstore.handlers.bookshandler.BooksHandler
-import platypus.bookstore.repos.books.BookRepository
-import platypus.bookstore.handlers.revenuecostshandler.RevenueCostsHandler
-import platypus.bookstore.repos.revenuecost.RevenueCostRepository
+import platypus.bookstore.classes.*
+import platypus.bookstore.classes.db.BookRC
+import platypus.bookstore.classes.db.Book
+import platypus.bookstore.handlers.BooksHandler
+import platypus.bookstore.repos.BookRepository
+import platypus.bookstore.handlers.RevenueCostsHandler
+import platypus.bookstore.repos.RevenueCostRepository
 import org.springframework.stereotype.Component
 
-import platypus.bookstore.classes.db.revenuecosts.RevenueCost
+import platypus.bookstore.classes.db.RevenueCost
 
 
 @RestController
@@ -48,16 +48,6 @@ public class RequestUser{
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/book")
 public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository){
-  
-  @GetMapping
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun books():Comment{
-		val comment = Comment(
-			author = "test",
-			content = "test",
-		)
-		return comment
-	}
 
 	@GetMapping("/findbooks")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -69,28 +59,36 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addbook(@RequestBody bookrc: BookRC): List<Book> {
+	suspend fun addbook(@RequestBody bookrc: BookRC): Boolean {
     println("value of bookrc $bookrc")
+		println("test reload second")
 		var bookshandler = BooksHandler(bookRepo);
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo);
 
+		var updatedBool:Boolean = true;
+
 		for(revenuecost in bookrc.revenuecost){
-			revenuecostshandler.addRevenueCost(revenuecost)
+			when(updatedBool){
+				true->{
+					updatedBool = revenuecostshandler.addRevenueCost(revenuecost)
+				}
+				false->{}
+			}
 		}
-		var booklist = bookshandler.addBook(bookrc.book);
-
-
-		return booklist
+		when(updatedBool){
+			true->{
+				updatedBool = bookshandler.addBook(bookrc.book);
+			}
+			false->{}
+		}
+	
+		return updatedBool
 	}
 
-  // @PostMapping("/addbooks")
-	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	// suspend fun addbooks(@RequestBody books:List<Book>):List<Book>{
-  //   println("value of book $books")
-	// 	var bookshandler = BooksHandler(bookRepo);
-	// 	var totalbooks:List<Book> = bookshandler.addBook(bookrc)
-	// 	return totalbooks
-	// }
+	@PostMapping("")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend true {}
+
 
 }
 

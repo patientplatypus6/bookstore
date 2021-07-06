@@ -1,5 +1,10 @@
-package platypus.bookstore.classes.db.books
-import platypus.bookstore.classes.db.revenuecosts.RevenueCost
+
+
+package platypus.bookstore.classes.db
+
+
+
+import platypus.bookstore.classes.db.RevenueCost
 // import art.kotlin_server.model.RevenueCost
 
 data class BookRC(

@@ -29,8 +29,8 @@ CREATE TABLE book
     authorbio VARCHAR(65535) NOT NULL,
     synopsis VARCHAR(65535) NOT NULL,
     isbn VARCHAR(65535) NOT NULL,
-    dateordered VARCHAR(255) NOT NULL, 
-    dateshipped VARCHAR(255) NOT NULL
+    dateordered VARCHAR(255), 
+    dateshipped VARCHAR(255)
 );
 
 DROP TABLE IF EXISTS bookerrata;
@@ -59,6 +59,7 @@ DROP TABLE IF EXISTS revenuecost;
 CREATE TABLE IF NOT EXISTS revenuecost
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
+    uniqueid VARCHAR(255) NOT NULL,
     bookuniqueid VARCHAR(255) NOT NULL,
     userorderuniqueid VARCHAR(255) NOT NULL,
     rcname VARCHAR(255) NOT NULL,
