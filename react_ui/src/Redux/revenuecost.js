@@ -29,22 +29,7 @@ export const revenuecostSlice = createSlice({
     modifyrc: (state, actions) => {
       console.log('value of actions.payload: ', actions.payload)
       state[actions.payload.name][actions.payload.index]=actions.payload.value
-    },
-    // modify: (state, action) => {
-    //   let {titleindex, title, text} = action.payload
-    //   if(titleindex==-1){
-    //     state.texts.push(text)
-    //     state.titles.push(title)
-    //   }else{
-    //     state.texts[titleindex]=text; 
-    //   }
-    // },
-    // clear: (state, action) =>{
-    //   let {titleindex, title} = action.payload 
-    //   if(titleindex!=-1){
-    //     state.texts[titleindex] = ""
-    //   }
-    // }
+    }
   },
 })
 

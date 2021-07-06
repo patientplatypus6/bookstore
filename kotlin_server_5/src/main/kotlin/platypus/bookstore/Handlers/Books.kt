@@ -8,7 +8,6 @@ import org.springframework.data.r2dbc.repository.Query
 import org.springframework.stereotype.Component
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.Persistable
 
 @Component
 @ComponentScan("platypus.bookstore")
@@ -23,7 +22,12 @@ class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun addBook(book: Books):List<Books>{
     println("addBooks")
-    bookRepo.save(book);
+    // bookRepo.save(book);
+    bookRepo.saveabook(
+      book.title, book.subtitle, book.publisher, 
+      book.currentcopyright, book.bookedition, 
+      book.uniqueid, book.authorbio, book.synopsis, book.isbn
+    )
     var bookList:List<Books> = findBooks()
     return bookList;
   }
@@ -38,27 +42,3 @@ class BooksHandler(val bookRepo: BookRepository){
   }
 
 } 
-
-// val title:String = book.title;
-// val subtitle:String = book.subtitle;
-// val publisher:String = book.publisher;
-// val currentcopyright:String = book.currentcopyright;
-// val bookedition:String = book.bookedition;
-// val uniqueid:String = book.uniqueid;
-// val authorbio:String = book.authorbio;
-// val synopsis:String = book.synopsis;
-// val isbn:String = book.isbn;
-
-// println("----------")
-// println("---BOOK---")
-// println("$book")
-// println("title $title")
-// println("subtitle $subtitle")
-// println("publisher $publisher")
-// println("currentcopyright $currentcopyright")
-// println("bookedition $bookedition")
-// println("uniqueid $uniqueid")
-// println("authorbio $authorbio")
-// println("synopsis $synopsis")
-// println("isbn $isbn")
-// println("----------")

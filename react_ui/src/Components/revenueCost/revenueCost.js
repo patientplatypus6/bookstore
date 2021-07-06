@@ -46,9 +46,13 @@ const RevenueCost = ({indexval, rcname}) => {
           display: 'inline-block'
         }}
       >
-        Revenue/Cost <span
-          style={{fontWeight:'lighter'}}
-        >- {indexval} - {rcname}</span>
+        Revenue/Cost 
+        <br/>
+        <span
+          style={{fontWeight:'lighter', fontSize: '1rem'}}
+        >
+          #{indexval}
+        </span>
       </div>
       <br/>
       <div>
