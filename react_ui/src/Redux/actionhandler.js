@@ -103,56 +103,77 @@ const ActionHandler = () => {
     var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'bookedition', 'authorbio', 'synopsis', 'isbn']
     var payload = {}
     payload.body = {
-      title: "NONE", 
-      subtitle: "NONE",
-      publisher: "NONE",
-      currentcopyright: "NONE",
-      bookedition: "NONE", 
-      uniqueid: "NONE",  
-      authorbio: "NONE", 
-      synopsis: "NONE", 
-      isbn: "NONE"
+      book: {
+        title: "NONE", 
+        subtitle: "NONE",
+        publisher: "NONE",
+        currentcopyright: "NONE",
+        bookedition: "NONE", 
+        uniqueid: "NONE",  
+        authorbio: "NONE", 
+        synopsis: "NONE", 
+        isbn: "NONE",
+      },
+      revenuecost: []
     }
     payload.requestType = "post"
     payload.uri = "book/addbook"
-
+  
     var tempArray = []
     //add book values to payload
     inputtitles.forEach(inputtitle=>{
       var textindex = titles.findIndex(element=>element==inputtitle)
       if(textindex!=-1){
         if(inputtitle=='title'){
-          payload.body.title=texts[textindex]
-        }
-        if(inputtitle=='uniqueid'){
-          payload.body.uniqueid=texts[textindex]
+          payload.body.book.title=texts[textindex]
         }
         if(inputtitle=='subtitle'){
-          payload.body.subtitle=texts[textindex]
+          payload.body.book.subtitle=texts[textindex]
         }
         if(inputtitle=='publisher'){
-          payload.body.publisher=texts[textindex]
+          payload.body.book.publisher=texts[textindex]
         }
         if(inputtitle=='currentcopyright'){
-          payload.body.currentcopyright=texts[textindex]
+          payload.body.book.currentcopyright=texts[textindex]
         }
         if(inputtitle=='bookedition'){
-          payload.body.bookedition=texts[textindex]
+          payload.body.book.bookedition=texts[textindex]
         }
         if(inputtitle=='authorbio'){
-          payload.body.authorbio=texts[textindex]
+          payload.body.book.authorbio=texts[textindex]
         }
         if(inputtitle=='synopsis'){
-          payload.body.synopsis=texts[textindex]
+          payload.body.book.synopsis=texts[textindex]
         }
         if(inputtitle=='isbn'){
-          payload.body.isbn=texts[textindex]
+          payload.body.book.isbn=texts[textindex]
           var tempid = texts[textindex]+Date.now().toString();
           var stringtempid = tempid.toString()
-          payload.body.uniqueid=stringtempid
+          payload.body.book.uniqueid=stringtempid
         }
       }
     })
+
+    console.log("value of uniqueid")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("payload.body.uniqueid: ", payload.body.book.uniqueid)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+    var revenuecostpayload = [];
+    revenuecost.indexvals.forEach((indexval, index)=>{
+      var tempuniqueid = revenuecost['rcnames'][indexval]+Date.now().toString()
+      var uniqueidstring = tempuniqueid.toString()
+      revenuecostpayload.push({
+        rcname: revenuecost['rcnames'][index], 
+        rcdescription: revenuecost['rcdescriptions'][index],
+        rcvalue: revenuecost['rcvalues'][index],
+        rcdate: revenuecost['rcdates'][index], 
+        bookuniqueid: payload.body.book.uniqueid,
+        uniqueid: uniqueidstring
+      })
+    })
+
+    payload.body.revenuecost = revenuecostpayload
 
     handlefetch(payload).then(result=>{
       console.log('value of result: ', result)

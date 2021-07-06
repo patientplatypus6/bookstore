@@ -1,8 +1,11 @@
-import axios from 'axios'
+  import axios from 'axios'
 
 const fetchrequest = (payload) => { 
  var url = "http://localhost:8080/"
  var urlfull = url + payload.uri;
+ console.log('inside fetchrequest and value of payload: ',
+ payload
+ )
  if(payload.requestType=='post'){
   return fetch(urlfull,{
     method: "post",

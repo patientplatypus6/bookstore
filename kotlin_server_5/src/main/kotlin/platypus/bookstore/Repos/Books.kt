@@ -15,15 +15,14 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.data.r2dbc.repository.Query  
 import org.springframework.data.repository.query.Param //is this right? may be necessary to use r2dbc
 import org.springframework.data.r2dbc.repository.Modifying
-import platypus.bookstore.classes.db.books.Books
+import platypus.bookstore.classes.db.books.Book
 import platypus.bookstore.classes.general.ResultString
 import org.springframework.stereotype.Repository
 // import org.springframework.data.domain.Persistable
 
 @Repository
-interface BookRepository : CoroutineCrudRepository<Books, Long> {
+interface BookRepository : CoroutineCrudRepository<Book, Long> {
     
-
     // The result of a modifying query can be:
     // Void (or Kotlin Unit) to discard update count and await completion.
     // Integer or another numeric type emitting the affected rows count.
@@ -32,12 +31,13 @@ interface BookRepository : CoroutineCrudRepository<Books, Long> {
     @Modifying
     @Query(
     """
-      insert into books (title, subtitle, publisher, currentcopyright, bookedition, uniqueid, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :authorbio, :synopsis, :isbn)
-    """)
+      insert into book (title, subtitle, publisher, currentcopyright, bookedition, uniqueid, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :authorbio, :synopsis, :isbn)
+    """
+    )
     suspend fun saveabook(title:String, subtitle:String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, authorbio:String, synopsis:String, isbn:String):Void
 
     @Query("""
-      select * from books
+      select * from book
     """)
-    suspend fun findBooks():List<Books>
+    suspend fun findBooks():List<Book>
 }

@@ -7,12 +7,17 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.json.JSONObject
 
 import platypus.bookstore.classes.general.Comment
-import platypus.bookstore.classes.db.books.Books
+import platypus.bookstore.classes.db.books.Book
+import platypus.bookstore.classes.db.books.BookRC
 import platypus.bookstore.classes.db.BooksHandler
 import platypus.bookstore.repos.books.BookRepository
 import org.springframework.stereotype.Component
+
+import platypus.bookstore.classes.db.books.RevenueCost
+
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -54,30 +59,27 @@ public class RequestBook(private val bookRepo: BookRepository){
 
 	@GetMapping("/findbooks")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findbooks():List<Books>{
+	suspend fun findbooks():List<Book>{
 		var bookshandler = BooksHandler(bookRepo)
-		var totalbooks: List<Books> = bookshandler.findBooks()
+		var totalbooks: List<Book> = bookshandler.findBooks()
 		return totalbooks;
 	}
 
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addbook(@RequestBody book:Books):List<Books>{
+	suspend fun addbook(@RequestBody book: BookRC):String {
     println("value of book $book")
-		var bookshandler = BooksHandler(bookRepo);
-		var totalbooks:List<Books> = bookshandler.addBook(book)
-		return totalbooks
+		return "test"
 	}
 
   @PostMapping("/addbooks")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addbooks(@RequestBody books:List<Books>):List<Books>{
+	suspend fun addbooks(@RequestBody books:List<Book>):List<Book>{
     println("value of book $books")
 		var bookshandler = BooksHandler(bookRepo);
-		var totalbooks:List<Books> = bookshandler.addBooks(books)
+		var totalbooks:List<Book> = bookshandler.addBooks(books)
 		return totalbooks
 	}
-
 
 }
 
