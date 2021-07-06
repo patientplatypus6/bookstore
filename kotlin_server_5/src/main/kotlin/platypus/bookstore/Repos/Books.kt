@@ -1,24 +1,14 @@
 
-// import org.springframework.data.r2dbc.repository.Query
-// import org.springframework.data.repository.reactive.ReactiveCrudRepository
-// import reactor.core.publisher.Flux
-
-// interface UserRepository : ReactiveCrudRepository<Books, Long> {
-
-//     @Query("SELECT u.* FROM users u WHERE u.email = :email")
-//     fun findByEmail(email: String): Flux<User>
-// }
 package platypus.bookstore.repos.books
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.data.r2dbc.repository.Query  
-import org.springframework.data.repository.query.Param //is this right? may be necessary to use r2dbc
+import org.springframework.data.repository.query.Param 
 import org.springframework.data.r2dbc.repository.Modifying
 import platypus.bookstore.classes.db.books.Book
 import platypus.bookstore.classes.general.ResultString
 import org.springframework.stereotype.Repository
-// import org.springframework.data.domain.Persistable
 
 @Repository
 interface BookRepository : CoroutineCrudRepository<Book, Long> {

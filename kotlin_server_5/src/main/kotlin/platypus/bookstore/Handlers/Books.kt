@@ -1,7 +1,8 @@
-package platypus.bookstore.classes.db
+package platypus.bookstore.handlers.bookshandler
 
 import platypus.bookstore.repos.books.BookRepository
 import platypus.bookstore.classes.db.books.Book
+import platypus.bookstore.classes.db.books.BookRC
 import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.web.reactive.function.server.*
 import org.springframework.data.r2dbc.repository.Query  
@@ -21,24 +22,32 @@ class BooksHandler(val bookRepo: BookRepository){
   }
 
   suspend fun addBook(book: Book):List<Book>{
-    println("addBooks")
-    // bookRepo.save(book);
-    bookRepo.saveabook(
-      book.title, book.subtitle, book.publisher, 
-      book.currentcopyright, book.bookedition, 
-      book.uniqueid, book.authorbio, book.synopsis, book.isbn
-    )
+    bookRepo.save(book)
     var bookList:List<Book> = findBooks()
-    return bookList;
-  }
-
-  suspend fun addBooks(books: List<Book>):List<Book>{
-    println("addBooks")
-    for(book in books){
-      bookRepo.save(book);
-    }
-    var bookList:List<Book> = findBooks()
-    return bookList;
+    return bookList
   }
 
 } 
+
+
+
+  // suspend fun addBook(book: Book):List<Book>{
+  //   println("addBooks")
+  //   // bookRepo.save(book);
+  //   bookRepo.saveabook(
+  //     book.title, book.subtitle, book.publisher, 
+  //     book.currentcopyright, book.bookedition, 
+  //     book.uniqueid, book.authorbio, book.synopsis, book.isbn
+  //   )
+  //   var bookList:List<Book> = findBooks()
+  //   return bookList;
+  // }
+
+  // suspend fun addBooks(books: List<Book>):List<Book>{
+  //   println("addBooks")
+  //   for(book in books){
+  //     bookRepo.save(book);
+  //   }
+  //   var bookList:List<Book> = findBooks()
+  //   return bookList;
+  // }

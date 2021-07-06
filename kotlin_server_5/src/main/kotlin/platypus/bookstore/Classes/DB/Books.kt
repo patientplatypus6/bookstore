@@ -1,20 +1,10 @@
 package platypus.bookstore.classes.db.books
-
+import platypus.bookstore.classes.db.revenuecosts.RevenueCost
 // import art.kotlin_server.model.RevenueCost
 
 data class BookRC(
   var book: Book,
   var revenuecost: List<RevenueCost>
-)
-
-data class RevenueCost(
-  var uniqueid: String = "",
-  var bookuniqueid: String = "", 
-  var userorderuniqueid: String = "", 
-  var rcname: String = "", 
-  var rcdescription: String = "", 
-  var rcvalue: String = "",
-  var rcdate: String = ""
 )
 
 data class Book(
