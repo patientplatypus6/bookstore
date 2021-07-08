@@ -53,8 +53,16 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooks():List<Book>{
 		var bookshandler = BooksHandler(bookRepo)
-		var totalbooks: List<Book> = bookshandler.findBooks()
+		var totalbooks: List<Book> = bookshandler.findbooks()
 		return totalbooks;
+	}
+
+	@GetMapping("/findrevenuecosts")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findrevenuecosts(bookuniqueid: String):List<RevenueCost>{
+		var revenuecostHandler = RevenueCostsHandler(revenuecostRepo)
+		var revenuecostlist: List<RevenueCost> = revenuecostHandler.findrevenuecostsbybook(bookuniqueid)
+		return revenuecostlist;
 	}
 
   @PostMapping("/addbook")
@@ -72,23 +80,18 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 				true->{
 					updatedBool = revenuecostshandler.addRevenueCost(revenuecost)
 				}
-				false->{}
+				false->{return false}
 			}
 		}
 		when(updatedBool){
 			true->{
-				updatedBool = bookshandler.addBook(bookrc.book);
+				updatedBool = bookshandler.addbook(bookrc.book);
 			}
-			false->{}
+			false->{return false}
 		}
 	
 		return updatedBool
 	}
-
-	// @PostMapping("")
-	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	// suspend true {}
-
 
 }
 

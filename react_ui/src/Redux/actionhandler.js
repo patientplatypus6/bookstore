@@ -119,7 +119,7 @@ const ActionHandler = () => {
     payload.requestType = "post"
     payload.uri = "book/addbook"
   
-    var tempArray = []
+    // var tempArray = []
     //add book values to payload
     inputtitles.forEach(inputtitle=>{
       var textindex = titles.findIndex(element=>element==inputtitle)
@@ -154,22 +154,15 @@ const ActionHandler = () => {
       }
     })
 
-    console.log("value of uniqueid")
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    console.log("payload.body.uniqueid: ", payload.body.book.uniqueid)
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
     var revenuecostpayload = [];
     revenuecost.indexvals.forEach((indexval, index)=>{
-      var tempuniqueid = revenuecost['rcnames'][indexval]+Date.now().toString()
-      var uniqueidstring = tempuniqueid.toString()
       revenuecostpayload.push({
         rcname: revenuecost['rcnames'][index], 
         rcdescription: revenuecost['rcdescriptions'][index],
         rcvalue: revenuecost['rcvalues'][index],
         rcdate: revenuecost['rcdates'][index], 
         bookuniqueid: payload.body.book.uniqueid,
-        uniqueid: uniqueidstring
+        uniqueid: revenuecost['rcnames'][index]+indexval.toString()
       })
     })
 
@@ -193,8 +186,6 @@ const ActionHandler = () => {
         indexvals: []
       }
       dispatch(removerc(newrevenuecost))
-      //add result to booklistdb
-      // addtobooklist(result)
     })
   }
 

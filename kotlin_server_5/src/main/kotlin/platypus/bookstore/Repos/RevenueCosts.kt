@@ -22,5 +22,10 @@ interface RevenueCostRepository : CoroutineCrudRepository<RevenueCost, Long> {
     @Query("""
       select * from revenuecost
     """)
-    suspend fun findRevenueCosts():List<RevenueCost>
+    suspend fun findrevenuecosts():List<RevenueCost>
+
+    @Query("""
+      select * from revenuecost where bookuniqueid = :bookuniqueid 
+    """)
+    suspend fun findrevenuecostsbybookuniqueid(bookuniqueid: String):List<RevenueCost>
 }
