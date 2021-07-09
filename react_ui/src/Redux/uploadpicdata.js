@@ -3,7 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 export const uploadpicdataSlice = createSlice({
   name: 'inputtext',
   initialState: {
-    files: []
+    //upload filenames here
+    files: [], 
+    frontcoverindex: -1,
+    backcoverindex: -1
   },
   reducers: {
     modifyuploadpicdata: (state, action) => {

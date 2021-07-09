@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.json.JSONObject
 
 import platypus.bookstore.classes.*
@@ -17,8 +18,10 @@ import platypus.bookstore.repos.BookRepository
 import platypus.bookstore.handlers.RevenueCostsHandler
 import platypus.bookstore.repos.RevenueCostRepository
 import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.RequestParam;
 
 import platypus.bookstore.classes.db.RevenueCost
+import org.springframework.web.multipart.MultipartFile
 
 
 @RestController
@@ -65,6 +68,14 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		return revenuecostlist;
 	}
 
+	@PostMapping("/addpics")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun addpics(@RequestBody file: List<MultipartFile>):String{
+		println("inside book/addpics")
+		println("value of file $file")
+		return "uploaded files"
+	}
+
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbook(@RequestBody bookrc: BookRC): Boolean {
@@ -78,7 +89,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		for(revenuecost in bookrc.revenuecost){
 			when(updatedBool){
 				true->{
-					updatedBool = revenuecostshandler.addRevenueCost(revenuecost)
+					updatedBool = revenuecostshandler.addrevenuecost(revenuecost)
 				}
 				false->{return false}
 			}

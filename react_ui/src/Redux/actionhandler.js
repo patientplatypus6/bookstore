@@ -33,6 +33,8 @@ const ActionHandler = () => {
 
   const booklist = useSelector((state)=>state.booklistdb.booklist)
 
+  const uploadpicdata = useSelector((state)=>state.uploadpicdata)
+
   //pulling all value of revenuecost
   const revenuecost = useSelector((state)=>state.revenuecost)
 
@@ -102,6 +104,7 @@ const ActionHandler = () => {
   const addbook = () => {
     var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'bookedition', 'authorbio', 'synopsis', 'isbn']
     var payload = {}
+    var picturepayload = {}
     payload.body = {
       book: {
         title: "NONE", 
@@ -150,6 +153,7 @@ const ActionHandler = () => {
           var tempid = texts[textindex]+Date.now().toString();
           var stringtempid = tempid.toString()
           payload.body.book.uniqueid=stringtempid
+          picturepayload.bookuniqueid = stringtempid
         }
       }
     })
@@ -186,7 +190,28 @@ const ActionHandler = () => {
         indexvals: []
       }
       dispatch(removerc(newrevenuecost))
+
+      //upload pictures
+
+      picturepayload.frontcoverindex = uploadpicdata.frontcoverindex
+
+      picturepayload.backcoverindex = uploadpicdata.backcoverindex
+
+      picturepayload.requestType = "imagepost"
+      picturepayload.uri = "book/addpics"
+
+      picturepayload.files = uploadpicdata.files
+
+      console.log('value of picturepayload: ', picturepayload)
+
+      handlefetch(picturepayload).then(result=>{
+        console.log('result from imagepost in actionhandler: ', result)
+      })
+
+
     })
+
+
   }
 
   //BUTTON LISTENERS
