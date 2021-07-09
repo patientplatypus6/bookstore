@@ -4,20 +4,26 @@ import './admin.css'
 // import { toJS } from "mobx"
 import InputBox from '../../Components/SubComponents/InputBox/InputBox'
 import Button from '../../Components/SubComponents/Button/Button'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import RevenueCost from '../../Components/revenueCost/revenueCost';
+import {
+  modifyuploadpicdata
+} from '../../Redux/uploadpicdata'
 
 
 const AddBook = () => {
 
   const rcnames = useSelector((state)=>state.revenuecost.rcnames)
   const indexvals = useSelector((state)=>state.revenuecost.indexvals)
+  const files = useSelector((state)=>state.uploadpicdata.files)
+
+  const dispatch = useDispatch()
 
   const [image64List, setImage64List] = useState([])
 
   useEffect(()=>{
-    console.log('value of rcnames: ', rcnames)
-    console.log('value of image64List: ', image64List)
+    // console.log('value of rcnames: ', rcnames)
+    // console.log('value of image64List: ', image64List)
   })
 
   const imageDisplayHandler = () => {
@@ -195,6 +201,7 @@ const AddBook = () => {
                     readerHandler(i)
                   }else if (i == fileList.length - 1){
                     setImage64List(base64List)
+                    dispatch(modifyuploadpicdata({files:base64List}))
                   }
                 } 
                 reader.readAsDataURL(fileList[i])

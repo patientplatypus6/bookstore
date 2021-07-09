@@ -95,7 +95,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 }
 
-
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/revenuecost")

@@ -37,6 +37,20 @@ const fetchrequest = (payload) => {
   .then(data => {
     return data
   })
+ }else if(payload.requestType=='imagepost'){
+  var data = new FormData()
+  payload.files.forEach((file, index)=>{
+    var filename = payload.formname + index
+    data.append(filename, file)
+  })
+  return fetch(urlfull, {
+    method: 'post', 
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data'
+    },
+    body: data
+  })
  }
 }
 

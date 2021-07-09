@@ -3,6 +3,7 @@ import buttonReducer from '../Redux/button'
 import inputtextReducer from './inputtext'
 import revenuecostReducer from './revenuecost'
 import booklistdbReducer from './booklistDB'
+import uploadpicdataReducer from './uploadpicdata'
 
 
 export default configureStore({
@@ -10,6 +11,7 @@ export default configureStore({
     button: buttonReducer,
     inputtext: inputtextReducer, 
     revenuecost: revenuecostReducer,
-    booklistdb: booklistdbReducer
+    booklistdb: booklistdbReducer,
+    uploadpicdata: uploadpicdataReducer
   },
 })
