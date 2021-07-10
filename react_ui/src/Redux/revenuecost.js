@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+import {dateFormat} from '../utility/utility'
+
 
 export const revenuecostSlice = createSlice({
   name: 'revenuecost',
@@ -13,7 +15,7 @@ export const revenuecostSlice = createSlice({
     addrc: (state, actions) => {
       console.log('inside addrc')
       console.log('value of state: ', state)
-      state.rcdates.push("")
+      state.rcdates.push(dateFormat(new Date (), "%Y-%m-%d %H:%M:%S", true))
       state.rcnames.push("")
       state.rcvalues.push("")
       state.rcdescriptions.push("")

@@ -17,13 +17,10 @@ const TextBox = ({title})=>{
   
   return(
     <>
-      <input 
-        className='inputBox'
-      />
       <div>
         <textarea 
           className='textbox'
-          rows="4" cols="50" 
+          rows="4" cols="30" 
           value={texts[titles.findIndex(element=>element==title)]}
           onChange={(e)=>{
             var titleindex = titles.findIndex(element=>element==title)

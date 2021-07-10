@@ -11,7 +11,7 @@ plugins {
 }
 
 application {
-    mainClass.set("platypus.bookstore.BookstoreApplicationKt") 
+  mainClass.set("platypus.bookstore.BookstoreApplicationKt") 
 }
 
 group = "platypus.bookstore.spring-boot"

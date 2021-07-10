@@ -11,6 +11,7 @@ import{
   modifyrc
 } from '../../Redux/revenuecost'
 import { useDispatch, useSelector } from 'react-redux';
+import {dateFormat} from '../../utility/utility';
 
 const RevenueCost = ({indexval, rcname}) => {
 
@@ -101,6 +102,11 @@ const RevenueCost = ({indexval, rcname}) => {
             inputHandler('rcdates', e.target.value)
           }}
         />
+        <br/>
+        <div style={{fontSize: '0.8rem'}}>
+          Date format must conform to <br/>
+          <span style={{fontWeight: 'bold'}}>DATETIME - format: YYYY-MM-DD HH:MI:SS</span>
+        </div>
       </div>  
       <br/>
       <div>

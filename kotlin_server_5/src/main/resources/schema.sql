@@ -1,5 +1,13 @@
 
--- DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS useraddress;
+DROP TABLE IF EXISTS pic;
+DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS bookerrata;
+DROP TABLE IF EXISTS messageuser;
+DROP TABLE IF EXISTS revenuecost;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS userorder;
+
 
 -- DROP TABLE IF EXISTS useraddress;
 CREATE TABLE IF NOT EXISTS useraddress
@@ -39,8 +47,8 @@ CREATE TABLE IF NOT EXISTS book
     authorbio VARCHAR(65535) NOT NULL,
     synopsis VARCHAR(65535) NOT NULL,
     isbn VARCHAR(65535) NOT NULL,
-    dateordered VARCHAR(255), 
-    dateshipped VARCHAR(255)
+    dateordered DATETIME, 
+    dateshipped DATETIME
 );
 
 -- DROP TABLE IF EXISTS bookerrata;
@@ -75,7 +83,7 @@ CREATE TABLE IF NOT EXISTS revenuecost
     rcname VARCHAR(255) NOT NULL,
     rcdescription VARCHAR(65535) NOT NULL,
     rcvalue VARCHAR(65535) NOT NULL,
-    rcdate VARCHAR(65535) NOT NULL
+    rcdate DATETIME NOT NULL
 );
 
 -- DROP TABLE IF EXISTS user;

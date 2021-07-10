@@ -3,6 +3,7 @@ import './admin.css'
 // import { observer} from "mobx-react-lite";
 // import { toJS } from "mobx"
 import InputBox from '../../Components/SubComponents/InputBox/InputBox'
+import TextBox from '../../Components/SubComponents/TextBox/TextBox'
 import Button from '../../Components/SubComponents/Button/Button'
 import { useDispatch, useSelector } from 'react-redux';
 import RevenueCost from '../../Components/revenueCost/revenueCost';
@@ -234,13 +235,13 @@ const AddBook = () => {
           <div>
             Author Biography
             <br/>
-            <InputBox title='authorbio'/>
+            <TextBox title='authorbio'/>
           </div>
           <br/>
           <div>
             Synopsis
             <br/>
-            <InputBox title='synopsis'/>
+            <TextBox title='synopsis'/>
           </div>
           <br/>
           {revenuecostHandler()}
