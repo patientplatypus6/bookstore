@@ -16,7 +16,7 @@
 
 #DEVELOPMENT
 sudo ./gradlew clean build
-./gradlew bootRun --stacktrace
+sudo ./gradlew bootRun --stacktrace
 # sudo java -jar -Dspring.devtools.restart.enabled=true ./build/libs/bookstore-0.0.1-SNAPSHOT.jar
 
 #sudo ./gradlew bootRun

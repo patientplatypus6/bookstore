@@ -10,19 +10,6 @@ plugins {
 	// kotlin("plugin.serialization") version "1.5.20"
 }
 
-// springBoot {
-//     mainClassName = "platypus.bookstore.main"
-// }
-
-// application {
-//     mainClass.set("platypus.bookstore.BookstoreApplication")
-// }
-
-// application {
-//     mainClassName("platypus.bookstore.BookstoreApplication")
-// }
-
-
 application {
     mainClass.set("platypus.bookstore.BookstoreApplicationKt") 
 }
@@ -59,7 +46,7 @@ dependencies {
 	runtimeOnly("dev.miku:r2dbc-mysql")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
 	runtimeOnly("mysql:mysql-connector-java")
-	// developmentOnly("org.springframework.boot:spring-boot-devtools")	
+	developmentOnly("org.springframework.boot:spring-boot-devtools")	
 	// compile("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
