@@ -14,7 +14,10 @@ export const uploadpicdataSlice = createSlice({
       state.files = action.payload.files
     },
     clearuploadpicdata: (state, action) =>{
+      console.log('inside clearuploadpicdata')
       state.files = []
+      state.frontcoverindex = -1 
+      state.backcoverindex = -1 
     }
   },
 })

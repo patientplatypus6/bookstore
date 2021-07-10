@@ -19,6 +19,7 @@ import platypus.bookstore.handlers.RevenueCostsHandler
 import platypus.bookstore.repos.RevenueCostRepository
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RequestParam;
+import platypus.bookstore.utility.*
 
 import platypus.bookstore.classes.db.RevenueCost
 import org.springframework.web.multipart.MultipartFile
@@ -70,10 +71,23 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 	@PostMapping("/addpics")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addpics(@RequestBody file: List<MultipartFile>):String{
-		println("inside book/addpics")
-		println("value of file $file")
-		return "uploaded files"
+	suspend fun addpics(@RequestBody picdata:Picdata):PicdataByte{
+		println("value of picdata: $picdata")
+		val bytearrayhandler = ByteArrayHandler()
+		var picdatabyte = PicdataByte()
+		val filesholder = mutableListOf<ByteArray>()
+		for (file in picdata.files){
+			val bytefile = bytearrayhandler.converttobytearray(file)
+			filesholder.add(bytefile)
+		}
+		picdatabyte.files = filesholder.toList()
+		picdatabyte.frontcoverindex = picdata.frontcoverindex
+		picdatabyte.backcoverindex = picdata.backcoverindex
+		// val comment = Comment(
+		// 	author = "test",
+		// 	content = "test",
+		// )
+		return picdatabyte
 	}
 
   @PostMapping("/addbook")
@@ -112,3 +126,29 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 public class RequestRevenueCost{
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// @PostMapping("/addpics")
+	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	// suspend fun addpics(@RequestParam(value = "file",required = false) file: MultipartFile):Comment{
+	// 	println("inside book/addpics")
+	// 	println("value of file $file")
+	// 	// val filestring: String = String(file.getBytes());
+	// 	// println("value of file $file")
+	// 	val comment = Comment(
+	// 		author = "test",
+	// 		content = "test",
+	// 	)
+	// 	return comment
+	// }

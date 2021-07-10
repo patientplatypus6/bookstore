@@ -19,7 +19,11 @@ import{
   modifybooklistdb,
   clearbooklistdb
 } from './booklistDB'
+import{
+  clearuploadpicdata
+} from './uploadpicdata'
 import fetchrequest from '../api/fetch'
+import {arraybuffertobase64} from '../utility/utility'
 
 const ActionHandler = () => {
 
@@ -104,7 +108,9 @@ const ActionHandler = () => {
   const addbook = () => {
     var inputtitles = ['title', 'uniqueid', 'subtitle', 'publisher', 'currentcopyright', 'bookedition', 'authorbio', 'synopsis', 'isbn']
     var payload = {}
-    var picturepayload = {}
+    var picturepayload = {
+      body: {}
+    }
     payload.body = {
       book: {
         title: "NONE", 
@@ -193,19 +199,25 @@ const ActionHandler = () => {
 
       //upload pictures
 
-      picturepayload.frontcoverindex = uploadpicdata.frontcoverindex
+      picturepayload.body.frontcoverindex = uploadpicdata.frontcoverindex
 
-      picturepayload.backcoverindex = uploadpicdata.backcoverindex
+      picturepayload.body.backcoverindex = uploadpicdata.backcoverindex
 
-      picturepayload.requestType = "imagepost"
+      picturepayload.requestType = "post"
       picturepayload.uri = "book/addpics"
 
-      picturepayload.files = uploadpicdata.files
+      picturepayload.body.files = uploadpicdata.files
 
       console.log('value of picturepayload: ', picturepayload)
 
       handlefetch(picturepayload).then(result=>{
         console.log('result from imagepost in actionhandler: ', result)
+        dispatch(clearuploadpicdata())
+        // result.files.forEach(file=>{
+        //   console.log('value of file in forEach: ', file)
+        //   let arraybuf = arraybuffertobase64(file)
+        //   console.log('value of arraybuf: ', arraybuf)
+        // })
       })
 
 

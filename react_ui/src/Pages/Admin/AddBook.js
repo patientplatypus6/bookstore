@@ -19,7 +19,7 @@ const AddBook = () => {
 
   const dispatch = useDispatch()
 
-  const [image64List, setImage64List] = useState([])
+  // const [image64List, setImage64List] = useState([])
 
   useEffect(()=>{
     // console.log('value of rcnames: ', rcnames)
@@ -29,7 +29,7 @@ const AddBook = () => {
   const imageDisplayHandler = () => {
     return(
       <div>
-        {image64List.map((image64, key)=>{
+        {files.map((image64, key)=>{
           return(
             <div key={key}>
               <img src={image64} style={{height: 'auto', width: '10vw'}}/>
@@ -200,7 +200,7 @@ const AddBook = () => {
                     i++
                     readerHandler(i)
                   }else if (i == fileList.length - 1){
-                    setImage64List(base64List)
+                    // setImage64List(base64List)
                     dispatch(modifyuploadpicdata({files:base64List}))
                   }
                 } 

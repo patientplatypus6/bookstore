@@ -73,13 +73,17 @@ const fetchrequest = (payload) => {
   console.log("file 0: ", data.get('files0'))
   console.log('value of urlfull in imagepost: ', urlfull)
 
+  // let testdata = new FormData()
+  // testdata.append('file0', payload.files[0])
+  // testdata.append('file1', payload.files[1])
+
   return fetch(urlfull, {
     method: 'post', 
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'multipart/form-data'
     },
-    body: data
+    file: data
   }).then(response => {
     console.log('value of response: ', response)
     return response.json()

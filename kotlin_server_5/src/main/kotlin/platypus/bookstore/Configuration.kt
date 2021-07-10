@@ -11,9 +11,19 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 import org.springframework.web.reactive.function.server.coRouter
 
 
+
 @Configuration
 @EnableR2dbcRepositories
 class AppConfiguration {
+
+    //Do I really need this?
+    // @Bean
+    // public MultipartFilter multipartFilter(){
+    //     val multipartFilter: MultipartFilter  = new MultipartFilter();
+    //     multipartFilter.setMultipartResolverBeanName("multipartResolver");
+    //     return multipartFilter;
+    // }
+
     @Bean
     fun initializer(connectionFactory: ConnectionFactory): ConnectionFactoryInitializer {
         val initializer = ConnectionFactoryInitializer()
