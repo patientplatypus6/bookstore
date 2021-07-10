@@ -5,8 +5,8 @@ export const uploadpicdataSlice = createSlice({
   initialState: {
     //upload filenames here
     files: [], 
-    frontcoverindex: -1,
-    backcoverindex: -1
+    frontcoverindex: 0,
+    backcoverindex: 0
   },
   reducers: {
     modifyuploadpicdata: (state, action) => {
@@ -18,11 +18,19 @@ export const uploadpicdataSlice = createSlice({
       state.files = []
       state.frontcoverindex = -1 
       state.backcoverindex = -1 
+    }, 
+    setcover: (state, action) => {
+      if(action.payload.type=='front'){
+        state.frontcoverindex = action.payload.index
+      }
+      if(action.payload.type=='back'){
+        state.backcoverindex = action.payload.index
+      }
     }
   },
 })
 
-export const { modifyuploadpicdata, clearuploadpicdata } = uploadpicdataSlice.actions
+export const { modifyuploadpicdata, clearuploadpicdata, setcover } = uploadpicdataSlice.actions
 
 export default uploadpicdataSlice.reducer
 

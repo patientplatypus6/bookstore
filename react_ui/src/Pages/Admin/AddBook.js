@@ -7,7 +7,8 @@ import Button from '../../Components/SubComponents/Button/Button'
 import { useDispatch, useSelector } from 'react-redux';
 import RevenueCost from '../../Components/revenueCost/revenueCost';
 import {
-  modifyuploadpicdata
+  modifyuploadpicdata, 
+  setcover
 } from '../../Redux/uploadpicdata'
 
 
@@ -16,10 +17,14 @@ const AddBook = () => {
   const rcnames = useSelector((state)=>state.revenuecost.rcnames)
   const indexvals = useSelector((state)=>state.revenuecost.indexvals)
   const files = useSelector((state)=>state.uploadpicdata.files)
+  const frontindex = useSelector((state)=>state.uploadpicdata.frontcoverindex)
+  const backindex = useSelector((state)=>state.uploadpicdata.backcoverindex)
+  
 
   const dispatch = useDispatch()
 
   // const [image64List, setImage64List] = useState([])
+  
 
   useEffect(()=>{
     // console.log('value of rcnames: ', rcnames)
@@ -32,10 +37,91 @@ const AddBook = () => {
         {files.map((image64, key)=>{
           return(
             <div key={key}>
-              <img src={image64} style={{height: 'auto', width: '10vw'}}/>
+              <div
+                style={{
+                  border: '2px solid black',
+                  padding: '5px', 
+                  margin: '2px'
+                }}
+              >
+                <div>
+                  {key==frontindex?
+                    <div style={{
+                      display:'inline-block', 
+                      marginBottom: '5px', 
+                    }}>~ Front Cover ~</div>
+                  :<div/>}
+                  {key==backindex?
+                    <div style={{
+                      display:'inline-block', 
+                      marginBottom: '5px'
+                    }}>~ Back Cover ~</div>
+                  :<div/>}    
+                </div>
+                <div style={{
+                  display:'inline-block', 
+                  marginBottom: '5px'
+                }}>
+                  <img src={image64} style={{height: 'auto', width: '10vw'}}/>
+                </div>
+              </div>
             </div>
           )
         })}
+        
+        {files.length>1?
+          <div style={{marginTop: '5px'}}>
+            <span style={{marginRight: '5px'}}> Select Front Cover Image Index </span>
+            <select
+              onChange={(e)=>{
+                console.log("value of e.target.value: ", e.target.value)
+                let payload = {
+                  index: e.target.value,
+                  type: 'front'
+                }
+                dispatch(setcover(payload))
+              }}
+            >
+              {files.map((image64, key)=>{
+                return(  
+                  <option
+                    key={key}
+                    style={{}}
+                  >
+                    {key}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          :<div/>}
+
+        {files.length>1?
+          <div style={{marginTop: '5px'}}>
+            <span style={{marginRight: '5px'}}> Select Back Cover Image Index </span>
+            <select
+              onChange={(e)=>{
+                console.log("value of e.target.value: ", e.target.value)
+                let payload = {
+                  index: e.target.value,
+                  type: 'back'
+                }
+                dispatch(setcover(payload))
+              }}
+            >
+              {files.map((image64, key)=>{
+                return(  
+                  <option
+                    key={key}
+                    style={{}}
+                  >
+                    {key}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+          :<div/>}
       </div>
     )
   }

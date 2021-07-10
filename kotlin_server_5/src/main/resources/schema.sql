@@ -1,7 +1,7 @@
 
 -- DROP TABLE IF EXISTS books;
 
-DROP TABLE IF EXISTS useraddress;
+-- DROP TABLE IF EXISTS useraddress;
 CREATE TABLE IF NOT EXISTS useraddress
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS useraddress
     userorderuniqueid VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS pic;
-CREATE TABLE pic(  
+-- DROP TABLE IF EXISTS pic;
+CREATE TABLE IF NOT EXISTS pic(  
     picbyte VARBINARY(MAX) NOT NULL,
     bookuniqueid VARCHAR(255),
     frontcover Boolean, 
@@ -26,8 +26,8 @@ CREATE TABLE pic(
     uniqueid VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS book;
-CREATE TABLE book
+-- DROP TABLE IF EXISTS book;
+CREATE TABLE IF NOT EXISTS book
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE book
     dateshipped VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS bookerrata;
+-- DROP TABLE IF EXISTS bookerrata;
 CREATE TABLE IF NOT EXISTS bookerrata
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS bookerrata
     fields VARCHAR(65535) NOT NULL 
 );
 
-DROP TABLE IF EXISTS messageuser;
+-- DROP TABLE IF EXISTS messageuser;
 CREATE TABLE IF NOT EXISTS messageuser
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS messageuser
     messageuseruniqueid VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS revenuecost;
+-- DROP TABLE IF EXISTS revenuecost;
 CREATE TABLE IF NOT EXISTS revenuecost
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS revenuecost
     rcdate VARCHAR(65535) NOT NULL
 );
 
-DROP TABLE IF EXISTS user;
+-- DROP TABLE IF EXISTS user;
 CREATE TABLE IF NOT EXISTS user
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS user
     lastname VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS userorder;
+-- DROP TABLE IF EXISTS userorder;
 CREATE TABLE IF NOT EXISTS userorder
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
