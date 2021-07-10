@@ -54,7 +54,7 @@ const Main = () => {
           <div
             style={{
               background: 'black', 
-              padding: '5px', 
+              padding: '5px',
               marginBottom: '20px'
             }}
           >

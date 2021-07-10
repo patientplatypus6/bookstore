@@ -23,7 +23,9 @@ import{
   clearuploadpicdata
 } from './uploadpicdata'
 import {
-  setuniquebooks
+  setuniquebooks, 
+  updatebookshelfcovers,
+  setupdatednewbooks
 } from './downloadpicdata'
 
 import fetchrequest from '../api/fetch'
@@ -47,6 +49,8 @@ const ActionHandler = () => {
 
   //pulling all value of revenuecost
   const revenuecost = useSelector((state)=>state.revenuecost)
+
+  const bookshelfcovers = useSelector((state)=>state.downloadpicdata.bookshelfcovers)
 
   //HANDLEFETCH
 
@@ -102,17 +106,30 @@ const ActionHandler = () => {
 
   //ACTION FUNCTIONS
 
-  const findcovers = () => {
-
+  const findcovers2 = () => {
     var payload = {}
     payload.uri='pic/findcovers' 
-    payload.requestType='get'    
+    payload.requestType='post'   
+    payload.body = {}
+    payload.body.bookids = downloadpicdata.newbooks 
+
+    console.log("inside findcovers2 and value of payload: ", payload)
+
+    handlefetch(payload).then(result=>{
+      console.log('value of result from findcovers2: ', result)
+      // console.log('value of bookshelfcovers: ', bookshelfcovers)
+      dispatch(updatebookshelfcovers({bookshelfcovers:result}))
+    })
+  }
+
+  const findcovers = () => {
+
     var newbooks = []
 
     for(var i = 0; i < downloadpicdata.bookshelfdownloadmax; i++){
       var modindex = i + downloadpicdata.bookshelfbook.length
       if(booklist[modindex]!=undefined){
-        newbooks.push(booklist[modindex])
+        newbooks.push(booklist[modindex]['uniqueid'])
       }else{
         i = downloadpicdata.bookshelfdownloadmax
       }
@@ -125,28 +142,7 @@ const ActionHandler = () => {
       newbooks
     }
 
-    console.log("&&&&&&&&&&")
-    console.log("&&&&&&&&&&")
-    console.log("&&&&&&&&&&")
-    console.log('value of newbooks: ', newbooks)
-    console.log('value of bookshelfbook: ', bookshelfbook)
-    console.log('value of payload: ', payload)
-    console.log("&&&&&&&&&&")
-    console.log("&&&&&&&&&&")
-    console.log("&&&&&&&&&&")
-
     dispatch(setuniquebooks(payload))
-
-    console.log('***************************')
-    console.log('***************************')
-    console.log('***************************')
-
-    console.log('value of bookshelfbook: ', downloadpicdata.bookshelfbook)
-    console.log('value of newbooks: ', downloadpicdata.newbooks)
-    
-    console.log('***************************')
-    console.log('***************************')
-    console.log('***************************')
 
   }
 
@@ -280,10 +276,12 @@ const ActionHandler = () => {
 
   }
 
-  //BUTTON LISTENERS
 
   useEffect(()=>{
     console.log('inside actionhandler useeffect')
+
+    //BUTTON LISTENERS
+
     toggles.forEach((toggleTF, index)=>{
       if(toggleTF && buttons[index]=='addbook'){
         addbook()  
@@ -307,7 +305,15 @@ const ActionHandler = () => {
         dispatch(toggle({buttonName: buttons[index], displayName: 'Delete Revenue Cost', buttons }))     
       }
     })
-  })
+
+    if (downloadpicdata.updatednewbooks == true){
+      var payload = {
+        updatednewbooks: false
+      }
+      findcovers2()
+      dispatch(setupdatednewbooks(payload))
+    }
+  }, [toggles, downloadpicdata])
   
   return(
     <div/>

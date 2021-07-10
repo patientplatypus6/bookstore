@@ -5,9 +5,10 @@ export const downloadpicdataSlice = createSlice({
   initialState: {
     //download filenames here
     bookshelfdownloadmax: 5,
-    base64bookshelf: [],
+    bookshelfcovers: [],
     bookshelfbook: [],
     newbooks: [],
+    updatednewbooks: false,
     base64book: []
   },
   reducers: {
@@ -17,11 +18,20 @@ export const downloadpicdataSlice = createSlice({
       state.newbooks = actions.payload.newbooks
       console.log('value of state.bookshelfbook: ', state.bookshelfbook)
       console.log('value of state.newbooks: ', state.newbooks)
+      state.updatednewbooks = true
+    }, 
+    setupdatednewbooks: (state, actions) => {
+      state.updatednewbooks = actions.payload.updatednewbooks
+    }, 
+    updatebookshelfcovers: (state, actions) => {
+      actions.payload.bookshelfcovers.forEach(cover=>{
+        state.bookshelfcovers.push(cover)
+      })
     }
   },
 })
 
-export const { setuniquebooks } = downloadpicdataSlice.actions
+export const { setuniquebooks, updatebookshelfcovers, setupdatednewbooks } = downloadpicdataSlice.actions
 
 export default downloadpicdataSlice.reducer
 

@@ -4,7 +4,8 @@ export const uploadpicdataSlice = createSlice({
   name: 'uploadpicdata',
   initialState: {
     //upload filenames here
-    files: [], 
+    //00000 for no files uploaded
+    files: [0], 
     frontcoverindex: 0,
     backcoverindex: 0
   },
@@ -15,7 +16,7 @@ export const uploadpicdataSlice = createSlice({
     },
     clearuploadpicdata: (state, action) =>{
       console.log('inside clearuploadpicdata')
-      state.files = []
+      state.files = [0]
       state.frontcoverindex = -1 
       state.backcoverindex = -1 
     }, 

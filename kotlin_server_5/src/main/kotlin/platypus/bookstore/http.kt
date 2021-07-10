@@ -30,6 +30,7 @@ import platypus.bookstore.classes.db.RevenueCost
 import org.springframework.web.multipart.MultipartFile
 
 import platypus.bookstore.classes.db.Pic
+import platypus.bookstore.classes.db.PicBookId
 
 
 @RestController
@@ -53,6 +54,22 @@ public class RequestTest{
 @RequestMapping("/user")
 public class RequestUser{
   
+}
+
+@RestController
+@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+@RequestMapping("/pic")
+public class RequestPic(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
+
+	@PostMapping("/findcovers")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findcovers(@RequestBody picbookid: PicBookId):List<Pic>{
+		println("value of picbookid: $picbookid")
+		var picshandler = PicsHandler(picRepo)
+		var coverlist = picshandler.findcovers(picbookid)
+		return coverlist;
+	}
+
 }
 
 @RestController

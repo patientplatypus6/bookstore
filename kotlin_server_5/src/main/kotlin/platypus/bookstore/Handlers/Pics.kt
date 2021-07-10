@@ -2,6 +2,7 @@ package platypus.bookstore.handlers
 
 import platypus.bookstore.repos.PicRepository
 import platypus.bookstore.classes.db.Pic
+import platypus.bookstore.classes.db.PicBookId
 import platypus.bookstore.classes.*
 import kotlin.collections.mutableListOf
 
@@ -16,6 +17,11 @@ class PicsHandler(val picRepo: PicRepository){
 
     //always returns true, need to fix this
     return true
+  }
+
+  suspend fun findcovers(picbookid: PicBookId): List<Pic>{
+    var coverlist = picRepo.findcoversbybookgroup(picbookid.bookids)
+    return coverlist
   }
   
   // suspend fun findbooks():List<Book>{

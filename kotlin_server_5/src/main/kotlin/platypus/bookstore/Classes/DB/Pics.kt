@@ -16,3 +16,7 @@ data class Pic(
   var backcover: Boolean = false, 
   var uniqueid: String = ""
 )
+
+data class PicBookId(
+  var bookids: List<String> = listOf<String>()
+)

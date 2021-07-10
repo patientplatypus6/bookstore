@@ -28,6 +28,7 @@ const AddBook = () => {
   
 
   useEffect(()=>{
+    // console.log("process.env.PUBLIC_URL: ", process.env.PUBLIC_URL)
     // console.log('value of rcnames: ', rcnames)
     // console.log('value of image64List: ', image64List)
   })
@@ -35,7 +36,19 @@ const AddBook = () => {
   const imageDisplayHandler = () => {
     return(
       <div>
-        {files.map((image64, key)=>{
+        {files[0]==0?
+        <div
+          style={{
+            border: '2px solid black',
+            padding: '5px', 
+            margin: '2px'
+          }}
+        >
+          <img 
+          style={{height: 'auto', width: '10vw'}}
+          src={process.env.PUBLIC_URL+'/No-Image-Placeholder.svg'}/>  
+        </div>:
+        files.map((image64, key)=>{
           return(
             <div key={key}>
               <div
@@ -147,7 +160,7 @@ const AddBook = () => {
 
   return(
     <>
-      <div
+      {/* <div
         style={{
           background: 'grey', 
           display: 'inline-block', 
@@ -168,13 +181,14 @@ const AddBook = () => {
         <br/>
         <br/>
         <input type='file' multiple/>
-      </div>
+      </div> */}
       <div
         style={{
           background: 'rgb(100,0,0)', 
           display: 'inline-block', 
           padding: '20px', 
           verticalAlign: 'top',
+          marginBottom: '20px'
         }}    
       >
         <div
