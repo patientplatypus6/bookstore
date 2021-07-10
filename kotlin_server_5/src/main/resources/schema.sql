@@ -7,7 +7,12 @@ DROP TABLE IF EXISTS messageuser;
 DROP TABLE IF EXISTS revenuecost;
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS userorder;
+DROP TABLE IF EXISTS administrator;
 
+CREATE TABLE IF NOT EXSITS administrator(
+    username VARCHAR(255) NOT NULL,
+    passphrase VARCHAR(255) NOT NULL
+)
 
 -- DROP TABLE IF EXISTS useraddress;
 CREATE TABLE IF NOT EXISTS useraddress

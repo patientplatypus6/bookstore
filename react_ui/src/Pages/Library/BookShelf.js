@@ -5,7 +5,9 @@ import './library.css'
 
 const BookShelf = () => {
   useEffect(()=>{
-
+    console.log('window.location: ', window.location)
+    console.log('window.location.pathname: ', window.location.pathname)
+    console.log(window.location.pathname=="/")
   })
   return(
     <div>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import Button from '../Components/SubComponents/Button/Button'
 import InputBox from '../Components/SubComponents/InputBox/InputBox'
 import TextBox from '../Components/SubComponents/TextBox/TextBox'
@@ -7,7 +7,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link, 
+  NavLink
 } from "react-router-dom";
 
 import AddBook from '../Pages/Admin/AddBook'
@@ -28,33 +29,108 @@ import OrderHistory from '../Pages/User/OrderHistory'
 import UserInfo from '../Pages/User/UserInfo'
 import ActionHandler from '../Redux/actionhandler.js'
 
-class Main extends React.Component{
-  render(){
+import { useLocation } from 'react-router-dom'
+
+// class Main extends React.Component{
+
+
+
+const Main = () => {
+  // render(){
+
+    // var location = useLocation().pathname
+
+    const usePathname = () => {
+      const location = useLocation();
+      console.log('value of location.pathname: ', location.pathname)
+      return location.pathname;
+    }
+
     return(
       <Router>
       <div>
         <ActionHandler/>
         <nav>
-          <ul>
-            <li>
-              <Link to="/">Book Shelf</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/book">Book</Link>
-            </li>
-            <li>
-              <Link to="/admin/addbook">Add Book</Link>
-            </li>
-            <li>
-              <Link to="/admin/booklist">Book List</Link>
-            </li>
-            <li>
-              <Link to="/admin/editbook">Edit Book</Link>
-            </li>
-          </ul>
+          <div
+            style={{
+              background: 'black', 
+              padding: '5px', 
+              marginBottom: '20px'
+            }}
+          >
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
+            exact to="/">Book Shelf</NavLink>
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
+            exact to="/about">About</NavLink>
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
+            exact to="/book">Book</NavLink>
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
+            exact to="/admin/addbook">Add Book</NavLink>
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
+            exact to="/admin/booklist">Book List</NavLink>
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
+            exact to="/admin/editbook">Edit Book</NavLink>
+          </div>
         </nav>  
         <Switch>
           <Route exact path="/" render={()=><BookShelf/>}/>
@@ -67,8 +143,9 @@ class Main extends React.Component{
       </div>
     </Router>
     );
-  }
+  // }
 }
+// }
 
 
 // <Route exact path="/about">
