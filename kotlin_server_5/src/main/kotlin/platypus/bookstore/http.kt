@@ -13,10 +13,15 @@ import org.json.JSONObject
 import platypus.bookstore.classes.*
 import platypus.bookstore.classes.db.BookRC
 import platypus.bookstore.classes.db.Book
+
 import platypus.bookstore.handlers.BooksHandler
-import platypus.bookstore.repos.BookRepository
 import platypus.bookstore.handlers.RevenueCostsHandler
+import platypus.bookstore.handlers.PicsHandler
+
+import platypus.bookstore.repos.BookRepository
 import platypus.bookstore.repos.RevenueCostRepository
+import platypus.bookstore.repos.PicRepository
+
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RequestParam;
 import platypus.bookstore.utility.*
@@ -51,7 +56,7 @@ public class RequestUser{
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/book")
-public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository){
+public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
 	@GetMapping("/findbooks")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")

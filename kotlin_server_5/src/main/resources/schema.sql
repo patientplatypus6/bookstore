@@ -16,6 +16,16 @@ CREATE TABLE IF NOT EXISTS useraddress
     userorderuniqueid VARCHAR(255) NOT NULL
 );
 
+DROP TABLE IF EXISTS pics;
+CREATE TABLE pics(  
+    picbyte VARBINARY(MAX) NOT NULL,
+    bookuniqueid VARCHAR(255),
+    frontcover Boolean, 
+    backcover Boolean,
+    -- could be non-book pic data???
+    uniqueid VARCHAR(255) NOT NULL
+);
+
 DROP TABLE IF EXISTS book;
 CREATE TABLE book
 (

@@ -4,15 +4,7 @@ import platypus.bookstore.repos.BookRepository
 import platypus.bookstore.classes.db.Book
 import platypus.bookstore.classes.db.RevenueCost
 import platypus.bookstore.classes.db.BookRC
-import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
-import org.springframework.web.reactive.function.server.*
-import org.springframework.data.r2dbc.repository.Query  
-import org.springframework.stereotype.Component
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.ComponentScan;
 
-@Component
-@ComponentScan("platypus.bookstore")
 class BooksHandler(val bookRepo: BookRepository){
   
   suspend fun findbooks():List<Book>{
