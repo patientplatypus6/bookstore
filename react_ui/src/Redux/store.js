@@ -4,6 +4,7 @@ import inputtextReducer from './inputtext'
 import revenuecostReducer from './revenuecost'
 import booklistdbReducer from './booklistDB'
 import uploadpicdataReducer from './uploadpicdata'
+import downloadpicdataReducer from './downloadpicdata'
 
 
 export default configureStore({
@@ -12,6 +13,7 @@ export default configureStore({
     inputtext: inputtextReducer, 
     revenuecost: revenuecostReducer,
     booklistdb: booklistdbReducer,
-    uploadpicdata: uploadpicdataReducer
+    uploadpicdata: uploadpicdataReducer, 
+    downloadpicdata: downloadpicdataReducer
   },
 })

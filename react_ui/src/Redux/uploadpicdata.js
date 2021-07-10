@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const uploadpicdataSlice = createSlice({
-  name: 'inputtext',
+  name: 'uploadpicdata',
   initialState: {
     //upload filenames here
     files: [], 
