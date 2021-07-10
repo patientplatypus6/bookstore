@@ -2,8 +2,21 @@ package platypus.bookstore.handlers
 
 import platypus.bookstore.repos.PicRepository
 import platypus.bookstore.classes.db.Pic
+import platypus.bookstore.classes.*
+import kotlin.collections.mutableListOf
 
 class PicsHandler(val picRepo: PicRepository){
+
+  suspend fun savebookpics(pics: MutableList<Pic>):Boolean{
+
+    val bookpicssaved = false;
+    for(pic in pics){
+      var picsaved:Boolean = picRepo.savebookpic(pic.picbyte, pic.bookuniqueid, pic.frontcover, pic. backcover, pic.uniqueid)
+    }
+
+    //always returns true, need to fix this
+    return true
+  }
   
   // suspend fun findbooks():List<Book>{
   //   println("findBooks")

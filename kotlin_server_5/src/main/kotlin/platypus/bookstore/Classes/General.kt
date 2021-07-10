@@ -19,6 +19,7 @@ data class UploadedFile (
 data class Picdata(
   val frontcoverindex: Int,
   val backcoverindex: Int,
+  val bookuniqueid: String,
   val files: List<String>
 )
 

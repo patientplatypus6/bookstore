@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS useraddress
     userorderuniqueid VARCHAR(255) NOT NULL
 );
 
-DROP TABLE IF EXISTS pics;
-CREATE TABLE pics(  
+DROP TABLE IF EXISTS pic;
+CREATE TABLE pic(  
     picbyte VARBINARY(MAX) NOT NULL,
     bookuniqueid VARCHAR(255),
     frontcover Boolean, 

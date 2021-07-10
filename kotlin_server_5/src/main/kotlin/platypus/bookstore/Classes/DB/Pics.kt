@@ -10,7 +10,7 @@
 package platypus.bookstore.classes.db
 
 data class Pic(
-  var picbyte: ByteArray = <ByteArray>(),
+  var picbyte:ByteArray?=null,
   var bookuniqueid: String = "", 
   var frontcover: Boolean = false, 
   var backcover: Boolean = false, 

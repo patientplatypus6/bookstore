@@ -4,9 +4,27 @@ plugins {
 	id("org.springframework.boot") version "2.5.2"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	// id("org.jetbrains.kotlin.plugin.serialization") version "1.5.20-RC"
+	application
 	kotlin("jvm") version "1.5.20"
 	kotlin("plugin.spring") version "1.5.20"
 	// kotlin("plugin.serialization") version "1.5.20"
+}
+
+// springBoot {
+//     mainClassName = "platypus.bookstore.main"
+// }
+
+// application {
+//     mainClass.set("platypus.bookstore.BookstoreApplication")
+// }
+
+// application {
+//     mainClassName("platypus.bookstore.BookstoreApplication")
+// }
+
+
+application {
+    mainClass.set("platypus.bookstore.BookstoreApplicationKt") 
 }
 
 group = "platypus.bookstore.spring-boot"
@@ -17,6 +35,10 @@ repositories {
 	mavenCentral()
 	// url "https://kotlin.bintray.com/kotlinx"
 }
+
+// configure<SpringBootExtension> {
+//       mainClassName = "platypus.bookstore.BookstoreApplication"
+// }
 
 // 20210307
 
@@ -37,9 +59,18 @@ dependencies {
 	runtimeOnly("dev.miku:r2dbc-mysql")
 	runtimeOnly("io.r2dbc:r2dbc-h2")
 	runtimeOnly("mysql:mysql-connector-java")
+	// developmentOnly("org.springframework.boot:spring-boot-devtools")	
+	// compile("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 }
+
+// configurations {
+//     developmentOnly
+//     runtimeClasspath {
+//         extendsFrom developmentOnly
+//     }
+// }
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {

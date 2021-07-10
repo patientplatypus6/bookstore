@@ -24,7 +24,12 @@ interface PicRepository : CoroutineCrudRepository<Pic, Long> {
       insert into pic (picbyte, bookuniqueid, frontcover, backcover, uniqueid) values (:picbyte, :bookuniqueid, :frontcover, :backcover, :uniqueid)
     """
     )
-    suspend fun savebookpic(picbyte: ByteArray, bookuniqueid: String, frontcover: Boolean, backcover: Boolean, uniqueid: String):Boolean
+    suspend fun savebookpic(picbyte: ByteArray?, bookuniqueid: String, frontcover: Boolean, backcover: Boolean, uniqueid: String):Boolean
+
+    @Query("""
+    select * from pic
+    """)
+    suspend fun findallpics():List<Pic>
 
     @Query("""
       select * from pic where frontcover = 1
@@ -34,5 +39,12 @@ interface PicRepository : CoroutineCrudRepository<Pic, Long> {
     @Query("""
       select * from pic where bookuniqueid = :bookuniqueid
     """)
-    suspend fun findallbookcovers(bookuniqueid: String):List<Pic>
+    suspend fun findpicsbybook(bookuniqueid: String):List<Pic>
+
+
+    @Query("""
+      select * from pic where frontcover = 1 and bookuniqueid in (:bookuniqueidlist)
+    """)
+    suspend fun findcoversbybookgroup(bookuniqueidlist: List<String>):List<Pic>
+
 }

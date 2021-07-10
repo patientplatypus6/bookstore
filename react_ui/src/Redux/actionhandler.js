@@ -159,7 +159,7 @@ const ActionHandler = () => {
           var tempid = texts[textindex]+Date.now().toString();
           var stringtempid = tempid.toString()
           payload.body.book.uniqueid=stringtempid
-          picturepayload.bookuniqueid = stringtempid
+          picturepayload.body.bookuniqueid = stringtempid
         }
       }
     })

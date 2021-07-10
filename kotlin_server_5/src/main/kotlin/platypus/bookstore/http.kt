@@ -29,6 +29,8 @@ import platypus.bookstore.utility.*
 import platypus.bookstore.classes.db.RevenueCost
 import org.springframework.web.multipart.MultipartFile
 
+import platypus.bookstore.classes.db.Pic
+
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -76,29 +78,35 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 	@PostMapping("/addpics")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addpics(@RequestBody picdata:Picdata):PicdataByte{
-		println("value of picdata: $picdata")
+	suspend fun addpics(@RequestBody picdata:Picdata):Boolean{
+		// println("value of picdata: $picdata")
 		val bytearrayhandler = ByteArrayHandler()
-		var picdatabyte = PicdataByte()
-		val filesholder = mutableListOf<ByteArray>()
-		for (file in picdata.files){
+		val pics = mutableListOf<Pic>()
+	
+		for((index, file) in picdata.files.withIndex()){
 			val bytefile = bytearrayhandler.converttobytearray(file)
-			filesholder.add(bytefile)
+			val newpic = Pic();
+			newpic.picbyte = bytefile;
+			if(index==picdata.frontcoverindex){
+				newpic.frontcover=true
+			}else if(index==picdata.frontcoverindex){
+				newpic.backcover=true
+			}
+			newpic.bookuniqueid = picdata.bookuniqueid
+			newpic.uniqueid = picdata.bookuniqueid+"pic"+index
+			pics.add(newpic)
 		}
-		picdatabyte.files = filesholder.toList()
-		picdatabyte.frontcoverindex = picdata.frontcoverindex
-		picdatabyte.backcoverindex = picdata.backcoverindex
-		// val comment = Comment(
-		// 	author = "test",
-		// 	content = "test",
-		// )
-		return picdatabyte
+
+		var picshandler = PicsHandler(picRepo)
+		var picssaved = picshandler.savebookpics(pics)
+
+		return picssaved
 	}
 
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbook(@RequestBody bookrc: BookRC): Boolean {
-    println("value of bookrc $bookrc")
+    // println("value of bookrc $bookrc")
 		println("test reload second")
 		var bookshandler = BooksHandler(bookRepo);
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo);
