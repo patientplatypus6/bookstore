@@ -22,6 +22,14 @@ function dateFormat (date, fstr, utc) {
   });
 }
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 // function isInViewport(element) {
 //   const rect = element.getBoundingClientRect();
 //   return (
@@ -33,4 +41,4 @@ function dateFormat (date, fstr, utc) {
 // }
 
 
-export {arraybuffertobase64, dateFormat}
+export {arraybuffertobase64, dateFormat, sleep}
