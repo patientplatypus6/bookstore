@@ -142,6 +142,16 @@ const ActionHandler = () => {
       newbooks
     }
 
+    // console.log("^^^^^^^^^^^^^^")
+    // console.log("^^^^^^^^^^^^^^")
+    // console.log("^^^^^^^^^^^^^^")
+
+    // console.log('value of payload in findcovers: ', payload)
+
+    // console.log("^^^^^^^^^^^^^^")
+    // console.log("^^^^^^^^^^^^^^")
+    // console.log("^^^^^^^^^^^^^^")
+
     dispatch(setuniquebooks(payload))
 
   }
@@ -175,6 +185,10 @@ const ActionHandler = () => {
       },
       revenuecost: []
     }
+
+    payload.body.book.uniqueid="DEFAULT" + Date.now()
+    picturepayload.body.bookuniqueid = "DEFAULT" + Date.now()
+
     payload.requestType = "post"
     payload.uri = "book/addbook"
   
@@ -210,6 +224,16 @@ const ActionHandler = () => {
           var stringtempid = tempid.toString()
           payload.body.book.uniqueid=stringtempid
           picturepayload.body.bookuniqueid = stringtempid
+          console.log("%%%%%%%%%%%%%%%%%%")
+          console.log("%%%%%%%%%%%%%%%%%%")
+          console.log("%%%%%%%%%%%%%%%%%%")
+
+          console.log("payload.body.book.uniqueid: ", payload.body.book.uniqueid)
+          console.log("picturepayload.body.bookuniqueid: ", picturepayload.body.bookuniqueid)
+
+          console.log("%%%%%%%%%%%%%%%%%%")
+          console.log("%%%%%%%%%%%%%%%%%%")
+          console.log("%%%%%%%%%%%%%%%%%%")
         }
       }
     })
@@ -306,14 +330,14 @@ const ActionHandler = () => {
       }
     })
 
-    if (downloadpicdata.updatednewbooks == true){
-      var payload = {
-        updatednewbooks: false
-      }
-      findcovers2()
-      dispatch(setupdatednewbooks(payload))
-    }
-  }, [toggles, downloadpicdata])
+    // if (downloadpicdata.updatednewbooks == true){
+    //   var payload = {
+    //     updatednewbooks: false
+    //   }
+    //   findcovers2()
+    //   dispatch(setupdatednewbooks(payload))
+    // }
+  }, [toggles])
   
   return(
     <div/>

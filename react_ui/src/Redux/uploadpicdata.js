@@ -7,7 +7,7 @@ export const uploadpicdataSlice = createSlice({
     //00000 for no files uploaded
     files: [0], 
     frontcoverindex: 0,
-    backcoverindex: 0
+    backcoverindex: 0, 
   },
   reducers: {
     modifyuploadpicdata: (state, action) => {
