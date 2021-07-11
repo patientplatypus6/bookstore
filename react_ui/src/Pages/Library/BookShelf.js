@@ -9,6 +9,7 @@ import {arraybuffertobase64} from '../../utility/utility'
 const BookShelf = () => {
 
   const focushandlerref = useRef(null);
+  const containerref = useRef(null);
 
   const buttons = useSelector((state) => state.button.buttons)
   const booklist = useSelector((state)=>state.booklistdb.booklist)
@@ -17,40 +18,78 @@ const BookShelf = () => {
 
   const dispatch = useDispatch()
   const [calledBooklist, setCalledBooklist] = useState(false)
+  const [calledFindcovers, setcalledFindcovers] = useState(false)
+  const [updateScroll, setUpdateScroll] = useState(false)
   
   useEffect(()=>{
-    //call button once on page load to populate if booklist is currently empty (and has not been populated by addbook)
 
-    var updateref = handleRef()
-    
-    console.log('value of booklist: ', booklist)
-    // console.log('value of bookshelfcovers: ', bookshelfcovers)
+    window.addEventListener('scroll', handleRef)
     
     if(calledBooklist == false){
       setCalledBooklist(true)
       dispatch(toggle({buttonName: 'findbooks', displayName: 'Find Books', buttons}))
     }
 
+    // if(
+    //   booklist.length > 0 &&
+    //   !calledFindcovers &&
+    //   bookshelfbook.length < booklist.length
+    // ){
+    //   console.log("inside if statement in useEffect for bookshelf")
+      
+    //   dispatch(toggle({buttonName: 'findcovers', displayName: 'Find Covers', buttons}))
+    // }
+
+    // console.log(" containerref.innerHeight<window.innerHeight: ",  containerref.innerHeight<window.innerHeight)
+    
+    // console.log("containerref.current.clientHeight: " ,containerref.current.clientHeight)
+
+    // console.log("window.innerHeight: " ,window.innerHeight)
+
+    
+
+    // console.log("booklist.length > 0: ",  booklist.length > 0)
+    // console.log(" bookshelfbook.length < booklist.length: ",  bookshelfbook.length < booklist.length)
+
+    console.log("document.documentElement.scrollHeight: ", document.documentElement.scrollHeight)
+    console.log("window.innerHeight: ", window.innerHeight)
+
     if(
-      booklist.length>0 &&
-      updateref &&
+      (containerref.current.clientHeight<window.innerHeight) &&
+      booklist.length > 0 &&
       bookshelfbook.length < booklist.length
     ){
-      console.log("inside if statement in useEffect for bookshelf")
+      console.log('inside containerref if statement: ')
       dispatch(toggle({buttonName: 'findcovers', displayName: 'Find Covers', buttons}))
     }
 
-    console.log('value of updateref: ', updateref)
-    console.log('value of bookshelfbook: ', bookshelfbook)
-    console.log('value of booklist: ', booklist)
+    // do{
+    //   if(
+    //     containerref.innerHeight<window.innerHeight &&
+    //     booklist.length > 0 &&
+    //     bookshelfbook.length < booklist.length
+    //   ){
+    //     dispatch(toggle({buttonName: 'findcovers', displayName: 'Find Covers', buttons}))
+    //   }else{
+    //     setcalledFindcovers(true)
+    //   }
+    // }while(!calledFindcovers)
+
+    return function cleanup(){
+      window.removeEventListener("scroll", handleRef)
+    }
+
   }, [booklist, bookshelfbook])
 
 
   const handleRef = () => {
-    if(focushandlerref.current.offsetParent.offsetHeight<=window.innerHeight){
-      return true
-    }else{
-      return false
+    if(
+      focushandlerref.current.offsetParent.offsetHeight
+      <=(window.innerHeight+window.scrollY+100)
+      &&
+      bookshelfbook.length < booklist.length
+    ){
+      dispatch(toggle({buttonName: 'findcovers', displayName: 'Find Covers', buttons}))
     }
   }
 
@@ -106,8 +145,10 @@ const BookShelf = () => {
         BookShelf
       </div>
       <div
+        ref={containerref}
         style={{
           background: 'grey', 
+          minHeight: '1px',
           marginTop: '20px',
           width: '60%', 
           display: "inline-block",

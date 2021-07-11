@@ -83,34 +83,35 @@ const AddBook = () => {
           )
         })}
         
-        {files.length>1?
-          <div style={{marginTop: '5px'}}>
-            <span style={{marginRight: '5px'}}> Select Front Cover Image Index </span>
-            <select
-              onChange={(e)=>{
-                console.log("value of e.target.value: ", e.target.value)
-                let payload = {
-                  index: e.target.value,
-                  type: 'front'
-                }
-                dispatch(setcover(payload))
-              }}
-            >
-              {files.map((image64, key)=>{
-                return(  
-                  <option
-                    key={key}
-                    style={{}}
-                  >
-                    {key}
-                  </option>
-                )
-              })}
-            </select>
-          </div>
-          :<div/>}
+        {/* {files.length>1? */}
+        <div style={{marginTop: '5px'}}>
+          <span style={{marginRight: '5px'}}> Select Front Cover Image Index </span>
+          <select
+            onChange={(e)=>{
+              console.log("value of e.target.value: ", e.target.value)
+              let payload = {
+                index: e.target.value,
+                type: 'front'
+              }
+              dispatch(setcover(payload))
+            }}
+          >
+            {files.map((image64, key)=>{
+              return(  
+                <option
+                  key={key}
+                  style={{}}
+                >
+                  {key}
+                </option>
+              )
+            })}
+          </select>
+        </div>
 
-        {files.length>1?
+          {/* :<div/>} */}
+
+        {/* {files.length>1? */}
           <div style={{marginTop: '5px'}}>
             <span style={{marginRight: '5px'}}> Select Back Cover Image Index </span>
             <select
@@ -135,7 +136,7 @@ const AddBook = () => {
               })}
             </select>
           </div>
-          :<div/>}
+          {/* :<div/>} */}
       </div>
     )
   }

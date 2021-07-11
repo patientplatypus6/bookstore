@@ -10,8 +10,22 @@ class PicsHandler(val picRepo: PicRepository){
 
   suspend fun savebookpics(pics: MutableList<Pic>):Boolean{
 
+
     val bookpicssaved = false;
     for(pic in pics){
+
+      val bookuniqueid = pic.bookuniqueid;
+      val frontcover = pic.frontcover;
+      val backcover = pic.backcover;
+      val uniqueid = pic.uniqueid;
+
+
+      println("bookuniqueid: $bookuniqueid");
+      println("frontcover: $frontcover");
+      println("backcover: $backcover");
+      println("uniqueid: $uniqueid");
+      
+
       var picsaved:Boolean = picRepo.savebookpic(pic.picbyte, pic.bookuniqueid, pic.frontcover, pic. backcover, pic.uniqueid)
     }
 

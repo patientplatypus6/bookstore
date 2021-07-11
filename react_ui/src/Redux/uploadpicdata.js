@@ -17,8 +17,8 @@ export const uploadpicdataSlice = createSlice({
     clearuploadpicdata: (state, action) =>{
       console.log('inside clearuploadpicdata')
       state.files = [0]
-      state.frontcoverindex = -1 
-      state.backcoverindex = -1 
+      state.frontcoverindex = 0 
+      state.backcoverindex = 0
     }, 
     setcover: (state, action) => {
       if(action.payload.type=='front'){
