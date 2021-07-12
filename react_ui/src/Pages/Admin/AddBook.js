@@ -26,7 +26,7 @@ const AddBook = () => {
   const [synopsis, setSynopsis] = useState("NONE")
   const [revenuecostindex, setRevenuecostindex] = useState([])
   const [revenuecostitem, setRevenuecostitem] = useState([])
-  const [uploadpicdata, setUploadpicdata] = useState([])
+  const [uploadpicdata, setUploadpicdata] = useState([0])
   const [picfrontindex, setPicfrontindex] = useState(0)
   const [picbackindex, setPicbackindex] = useState(0)  
 
@@ -59,7 +59,7 @@ const AddBook = () => {
   }
 
   const resetPicEntries = () => {
-    setUploadpicdata([])
+    setUploadpicdata([0])
     setPicfrontindex(0) 
     setPicbackindex(0)
   }

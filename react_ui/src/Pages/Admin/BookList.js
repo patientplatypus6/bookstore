@@ -17,7 +17,10 @@ import fetchrequest from '../../api/fetch'
 
 const BookList = () => {
 
-  const booklist = useSelector((state)=>state.booklistdb.booklist)
+  // const booklist = useSelector((state) => state.booklistdb.booklist)
+
+  const [booklist, setBooklist] = useState([])
+
   const buttons = useSelector((state) => state.button.buttons)
   const toggles = useSelector((state) => state.button.toggles)
   const dispatch = useDispatch()
@@ -36,16 +39,17 @@ const BookList = () => {
     return fetchasync();
   }
 
-  const addtobooklist = (payload) => {
-    dispatch(modifybooklistdb(payload))
-  }
+  // const addtobooklist = (payload) => {
+  //   dispatch(modifybooklistdb(payload))
+  // }
 
   const findbooks = () => {
     var payload = {}
     payload.uri='book/findbooks' 
     payload.requestType='get'
     handlefetch(payload).then(result=>{
-      addtobooklist(result)
+      // addtobooklist(result)
+      setBooklist(result)
     })
   }
 
@@ -171,14 +175,18 @@ const BookList = () => {
 
   useEffect(()=>{
     findbooks()
-  }, [booklistcleared])
+  })
 
-  useEffect(()=>{
-    dispatch(clearbooklistdb())
-    return function cleanup(){
-      dispatch(clearbooklistdb())
-    }
-  }, [])
+  // useEffect(()=>{
+  //   findbooks()
+  // }, [booklistcleared])
+
+  // useEffect(()=>{
+  //   dispatch(clearbooklistdb())
+  //   return function cleanup(){
+  //     dispatch(clearbooklistdb())
+  //   }
+  // }, [])
 
 
   return(

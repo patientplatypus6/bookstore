@@ -22,9 +22,6 @@ const BookShelf = () => {
   const containerref = useRef(null);
   const booklistcleared = useSelector((state)=>state.downloadpicdata.booklistcleared)
 
-  const [bookidMain, setBookidMain] = useState([])
-
-  const [booklist, setBookList] = useState([])
   const [bookshelfcovers, setBookshelfcovers] = useState([])
 
   const [, updateState] = React.useState();
@@ -34,8 +31,6 @@ const BookShelf = () => {
 
   const dispatch = useDispatch()
 
-  //handle fetch
-
   const handlefetch = (payload) => {
     const fetchasync = async () => {
       var fetchresult = await fetchrequest(payload)
@@ -43,82 +38,36 @@ const BookShelf = () => {
     }
     return fetchasync();
   }
-  
-
-  //helper functions
-
-  const addtobooklist = (payload) => {
-    dispatch(modifybooklistdb(payload))
-  }
-
-  //callable functions
-
-  const findcovers2 = (bookidslice) => {
-
-    var payload = {}
-    payload.uri='pic/findcovers' 
-    payload.requestType='post'   
-    payload.body = {}
-    payload.body.bookids = bookidslice
-
-    console.log('80808080value of bookidslice: ', bookidslice)
-
-    handlefetch(payload).then(result=>{
-      setBookidMain(bookidMain.slice(1))
-      // dispatch(updatebookshelfcovers({bookshelfcovers:result}))
-
-      var tempbookshelfcovers = bookshelfcovers
-      for(var i = 0; i < result.length; i++){
-        tempbookshelfcovers.push(result[i])
-        if(i==result.length-1){
-          console.log('80808080value of result: ', result)
-          console.log('80808080value of i: ', i)
-          setBookshelfcovers(tempbookshelfcovers)
-        }
-      }
-    })
-  }
 
   const findbooks = () => {
     var payload = {}
     payload.uri='book/findbooks' 
     payload.requestType='get'
     handlefetch(payload).then(result=>{
-      setBookList(result)
+      console.log("value of result: ", result)
+      var uniqueidlist = []
+      result.forEach(item=>{
+        uniqueidlist.push(item.uniqueid)
+      })
+      uniqueidlist.forEach(id=>{
+        var coverpayload = {}
+        coverpayload.uri='pic/findcovers' 
+        coverpayload.requestType='post'   
+        coverpayload.body = {}
+        coverpayload.body.bookids=[id]
+        handlefetch(coverpayload).then(coverresult=>{
+          console.log("value of bookshelfcovers: ", bookshelfcovers)
+          var tempbookshelfcovers = bookshelfcovers
+          for(var i = 0; i < coverresult.length; i++){
+            tempbookshelfcovers.push(coverresult[i])
+            if(i==coverresult.length-1){
+              setBookshelfcovers([...tempbookshelfcovers])
+            }
+          }
+        })
+      })
     })
   }
-
-  const findcovers = () => {
-
-    var bookid = []
-    if(booklist.length > 0){
-      var i = 0
-      var catlength = 1
-      var tempbookid = []
-      do{
-        tempbookid.push(booklist[i]['uniqueid'])
-        if(i % catlength == catlength - 1 || i == booklist.length - 1){
-          bookid.push(tempbookid)
-          tempbookid = []
-        }
-        i++
-      }while(i < booklist.length)
-
-      console.log("*(*(*((**value of bookid: ", bookid)
-  
-      setBookidMain(bookid)
-
-    }
-  }
-
-  useEffect(()=>{
-    if(bookidMain.length>0)
-    findcovers2(bookidMain[0])
-  }, [bookidMain])
-
-  useEffect(()=>{
-    findcovers()
-  }, [booklist])
 
   useEffect(()=>{
     findbooks()
@@ -127,11 +76,8 @@ const BookShelf = () => {
   const coverhandler = () => {
     return(
       <>
-        {booklist.length>0?bookshelfcovers.map((cover)=>{
-          console.log("%%%bookuniqueid: ", cover)
-          console.log(booklist)
-          var bookrow = booklist.find(element=>element.uniqueid==cover.bookuniqueid)
-          var title = bookrow.title
+        {bookshelfcovers.map((cover)=>{
+          var title = cover.title
           if (cover.picbyte == "MA=="){
             return(
               <div key={cover.bookuniqueid}>
@@ -181,26 +127,22 @@ const BookShelf = () => {
                   <br/>
                   <tr style={{}}>
                     <tc style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      {/* <td> */}
-                        <img 
-                        style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                        src={arraybuffertobase64(cover.picbyte)}/>    
-                      {/* </td>                   */}
+                      <img 
+                      style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
+                      src={arraybuffertobase64(cover.picbyte)}/>    
                     </tc>
                     <tc style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      {/* <td> */}
-                        <Button 
-                          buttonName='viewbook'
-                          displayName="View Book"
-                        />  
-                      {/* </td>                     */}
+                      <Button 
+                        buttonName='viewbook'
+                        displayName="View Book"
+                      />  
                     </tc>
                   </tr>
                 </table>
               </div>
             )
           }
-        }):<div/>}
+        })} 
       </>
     )
   }
