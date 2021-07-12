@@ -4,16 +4,18 @@ export const booklistdbSlice = createSlice({
   name: 'booklistdb',
   initialState: {
     booklist: [],
-    booklistupdated: 0
+    booklistupdated: 0, 
+    booklistcleared: 0,
   },
   reducers: {
     modifybooklistdb: (state, action) => {
-      console.log('value of payload in modifybooklistdb; ', action.payload  )
+      console.log('value of payload in modifybooklistdb; ', action.payload)
       state.booklist = action.payload
       state.booklistupdated = Date.now()
     },
     clearbooklistdb: (state, action) =>{
       state.booklist = []
+      state.booklistcleared = Date.now()
     }
   },
 })

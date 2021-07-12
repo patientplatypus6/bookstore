@@ -224,16 +224,6 @@ const ActionHandler = () => {
           var stringtempid = tempid.toString()
           payload.body.book.uniqueid=stringtempid
           picturepayload.body.bookuniqueid = stringtempid
-          console.log("%%%%%%%%%%%%%%%%%%")
-          console.log("%%%%%%%%%%%%%%%%%%")
-          console.log("%%%%%%%%%%%%%%%%%%")
-
-          console.log("payload.body.book.uniqueid: ", payload.body.book.uniqueid)
-          console.log("picturepayload.body.bookuniqueid: ", picturepayload.body.bookuniqueid)
-
-          console.log("%%%%%%%%%%%%%%%%%%")
-          console.log("%%%%%%%%%%%%%%%%%%")
-          console.log("%%%%%%%%%%%%%%%%%%")
         }
       }
     })

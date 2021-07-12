@@ -30,6 +30,7 @@ import UserInfo from '../Pages/User/UserInfo'
 import ActionHandler from '../Redux/actionhandler.js'
 
 import { useLocation } from 'react-router-dom'
+import AddRevenueCost from './Admin/AddRevenueCost';
 
 // class Main extends React.Component{
 
@@ -117,6 +118,18 @@ const Main = () => {
               padding: '20px',
               color: "rgb(250,250,250)"
             }}
+            exact to="/admin/addrevenuecost">Add Revenue Cost</NavLink>
+            <NavLink 
+            style={{
+              textDecoration: 'none', 
+              color: "rgb(180,180,180)", 
+              padding: '20px'
+            }} 
+            activeStyle={{
+              textDecoration: 'underline',
+              padding: '20px',
+              color: "rgb(250,250,250)"
+            }}
             exact to="/admin/booklist">Book List</NavLink>
             <NavLink 
             style={{
@@ -137,6 +150,7 @@ const Main = () => {
           <Route exact path="/about" render={()=><About/>}/>
           <Route exact path="/book" render={()=><Book/>}/>
           <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
+          <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
           <Route exact path="/admin/booklist" render={()=><BookList/>}/>
           <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
         </Switch>

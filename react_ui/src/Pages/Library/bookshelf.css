@@ -1,0 +1,22 @@
+table, td, tc{
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+  vertical-align: top;
+}
+
+table{
+  width: 100%
+}
+
+.columnHeaders{
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+.tableHolder{
+  display: inline-block;
+  text-align: center;
+  /* width: 60%; */
+}
