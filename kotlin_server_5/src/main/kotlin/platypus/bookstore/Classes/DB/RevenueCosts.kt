@@ -13,3 +13,7 @@ data class RevenueCost(
   var rcvalue: String = "",
   var rcdate: LocalDateTime = LocalDateTime.now()
 )
+
+data class RevenueCostBookName(
+  var rcname: String = ""
+)

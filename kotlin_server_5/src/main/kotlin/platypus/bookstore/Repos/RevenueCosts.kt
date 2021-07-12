@@ -38,4 +38,11 @@ interface RevenueCostRepository : CoroutineCrudRepository<RevenueCost, Long> {
     )
     suspend fun deletebybookid(bookuniqueid: String):Boolean
 
+    @Query(
+      """
+        SELECT * from revenuecost where rcname = :rcname
+      """
+    )
+    suspend fun allrcbyname(bookuniqueid: String):List<RevenueCost>
+
 }

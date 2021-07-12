@@ -33,5 +33,10 @@ class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
     return true;
   }
 
+  suspend fun allrcbyname(rcname: String):List<RevenueCost>{
+    var namelist: List<RevenueCost> = 
+    revenuecostRepo.allrcbyname(rcname);
+    return namelist;
+  }
 
 } 

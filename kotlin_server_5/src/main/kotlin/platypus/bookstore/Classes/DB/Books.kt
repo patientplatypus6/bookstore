@@ -15,6 +15,7 @@ data class BookRC(
 data class Book(
   var title: String = "",
   var subtitle: String = "", 
+  var author: String = "",
   var publisher: String = "", 
   var currentcopyright: String = "",
   var bookedition: String = "", 
@@ -22,6 +23,13 @@ data class Book(
   var storyinfo: String = "", 
   var condition: String = "", 
   var isbn: String = ""
+)
+
+data class ShelfBook(
+  var title: String = "",
+  var author: String = "", 
+  var projectedshippingprice: RevenueCost,
+  var projectedbookprice: RevenueCost
 )
 
 data class BookId(

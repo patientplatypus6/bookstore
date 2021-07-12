@@ -21,7 +21,7 @@ class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun addbook(book: Book):Boolean{
     var bookAdded:Boolean = bookRepo.saveabook(
-      book.title, book.subtitle, book.publisher, 
+      book.title, book.subtitle, book.author, book.publisher, 
       book.currentcopyright, book.bookedition, 
       book.uniqueid, book.storyinfo, book.condition, book.isbn
     )
@@ -30,7 +30,7 @@ class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun updatebook(book: Book):Boolean{
     var bookUpdated:Boolean = bookRepo.updateabook(
-      book.title, book.subtitle, book.publisher, 
+      book.title, book.subtitle, book.author, book.publisher, 
       book.currentcopyright, book.bookedition, book.storyinfo, book.condition, book.isbn, book.uniqueid
     )
     return bookUpdated

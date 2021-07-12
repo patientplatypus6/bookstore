@@ -12,6 +12,9 @@ const BookShelf = () => {
 
   const [bookshelfcovers, setBookshelfcovers] = useState([])
 
+  const [shippingprice, setShippingprice] = useState([])
+  const [bookprice, setBookprice] = useState([])
+
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
 
@@ -53,8 +56,32 @@ const BookShelf = () => {
     })
   }
 
+  const findshippingprices = () => {
+    var payload = {body: {}}
+    payload.uri='revenuecost/allrcbyname' 
+    payload.requestType='post'
+    payload.body.rcname='REVENUE - BOOK SHIPPING (PROJECTED)'
+    handlefetch(payload).then(result=>{
+      console.log("value of result: ", result)
+      setShippingprice(result)
+    })
+  }
+
+  const findbookprices = () => {
+    var payload = {body: {}}
+    payload.uri='revenuecost/allrcbyname' 
+    payload.requestType='post'
+    payload.body.rcname='REVENUE - BOOK PRICE (PROJECTED)'
+    handlefetch(payload).then(result=>{
+      console.log("value of result: ", result)
+      setBookprice(result)
+    })
+  }
+
   useEffect(()=>{
     findbooks()
+    findshippingprices()
+    findbookprices()
   }, [])
 
   const coverhandler = () => {
@@ -70,35 +97,69 @@ const BookShelf = () => {
         :<div/>}
         {bookshelfcovers.map((cover)=>{
           var title = cover.title
+          var bookpriceitem = "";
+          var shippingpriceitem = "";
+          var totalpriceitem = null;
+          
+          try{
+            var bookpriceitem = bookprice.find(element=>element.bookuniqueid==cover.bookuniqueid).rcvalue
+          }catch{
+            var bookpriceitem = "N/A"
+          }
+
+          try{
+            var shippingpriceitem = shippingprice.find(element=>element.shippinguniqueid==cover.shippinguniqueid).rcvalue
+          }catch{
+            var shippingpriceitem = "N/A"
+          }
+
+          try{
+            var totalpriceitem = parseFloat(bookpriceitem)+parseFloat(shippingpriceitem)
+          }catch{
+            var totalpriceitem = "N/A"
+          }
+
           if (cover.picbyte == "MA=="){
             return(
               <div key={cover.bookuniqueid}>
-                <table style={{width: '100%'}}>
-                  <br/>
-                  <tr
-                    style={{fontWeight: 'bold', fontSize: '1.25rem', fontStyle: 'italic'}}
-                  >
-                    {title}
-                  </tr>
-                  <tr>
-                    {cover.bookuniqueid}
-                  </tr>
-                  <br/>
-                  <tr>
-                    <tc  style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      <img 
-                        style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                        src={process.env.PUBLIC_URL+'/No-Image-Placeholder.svg'}
-                      />  
-                    </tc>
-                    <tc  style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      <div
-                        className='button'
-                      >
-                        View Book
+                <table style={{width: '100%', background: "lightorange"}}>
+                  <tbody style={{background: "lightorange"}}>
+                    <br/>
+                    <tr
+                      style={{fontWeight: 'bold', fontSize: '1.25rem', fontStyle: 'italic'}}
+                    >
+                      {title}
+                    </tr>
+                    <tr>
+                      {cover.bookuniqueid}
+                    </tr>
+                    <tr style={{background: 'lightorange'}}>
+                      <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
+                        <img 
+                          style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
+                          src={process.env.PUBLIC_URL+'/No-Image-Placeholder.svg'}
+                        />  
                       </div>
-                    </tc>
-                  </tr>
+                      <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top', width: "25vw", background: "lightblue", borderRadius: '5px'}}>
+                        <div>
+                          <div>
+                            <span>Book Price</span><span>{bookpriceitem}</span>
+                          </div>
+                          <div>
+                            Shipping Price - {shippingpriceitem}
+                          </div>
+                          <div>
+                            Total Price - {totalpriceitem}
+                          </div>
+                        </div>
+                        <div
+                          className='button'
+                        >
+                          View Book
+                        </div>
+                      </div>
+                    </tr>
+                  </tbody>
                 </table>
               </div>  
             )
@@ -108,30 +169,31 @@ const BookShelf = () => {
             return(
               <div key={cover.bookuniqueid}>
                 <table style={{width: '100%'}}>
-                  <br/>
-                  <tr
-                    style={{fontWeight: 'bold', fontSize: '1.25rem', fontStyle: 'italic'}}
-                  >
-                    {title}
-                  </tr>
-                  <tr>
-                    {cover.bookuniqueid}
-                  </tr>
-                  <br/>
-                  <tr style={{}}>
-                    <tc style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      <img 
-                      style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                      src={arraybuffertobase64(cover.picbyte)}/>    
-                    </tc>
-                    <tc style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      <div
-                        className='button'
-                      >
-                        View Book
+                  <tbody>
+                    <br/>
+                    <tr
+                      style={{fontWeight: 'bold', fontSize: '1.25rem', fontStyle: 'italic'}}
+                    >
+                      {title}
+                    </tr>
+                    <tr>
+                      {cover.bookuniqueid}
+                    </tr>
+                    <tr style={{}}>
+                      <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
+                        <img 
+                        style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
+                        src={arraybuffertobase64(cover.picbyte)}/>    
                       </div>
-                    </tc>
-                  </tr>
+                      <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
+                        <div
+                          className='button'
+                        >
+                          View Book
+                        </div>
+                      </div>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             )

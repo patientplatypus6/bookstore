@@ -21,10 +21,10 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      insert into book (title, subtitle, publisher, currentcopyright, bookedition, uniqueid, storyinfo, condition, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :storyinfo, :condition, :isbn)
+      insert into book (title, subtitle, author, publisher, currentcopyright, bookedition, uniqueid, storyinfo, condition, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :storyinfo, :condition, :isbn)
     """
     )
-    suspend fun saveabook(title:String, subtitle:String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String):Boolean
+    suspend fun saveabook(title:String, subtitle:String, author: String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String):Boolean
 
     @Query("""
       select * from book
@@ -37,6 +37,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
         update book set 
         title=:title,
         subtitle=:subtitle,
+        author=:author,
         publisher=:publisher,
         currentcopyright=:currentcopyright,
         bookedition=:bookedition,
@@ -47,7 +48,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
         uniqueid=:uniqueid
       """
     )
-    suspend fun updateabook(title:String, subtitle:String, publisher:String, currentcopyright:String, bookedition:String, storyinfo:String, condition:String, isbn:String,uniqueid:String):Boolean
+    suspend fun updateabook(title:String, subtitle:String, author:String, publisher:String, currentcopyright:String, bookedition:String, storyinfo:String, condition:String, isbn:String,uniqueid:String):Boolean
 
     @Modifying
     @Query(

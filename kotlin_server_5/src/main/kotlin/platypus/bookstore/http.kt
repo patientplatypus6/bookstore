@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile
 import platypus.bookstore.classes.db.Pic
 import platypus.bookstore.classes.db.PicBookId
 import platypus.bookstore.classes.db.PicBookIds
+import platypus.bookstore.classes.db.RevenueCostBookName
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -200,7 +201,18 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/revenuecost")
-public class RequestRevenueCost{
+public class RequestRevenueCost(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
+
+	@PostMapping("/allrcbyname")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun allrcbyname(@RequestBody rcname: RevenueCostBookName):List<RevenueCost>{
+		var revenuecostname:String = rcname.rcname;
+		var revenuecostHandler = RevenueCostsHandler(revenuecostRepo)
+		
+		var revenuecostlist:List<RevenueCost> = revenuecostHandler.allrcbyname(revenuecostname);
+
+		return revenuecostlist;
+	}
 
 }
 

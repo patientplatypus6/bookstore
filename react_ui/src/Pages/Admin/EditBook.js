@@ -12,6 +12,7 @@ const EditBook = () => {
 
   const [isbn, setIsbn] = useState("NONE")
   const [title, setTitle] = useState("NONE")
+  const [author, setAuthor] = useState("NONE")
   const [currentcopyright, setCurrentcopyright] = useState("NONE")
   const [bookedition, setBookedition] = useState("NONE")
   const [storyinfo, setStoryinfo] = useState("NONE")
@@ -24,6 +25,8 @@ const EditBook = () => {
   const [picfrontindex, setPicfrontindex] = useState(0)
   const [picbackindex, setPicbackindex] = useState(0)  
 
+  const [fetchcount, setFetchcount] = useState(0)
+  const [bookuniqueid, setBookuniqueid] = useState(0)
 
   const handlefetch = (payload) => {
     console.log('inside handlefetch and value of payload: ', payload)
@@ -42,20 +45,25 @@ const EditBook = () => {
     setStoryinfo("NONE")
     setSubtitle("NONE")
     setPublisher("NONE")
+    setAuthor("NONE")
     setCondition("NONE")
     setRevenuecostindex([])
     setRevenuecostitem([])
+
+    setFetchcount(fetchcount+1)
   }
 
   const resetPicEntries = () => {
     setUploadpicdata([0])
     setPicfrontindex(0) 
     setPicbackindex(0)
+
+    setFetchcount(fetchcount+1)
   }
 
   const editbookhandler = () => {
 
-    var bookuniqueid = history.location.state.bookitem.uniqueid
+    setBookuniqueid(history.location.state.bookitem.uniqueid)
 
     var temprevenuecostitem = revenuecostitem
     temprevenuecostitem.forEach(item=>{
@@ -68,6 +76,7 @@ const EditBook = () => {
         book: {
           title, 
           subtitle,
+          author,
           publisher,
           currentcopyright,
           bookedition, 
@@ -99,11 +108,16 @@ const EditBook = () => {
       console.log("value of results: ", result)
       resetPicEntries()
     })
-    history.push({
-      pathname: '/admin/dashboard',
-      dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been edited in the database...`
-    })
   }
+
+  useEffect(()=>{
+    if(fetchcount==2){
+      history.push({
+        pathname: '/admin/dashboard',
+        dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been edited in the database...`
+      })
+    }
+  }, [fetchcount])
 
   const findrevenuecosts = (bookuniqueid) => {
     console.log('value of bookuniqueid: ', bookuniqueid)
@@ -165,6 +179,7 @@ const EditBook = () => {
     setSubtitle(bookitem.subtitle)
     setPublisher(bookitem.publisher)
     setCondition(bookitem.condition)
+    setAuthor(bookitem.author)
   }
 
   useEffect(()=>{ 
@@ -393,11 +408,11 @@ const EditBook = () => {
             <option value={'REVENUE - BOOK PRICE (SOLD)'}>
               REVENUE - BOOK PRICE (SOLD)
             </option>
-            <option value={'REVENUE - BOOK SHIPPING (PROSPECTIVE)'}>
-              REVENUE - BOOK SHIPPING (SOLD)
+            <option value={'REVENUE - BOOK SHIPPING (PROJECTED)'}>
+              REVENUE - BOOK SHIPPING (PROJECTED)
             </option>
-            <option value={'REVENUE - BOOK PRICE (PROSPECTIVE)'}>
-              REVENUE - BOOK PRICE (SOLD)
+            <option value={'REVENUE - BOOK PRICE (PROJECTED)'}>
+              REVENUE - BOOK PRICE (PROJECTED)
             </option>
           </select>
         </div>
@@ -547,6 +562,18 @@ const EditBook = () => {
               value={subtitle}
               onChange={(e)=>{
                 setSubtitle(e.target.value)
+              }}
+            />
+          </div>
+          <br/>
+          <div>
+            Author
+            <br/>
+            <input 
+              className='inputBox'
+              value={author}
+              onChange={(e)=>{
+                setAuthor(e.target.value)
               }}
             />
           </div>
