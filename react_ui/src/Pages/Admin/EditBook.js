@@ -26,7 +26,6 @@ const EditBook = () => {
   const [picbackindex, setPicbackindex] = useState(0)  
 
   const [fetchcount, setFetchcount] = useState(0)
-  const [bookuniqueid, setBookuniqueid] = useState(0)
 
   const handlefetch = (payload) => {
     console.log('inside handlefetch and value of payload: ', payload)
@@ -63,7 +62,7 @@ const EditBook = () => {
 
   const editbookhandler = () => {
 
-    setBookuniqueid(history.location.state.bookitem.uniqueid)
+    var bookuniqueid = history.location.state.bookitem.uniqueid
 
     var temprevenuecostitem = revenuecostitem
     temprevenuecostitem.forEach(item=>{
@@ -103,21 +102,16 @@ const EditBook = () => {
     handlefetch(payload).then(result=>{
       console.log("value of results: ", result)
       resetBookEntries()
-    })
-    handlefetch(picturepayload).then(result=>{
-      console.log("value of results: ", result)
-      resetPicEntries()
+      handlefetch(picturepayload).then(result=>{
+        console.log("value of results: ", result)
+        resetPicEntries()
+        history.push({
+          pathname: '/admin/dashboard',
+          dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been edited in the database...`
+        })
+      })
     })
   }
-
-  useEffect(()=>{
-    if(fetchcount==2){
-      history.push({
-        pathname: '/admin/dashboard',
-        dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been edited in the database...`
-      })
-    }
-  }, [fetchcount])
 
   const findrevenuecosts = (bookuniqueid) => {
     console.log('value of bookuniqueid: ', bookuniqueid)

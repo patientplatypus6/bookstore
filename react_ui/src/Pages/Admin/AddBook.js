@@ -24,7 +24,6 @@ const AddBook = () => {
   const [picbackindex, setPicbackindex] = useState(0)  
 
   const [fetchcount, setFetchcount] = useState(0)
-  const [bookuniqueid, setBookuniqueid] = useState(0)
 
   useEffect(()=>{
   })
@@ -51,7 +50,7 @@ const AddBook = () => {
     setAuthor("NONE")
     setRevenuecostindex([])
     setRevenuecostitem([])
-
+    console.log("inside resetBookEntries before setting fetchcount and value: ", fetchcount)
     setFetchcount(fetchcount+1)
   }
 
@@ -59,13 +58,13 @@ const AddBook = () => {
     setUploadpicdata([0])
     setPicfrontindex(0) 
     setPicbackindex(0)
-
+    console.log("inside resetPicEntries before setting fetchcount and value: ", fetchcount)
     setFetchcount(fetchcount+1)
   }
 
   const addbookhandler = () => {
     
-    setBookuniqueid(isbn + Date.now())
+    var bookuniqueid = isbn + Date.now()
 
     var temprevenuecostitem = revenuecostitem
     temprevenuecostitem.forEach(item=>{
@@ -103,24 +102,17 @@ const AddBook = () => {
       uri:"book/addpics"
     }
     handlefetch(payload).then(result=>{
-      console.log("value of results: ", result)
       resetBookEntries()
-    })
-    handlefetch(picturepayload).then(result=>{
-      console.log("value of results: ", result)
-      resetPicEntries()
-    })
-  }
-
-  useEffect(()=>{
-    if(fetchcount==2){
-      history.push({
-        pathname: '/admin/dashboard',
-        dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been added to the database...`
+      handlefetch(picturepayload).then(result=>{
+        resetPicEntries()
+        history.push({
+          pathname: '/admin/dashboard',
+          dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been added to the database...`
+        })
       })
-    }
-  }, [fetchcount])
+    })
 
+  }
 
   const imageDisplayHandler = () => {
     return(
@@ -490,7 +482,6 @@ const AddBook = () => {
             />
           </div>
           <br/>
-          <br/>
           <div>
             Author
             <br/>
@@ -502,6 +493,7 @@ const AddBook = () => {
               }}
             />
           </div>
+          <br/>
           <div>
             Publisher
             <br/>

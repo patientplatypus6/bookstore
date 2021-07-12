@@ -78,10 +78,12 @@ const BookShelf = () => {
     })
   }
 
+  const findbookshelfbooks = () => {
+    var payload = {body: {}}
+  }
+
   useEffect(()=>{
-    findbooks()
-    findshippingprices()
-    findbookprices()
+    findbookshelfbooks()
   }, [])
 
   const coverhandler = () => {
@@ -100,7 +102,7 @@ const BookShelf = () => {
           var bookpriceitem = "";
           var shippingpriceitem = "";
           var totalpriceitem = null;
-          
+
           try{
             var bookpriceitem = bookprice.find(element=>element.bookuniqueid==cover.bookuniqueid).rcvalue
           }catch{

@@ -21,7 +21,7 @@ const AdminDashboard = () => {
     return fetchasync();
   }
 
-  const deletebookhandler = (uniqueid) => {
+  const deletebookhandler = (title, uniqueid) => {
     console.log("inside deletebookhandler and value of uniqueid: ", uniqueid)
     var payload = {
       body: {
@@ -32,6 +32,7 @@ const AdminDashboard = () => {
     payload.requestType='post'
     handlefetch(payload).then(result=>{
       findbooks()
+      setDashmessage(`Book with title ${title} and id ${uniqueid} \n has been deleted from the database...`)
     })
   }
 
@@ -90,6 +91,9 @@ const AdminDashboard = () => {
               Subtitle
             </td>
             <td className='columnHeaders'>
+              Author
+            </td>
+            <td className='columnHeaders'>
               Publisher
             </td>
             <td className='columnHeaders'>
@@ -111,6 +115,9 @@ const AdminDashboard = () => {
                 </td>
                 <td>
                   {bookitem.subtitle}
+                </td>
+                <td>
+                  {bookitem.author}
                 </td>
                 <td>
                   {bookitem.publisher}
@@ -142,7 +149,7 @@ const AdminDashboard = () => {
                     className='button'
                     style={{background: "red"}}
                     onClick={()=>{
-                      deletebookhandler(bookitem.uniqueid)
+                      deletebookhandler(bookitem.title, bookitem.uniqueid)
                     }}
                   >
                     DELETE BOOK

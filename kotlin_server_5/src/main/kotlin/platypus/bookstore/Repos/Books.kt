@@ -21,7 +21,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      insert into book (title, subtitle, author, publisher, currentcopyright, bookedition, uniqueid, storyinfo, condition, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :storyinfo, :condition, :isbn)
+      insert into book (title, subtitle, author, publisher, currentcopyright, bookedition, uniqueid, storyinfo, condition, isbn) values (:title, :subtitle, :author, :publisher, :currentcopyright, :bookedition, :uniqueid, :storyinfo, :condition, :isbn)
     """
     )
     suspend fun saveabook(title:String, subtitle:String, author: String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String):Boolean
