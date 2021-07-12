@@ -2,8 +2,12 @@ import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
 import fetchrequest from '../../api/fetch'
 
+import { useHistory } from "react-router-dom";
+
 const AddBook = () => {
 
+  let history = useHistory();
+    
   const [isbn, setIsbn] = useState("NONE")
   const [title, setTitle] = useState("NONE")
   const [currentcopyright, setCurrentcopyright] = useState("NONE")
@@ -95,6 +99,10 @@ const AddBook = () => {
     handlefetch(picturepayload).then(result=>{
       console.log("value of results: ", result)
       resetPicEntries()
+    })
+    history.push({
+      pathname: '/admin/dashboard',
+      dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been added to the database...`
     })
   }
 

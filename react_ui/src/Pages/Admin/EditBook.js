@@ -99,6 +99,10 @@ const EditBook = () => {
       console.log("value of results: ", result)
       resetPicEntries()
     })
+    history.push({
+      pathname: '/admin/dashboard',
+      dashmessage: `Book with title ${title} and unique id ${bookuniqueid} \n has been edited in the database...`
+    })
   }
 
   const findrevenuecosts = (bookuniqueid) => {

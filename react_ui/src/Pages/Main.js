@@ -94,7 +94,7 @@ const Main = () => {
               color: "rgb(250,250,250)"
             }}
             exact to="/book">Book</NavLink>
-            <NavLink 
+            {/* <NavLink 
             style={{
               textDecoration: 'none', 
               color: "rgb(180,180,180)", 
@@ -105,7 +105,7 @@ const Main = () => {
               padding: '20px',
               color: "rgb(250,250,250)"
             }}
-            exact to="/admin/addbook">Add Book</NavLink>
+            exact to="/admin/addbook">Add Book</NavLink> */}
             <NavLink 
             style={{
               textDecoration: 'none', 
@@ -130,7 +130,7 @@ const Main = () => {
               color: "rgb(250,250,250)"
             }}
             exact to="/admin/dashboard">Admin Dashboard</NavLink>
-            <NavLink 
+            {/* <NavLink 
             style={{
               textDecoration: 'none', 
               color: "rgb(180,180,180)", 
@@ -141,7 +141,7 @@ const Main = () => {
               padding: '20px',
               color: "rgb(250,250,250)"
             }}
-            exact to="/admin/editbook">Edit Book</NavLink>
+            exact to="/admin/editbook">Edit Book</NavLink> */}
           </div>
         </nav>  
         <Switch>

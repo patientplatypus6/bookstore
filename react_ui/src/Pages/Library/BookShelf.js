@@ -3,17 +3,6 @@ import './library.css'
 import { useSelector, useDispatch } from 'react-redux'
 import {arraybuffertobase64, sleep} from '../../utility/utility'
 
-// import{
-//   clearbooklistdb,
-//   modifybooklistdb
-// } from '../../Redux/booklistDB'
-// import {
-//   updatebookshelfcovers,
-//   cleanbookshelfcovers
-// } from '../../Redux/downloadpicdata'
-
-// import Button from '../../Components/SubComponents/Button/Button'
-
 import fetchrequest from '../../api/fetch'
 
 const BookShelf = () => {

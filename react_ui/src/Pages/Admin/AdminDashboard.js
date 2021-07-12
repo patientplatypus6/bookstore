@@ -1,9 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
-import { useSelector, useDispatch } from 'react-redux'
 import './admin.css'
 import { useHistory } from "react-router-dom";
 import './booklist.css'
-
 import fetchrequest from '../../api/fetch'
 
 const AdminDashboard = () => {
@@ -13,6 +11,7 @@ const AdminDashboard = () => {
   const [booklist, setBooklist] = useState([])
   const [pagenumber, setPagenumber] = useState(1)
   const [displayper, setDisplayper] = useState(25)
+  const [dashmessage, setDashmessage] = useState("Welcome to the Administator dashboard! \n Action messages will appear hear from state changes in the database \n Thank you!")
 
   const handlefetch = (payload) => {
     const fetchasync = async () => {
@@ -191,6 +190,10 @@ const AdminDashboard = () => {
 
   useEffect(()=>{
     findbooks()
+    console.log("value of history: ", history)
+    if(history!=undefined && history.location!=null && history.location.dashmessage!=null & history.location.dashmessage!=undefined){
+      setDashmessage(history.location.dashmessage)
+    }
   }, [])
 
 
@@ -198,8 +201,75 @@ const AdminDashboard = () => {
     <div>
       <div
         style={{
+          color: "rgb(0,250,0)", 
+          width: '60%',
+          textAlign: 'left', 
+          display: "inline-block",
+          background: 'black', 
+          borderRadius: '5px', 
+          padding: "10px",
+          whiteSpace: "pre-line", 
+          marginBottom: '10px'
+        }}
+      >
+        {dashmessage}
+      </div>
+      <div
+        style={{
           fontWeight: 'bold', 
-          fontSize: '1.5rem'
+          fontSize: '1.5rem', 
+          background: 'grey'
+        }}
+      >
+        Administrator Actions
+      </div>
+      <br/>
+      <div 
+        style={{
+          display: 'inline-block', 
+          textAlign: 'center'
+        }}
+      > 
+        <span style={{marginLeft: "5px", marginRight: "5px"}}>
+          <div
+            className="button"
+            onClick={()=>{
+              history.push({
+                pathname: '/admin/addrevenuecost'
+              })
+            }}
+          >
+            Add Revenue/Cost
+          </div>
+        </span>
+        <span style={{marginLeft: "5px", marginRight: "5px"}}>  
+          <div
+            className="button"
+            onClick={()=>{
+              history.push({
+                pathname: '/admin/addbook'
+              })
+            }}
+          >
+            Add Book
+          </div>
+        </span>
+        <span style={{marginLeft: "5px", marginRight: "5px"}}>
+          <div
+            className="button"
+            style={{background: "red"}}
+          >
+            Log Out
+          </div>
+        </span>
+      </div>
+      <br/> 
+      <br/>
+      <div
+        style={{
+          fontWeight: 'bold', 
+          fontSize: '1.5rem', 
+          background: "grey"
         }}
       >
         Book Inventory Past & Future
@@ -208,6 +278,17 @@ const AdminDashboard = () => {
       <br/>
       <div className='tableHolder'>
         {booklistTable(booklist)}
+      </div>
+      <br/> 
+      <br/>
+      <div
+        style={{
+          fontWeight: 'bold', 
+          fontSize: '1.5rem', 
+          background: "grey"
+        }}
+      >
+        Revenue Cost Table
       </div>
     </div>
   )
