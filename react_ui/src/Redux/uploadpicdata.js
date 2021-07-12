@@ -13,6 +13,7 @@ export const uploadpicdataSlice = createSlice({
     modifyuploadpicdata: (state, action) => {
       console.log('value of action: ', action.payload.files)
       state.files = action.payload.files
+      console.log('value of pic files: ', action.payload.files)
     },
     clearuploadpicdata: (state, action) =>{
       console.log('inside clearuploadpicdata')

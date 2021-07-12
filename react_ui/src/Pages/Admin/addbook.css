@@ -15,3 +15,22 @@ table, td{
   text-align: center;
   /* width: 60%; */
 }
+
+.button{
+  background: black;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px;
+  border: 5px solid blue;
+  border-radius: 5px;
+  font-family: monospace;
+}
+
+.inputBox{
+  display: inline-block;
+}
+
+.textbox{
+  resize: none;
+}

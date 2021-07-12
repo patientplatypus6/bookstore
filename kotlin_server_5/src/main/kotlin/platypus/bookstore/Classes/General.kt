@@ -28,16 +28,3 @@ data class PicdataByte(
   var backcoverindex: Int = -1,
   var files: List<ByteArray> = mutableListOf<ByteArray>()
 )
-
-//u
-// data class Student(val id: Int,
-//                    val firstName: String,
-//                    val lastName: String,
-//                    val hobbyId: Int,
-//                    val address1: String,
-//                    val address2: String,
-//                    val created: String,
-//                    val updated: String) {
-//     constructor(firstName: String, lastName: String) :
-//             this(Int.MIN_VALUE, firstName, lastName, Int.MIN_VALUE, "", "", "", "")
-// }

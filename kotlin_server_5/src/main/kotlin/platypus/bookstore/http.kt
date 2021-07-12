@@ -96,7 +96,8 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	@PostMapping("/addpics")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun addpics(@RequestBody picdata:Picdata):Boolean{
-		// println("value of picdata: $picdata")
+		println("inside addpics")
+		println("value of picdata: $picdata")
 		val bytearrayhandler = ByteArrayHandler()
 		val pics = mutableListOf<Pic>()
 	
@@ -123,7 +124,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
   @PostMapping("/addbook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbook(@RequestBody bookrc: BookRC): Boolean {
-    // println("value of bookrc $bookrc")
+    println("value of bookrc $bookrc")
 		println("test reload second")
 		var bookshandler = BooksHandler(bookRepo);
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo);
