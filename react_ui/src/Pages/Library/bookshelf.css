@@ -9,6 +9,17 @@ table{
   width: 100%
 }
 
+.button{
+  background: black;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px;
+  border: 5px solid blue;
+  border-radius: 5px;
+  font-family: monospace;
+}
+
 .columnHeaders{
   font-weight: bold;
   font-style: italic;

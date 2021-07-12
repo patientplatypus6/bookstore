@@ -1,7 +1,7 @@
 import React, {Component, useState} from 'react';
-import Button from '../Components/SubComponents/Button/Button'
-import InputBox from '../Components/SubComponents/InputBox/InputBox'
-import TextBox from '../Components/SubComponents/TextBox/TextBox'
+// import Button from '../Components/SubComponents/Button/Button'
+// import InputBox from '../Components/SubComponents/InputBox/InputBox'
+// import TextBox from '../Components/SubComponents/TextBox/TextBox'
 // import { observer, useObserver} from "mobx-react";
 import {
   BrowserRouter as Router,
@@ -11,7 +11,7 @@ import {
   NavLink
 } from "react-router-dom";
 
-import AddBook from '../Pages/Admin/AddBook'
+import AddBook from './Admin/AddBook'
 import BookList from '../Pages/Admin/BookList'
 import EditBook from '../Pages/Admin/EditBook'
 import Portal from '../Pages/Admin/Portal'
@@ -27,7 +27,7 @@ import About from '../Pages/Library/About'
 import Message from '../Pages/User/Message'
 import OrderHistory from '../Pages/User/OrderHistory'
 import UserInfo from '../Pages/User/UserInfo'
-import ActionHandler from '../Redux/actionhandler.js'
+// import ActionHandler from '../Redux/actionhandler.js'
 
 import { useLocation } from 'react-router-dom'
 import AddRevenueCost from './Admin/AddRevenueCost';
@@ -50,7 +50,6 @@ const Main = () => {
     return(
       <Router>
       <div>
-        <ActionHandler/>
         <nav>
           <div
             style={{

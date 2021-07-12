@@ -3,16 +3,16 @@ import './library.css'
 import { useSelector, useDispatch } from 'react-redux'
 import {arraybuffertobase64, sleep} from '../../utility/utility'
 
-import{
-  clearbooklistdb,
-  modifybooklistdb
-} from '../../Redux/booklistDB'
-import {
-  updatebookshelfcovers,
-  cleanbookshelfcovers
-} from '../../Redux/downloadpicdata'
+// import{
+//   clearbooklistdb,
+//   modifybooklistdb
+// } from '../../Redux/booklistDB'
+// import {
+//   updatebookshelfcovers,
+//   cleanbookshelfcovers
+// } from '../../Redux/downloadpicdata'
 
-import Button from '../../Components/SubComponents/Button/Button'
+// import Button from '../../Components/SubComponents/Button/Button'
 
 import fetchrequest from '../../api/fetch'
 
@@ -20,16 +20,11 @@ const BookShelf = () => {
 
   const focushandlerref = useRef(null);
   const containerref = useRef(null);
-  const booklistcleared = useSelector((state)=>state.downloadpicdata.booklistcleared)
 
   const [bookshelfcovers, setBookshelfcovers] = useState([])
 
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
-
-
-
-  const dispatch = useDispatch()
 
   const handlefetch = (payload) => {
     const fetchasync = async () => {
@@ -76,6 +71,14 @@ const BookShelf = () => {
   const coverhandler = () => {
     return(
       <>
+        {bookshelfcovers.length==0?
+          <div>
+            <img 
+              style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
+              src={process.env.PUBLIC_URL+'/loading.gif'}
+            />  
+          </div>
+        :<div/>}
         {bookshelfcovers.map((cover)=>{
           var title = cover.title
           if (cover.picbyte == "MA=="){
@@ -100,10 +103,11 @@ const BookShelf = () => {
                       />  
                     </tc>
                     <tc  style={{padding: '5px'}}>
-                      <Button 
-                        buttonName='viewbook'
-                        displayName="View Book"
-                      />
+                      <div
+                        className='button'
+                      >
+                        View Book
+                      </div>
                     </tc>
                   </tr>
                 </table>
@@ -132,10 +136,11 @@ const BookShelf = () => {
                       src={arraybuffertobase64(cover.picbyte)}/>    
                     </tc>
                     <tc style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                      <Button 
-                        buttonName='viewbook'
-                        displayName="View Book"
-                      />  
+                      <div
+                        className='button'
+                      >
+                        View Book
+                      </div>
                     </tc>
                   </tr>
                 </table>

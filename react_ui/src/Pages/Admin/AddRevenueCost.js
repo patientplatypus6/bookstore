@@ -2,41 +2,113 @@ import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
 // import { observer} from "mobx-react-lite";
 // import { toJS } from "mobx"
-import InputBox from '../../Components/SubComponents/InputBox/InputBox'
-import TextBox from '../../Components/SubComponents/TextBox/TextBox'
-import Button from '../../Components/SubComponents/Button/Button'
+// import InputBox from '../../Components/SubComponents/InputBox/InputBox'
+// import TextBox from '../../Components/SubComponents/TextBox/TextBox'
+// import Button from '../../Components/SubComponents/Button/Button'
 import { useDispatch, useSelector } from 'react-redux';
-import RevenueCost from '../../Components/revenueCost/revenueCost';
-import {
-  modifyuploadpicdata, 
-  setcover
-} from '../../Redux/uploadpicdata'
-
+// import RevenueCost from '../../Components/revenueCost/revenueCost';
+// import {
+//   modifyuploadpicdata, 
+//   setcover
+// } from '../../Redux/uploadpicdata'
+import {dateFormat} from '../../utility/utility'
+import fetchrequest from '../../api/fetch'
 
 const AddRevenueCost = () => {
 
-  const rcnames = useSelector((state)=>state.revenuecost.rcnames)
-  const indexvals = useSelector((state)=>state.revenuecost.indexvals)
-  const files = useSelector((state)=>state.uploadpicdata.files)
-  const frontindex = useSelector((state)=>state.uploadpicdata.frontcoverindex)
-  const backindex = useSelector((state)=>state.uploadpicdata.backcoverindex)
-  
-
-  const dispatch = useDispatch()
-
-  // const [image64List, setImage64List] = useState([])
-  
+  const [isbn, setIsbn] = useState("NONE")
+  const [title, setTitle] = useState("NONE")
+  const [currentcopyright, setCurrentcopyright] = useState("NONE")
+  const [bookedition, setBookedition] = useState("NONE")
+  const [authorbio, setAuthorbio] = useState("NONE")
+  const [subtitle, setSubtitle] = useState("NONE")
+  const [publisher, setPublisher] = useState("NONE")
+  const [synopsis, setSynopsis] = useState("NONE")
+  const [revenuecostindex, setRevenuecostindex] = useState([])
+  const [revenuecostitem, setRevenuecostitem] = useState([])
+  const [uploadpicdata, setUploadpicdata] = useState([0])
+  const [picfrontindex, setPicfrontindex] = useState(0)
+  const [picbackindex, setPicbackindex] = useState(0)  
 
   useEffect(()=>{
-    // console.log("process.env.PUBLIC_URL: ", process.env.PUBLIC_URL)
-    // console.log('value of rcnames: ', rcnames)
-    // console.log('value of image64List: ', image64List)
   })
+
+
+  const handlefetch = (payload) => {
+    console.log('inside handlefetch and value of payload: ', payload)
+    const fetchasync = async () => {
+      var fetchresult = await fetchrequest(payload)
+      return fetchresult
+    }
+    return fetchasync();
+  }
+
+  const resetBookEntries = () => {
+    setIsbn("NONE")
+    setTitle("NONE")
+    setCurrentcopyright("NONE")
+    setBookedition("NONE")
+    setAuthorbio("NONE")
+    setSubtitle("NONE")
+    setPublisher("NONE")
+    setSynopsis("NONE")
+    setRevenuecostindex([])
+    setRevenuecostitem([])
+  }
+
+  const resetPicEntries = () => {
+    setUploadpicdata([0])
+    setPicfrontindex(0) 
+    setPicbackindex(0)
+  }
+
+  const addbookhandler = () => {
+    
+    var bookuniqueid = isbn + Date.now()
+
+    var payload = {
+      body: {
+        book: {
+          title, 
+          subtitle,
+          publisher,
+          currentcopyright,
+          bookedition, 
+          uniqueid: bookuniqueid,  
+          authorbio, 
+          synopsis, 
+          isbn,
+        },
+        revenuecost: revenuecostitem
+      }, 
+      requestType:"post",
+      uri:"book/addbook"
+    }
+    var picturepayload = {
+      body: {
+        frontcoverindex: picfrontindex, 
+        backcoverindex: picbackindex, 
+        bookuniqueid, 
+        files: uploadpicdata
+      }, 
+      requestType:"post",
+      uri:"book/addpics"
+    }
+    handlefetch(payload).then(result=>{
+      console.log("value of results: ", result)
+      resetBookEntries()
+    })
+    handlefetch(picturepayload).then(result=>{
+      console.log("value of results: ", result)
+      resetPicEntries()
+    })
+  }
+
 
   const imageDisplayHandler = () => {
     return(
       <div>
-        {files[0]==0?
+        {uploadpicdata[0]==0?
         <div
           style={{
             border: '2px solid black',
@@ -48,7 +120,7 @@ const AddRevenueCost = () => {
           style={{height: 'auto', width: '10vw'}}
           src={process.env.PUBLIC_URL+'/No-Image-Placeholder.svg'}/>  
         </div>:
-        files.map((image64, key)=>{
+        uploadpicdata.map((image64, key)=>{
           return(
             <div key={key}>
               <div
@@ -59,13 +131,13 @@ const AddRevenueCost = () => {
                 }}
               >
                 <div>
-                  {key==frontindex?
+                  {key==picfrontindex?
                     <div style={{
                       display:'inline-block', 
                       marginBottom: '5px', 
                     }}>~ Front Cover ~</div>
                   :<div/>}
-                  {key==backindex?
+                  {key==picbackindex?
                     <div style={{
                       display:'inline-block', 
                       marginBottom: '5px'
@@ -89,14 +161,10 @@ const AddRevenueCost = () => {
           <select
             onChange={(e)=>{
               console.log("value of e.target.value: ", e.target.value)
-              let payload = {
-                index: e.target.value,
-                type: 'front'
-              }
-              dispatch(setcover(payload))
+              setPicfrontindex(e.target.value)
             }}
           >
-            {files.map((image64, key)=>{
+            {uploadpicdata.map((image64, key)=>{
               return(  
                 <option
                   key={key}
@@ -117,14 +185,10 @@ const AddRevenueCost = () => {
             <select
               onChange={(e)=>{
                 console.log("value of e.target.value: ", e.target.value)
-                let payload = {
-                  index: e.target.value,
-                  type: 'back'
-                }
-                dispatch(setcover(payload))
+                setPicbackindex(e.target.value)
               }}
             >
-              {files.map((image64, key)=>{
+              {uploadpicdata.map((image64, key)=>{
                 return(  
                   <option
                     key={key}
@@ -141,17 +205,137 @@ const AddRevenueCost = () => {
     )
   }
 
-  const revenuecostHandler=()=>{
-    console.log('inside revenuecostHandler  ')
-    console.log('value of rcnames: ', rcnames)
-    console.log('value of indexvals: ', indexvals)
+  const revenuecostrender = (uniqueid) => {
+    console.log("inside revenuecostrender and indexval: ", uniqueid)
+    console.log(revenuecostitem)
+    var itemindex = revenuecostitem.findIndex(element=>element.uniqueid==uniqueid);
+    console.log(itemindex)
+    var temprevenuecostindex = revenuecostindex
+    console.log(temprevenuecostindex[itemindex])
+    return(
+      <div>
+        <div
+          style={{
+            fontWeight: 'bold', 
+            fontSize: '1.5rem', 
+            display: 'inline-block'
+          }}
+        >
+          Revenue/Cost 
+          <br/>
+          <span
+            style={{fontWeight:'lighter', fontSize: '1rem'}}
+          >
+            #{uniqueid}
+          </span>
+        </div>
+        <br/>
+        <div>
+          Revenue Cost Name
+          <br/>
+          <input 
+            className='inputBox'
+            value={revenuecostitem[itemindex]['rcname']}
+            onChange={(e)=>{
+              console.log("value of e.target.value: ", e.target.value)
+              var temprevenuecostitem= revenuecostitem
+              temprevenuecostitem[itemindex]['rcname'] = e.target.value
+              setRevenuecostitem([...temprevenuecostitem])
+            }}
+          />
+        </div>
+        <br/>
+        <div>
+          Revenue Cost Description
+          <br/>
+          <input 
+            className='inputBox'
+            value={revenuecostitem[itemindex]['rcdescription']}
+            onChange={(e)=>{
+              var temprevenuecostitem = revenuecostitem
+              temprevenuecostitem[itemindex]['rcdescription'] = e.target.value
+              setRevenuecostitem([...temprevenuecostitem])
+            }}
+          />
+        </div>
+        <br/>
+        <div>
+          Revenue Cost Value
+          <br/>
+          <input 
+            className='inputBox'
+            value={revenuecostitem[itemindex]['rcvalue']}
+            onChange={(e)=>{
+              var temprevenuecostitem = revenuecostitem
+              temprevenuecostitem[itemindex]['rcvalue'] = e.target.value
+              setRevenuecostitem([...temprevenuecostitem])
+            }}
+          />
+        </div>
+        <br/>
+        <div>
+          Revenue Cost Date
+          <br/>
+          <input 
+            className='inputBox'
+            value={revenuecostitem[itemindex]['rcdate']}
+            onChange={(e)=>{
+              var temprevenuecostitem = revenuecostitem
+              temprevenuecostitem[itemindex]['rcdate'] = e.target.value
+              setRevenuecostitem([...temprevenuecostitem])
+            }}
+          />
+          <br/>
+          <div style={{fontSize: '0.8rem'}}>
+            Date format must conform to <br/>
+            <span style={{fontWeight: 'bold'}}>DATETIME - format: YYYY-MM-DD HH:MI:SS</span>
+          </div>
+        </div>  
+        <br/>
+        <div>
+          <div className='button'
+            onClick={()=>{
+
+              var temprevenuecostitem = [...revenuecostitem]
+              var newcostitem = []
+              temprevenuecostitem.forEach((ci, i) =>{
+                if(ci.uniqueid!=uniqueid){
+                  newcostitem.push(ci)
+                }
+              })
+
+              console.log('value of newcostitem: ', newcostitem)
+
+              setRevenuecostitem(newcostitem)              
+
+              var temprevenuecostindex = [...revenuecostindex]
+              var newcostindex = []
+              temprevenuecostindex.forEach((ci, i) =>{
+                if(i!=itemindex){
+                  newcostindex.push(ci)
+                }
+              })
+              setRevenuecostindex(newcostindex)
+            }}
+          >  
+            Delete Revenue Cost Entry
+          </div>
+        </div>
+        <br/>
+      </div>
+    )
+  }
+
+  const revenuecostHandler = () => {
+    console.log("inside revenuecosthandler: ")
+    console.log("value of revenuecostitem: ", revenuecostitem)
     return (
       <div>
-        {indexvals!=undefined?indexvals.map((indexval, key)=>{
+        {revenuecostitem!=undefined?revenuecostitem.map((indexval, key)=>{
           console.log('value of indexval: ', indexval)
           return(
             <div key={key}>
-              <RevenueCost indexval={indexval} rcname={rcnames[key]}/>
+              {revenuecostrender(indexval.uniqueid)}
             </div>
           )
         }):<div/>}
@@ -161,28 +345,6 @@ const AddRevenueCost = () => {
 
   return(
     <>
-      {/* <div
-        style={{
-          background: 'grey', 
-          display: 'inline-block', 
-          padding: '20px', 
-          verticalAlign: 'top', 
-          marginRight: '20px'
-        }}
-      >
-        <div
-          style={{
-            fontWeight: 'bold', 
-            fontSize: '1.5rem', 
-            display: 'inline-block'
-          }}
-        >
-          Upload Book List JSON
-        </div>
-        <br/>
-        <br/>
-        <input type='file' multiple/>
-      </div> */}
       <div
         style={{
           background: 'rgb(100,0,0)', 
@@ -214,61 +376,133 @@ const AddRevenueCost = () => {
           <div>
             ISBN
             <br/>
-            <InputBox title='isbn'/>
+            <input 
+              className='inputBox'
+              value={isbn}
+              onChange={(e)=>{
+                setIsbn(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Title
             <br/>
-            <InputBox title='title'/>
+            <input 
+              className='inputBox'
+              value={title}
+              onChange={(e)=>{
+                setTitle(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Sub Title
             <br/>
-            <InputBox title='subtitle'/>
+            <input 
+              className='inputBox'
+              value={subtitle}
+              onChange={(e)=>{
+                setSubtitle(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Publisher
             <br/>
-            <InputBox title='publisher'/>
+            <input 
+              className='inputBox'
+              value={publisher}
+              onChange={(e)=>{
+                setPublisher(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Current Copyright
             <br/>
-            <InputBox title='currentcopyright'/>
+            <input 
+              className='inputBox'
+              value={currentcopyright}
+              onChange={(e)=>{
+                setCurrentcopyright(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Edition
             <br/>
-            <InputBox title='bookedition'/>
+            <input 
+              className='inputBox'
+              value={bookedition}
+              onChange={(e)=>{
+                setBookedition(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Author Biography
             <br/>
-            <TextBox title='authorbio'/>
+            <textarea 
+              className='textbox'
+              rows="4" cols="30" 
+              value={authorbio}
+              onChange={(e)=>{
+                setAuthorbio(e.target.value)
+              }}
+            />
           </div>
           <br/>
           <div>
             Synopsis
             <br/>
-            <TextBox title='synopsis'/>
+            <textarea 
+              className='textbox'
+              rows="4" cols="30" 
+              value={synopsis}
+              onChange={(e)=>{
+                setSynopsis(e.target.value)
+              }}
+            />
           </div>
           <br/>
           {revenuecostHandler()}
           <div>
-            <Button 
-              buttonName='addrevenuecost'
-              displayName="Add Revenue Cost"
-            />
+          <div className='button'
+            onClick={()=>{
+              var datestring = Date.now()
+              var tempindex = revenuecostindex
+              tempindex.push(datestring)
+              setRevenuecostindex(tempindex)
+              var temprevenuecostitem = [...revenuecostitem]
+              temprevenuecostitem.push({
+                uniqueid: datestring,
+                rcname: "NONE", 
+                rcdescription: "NONE", 
+                rcvalue: "NONE", 
+                rcdate: dateFormat(new Date (), "%Y-%m-%d %H:%M:%S", true)
+              })
+              setRevenuecostitem(temprevenuecostitem)
+              console.log("value of revenuecostitem : ", revenuecostitem)
+            }}
+          >  
+            Add Revenue Cost
+          </div>
           </div>
           <br/>
           <div>
-            <Button buttonName='addRevnAddRevenueCost' displayName="Add Book"/>
+            <div className='button'
+              onClick={()=>{
+                addbookhandler()
+              }}
+            >  
+              Add Book
+            </div>
           </div>
         </div>
         <div
@@ -302,8 +536,7 @@ const AddRevenueCost = () => {
                     i++
                     readerHandler(i)
                   }else if (i == fileList.length - 1){
-                    // setImage64List(base64List)
-                    dispatch(modifyuploadpicdata({files:base64List}))
+                    setUploadpicdata(base64List)
                   }
                 } 
                 reader.readAsDataURL(fileList[i])

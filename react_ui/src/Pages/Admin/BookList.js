@@ -3,14 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import './admin.css'
 // import { observer} from "mobx-react-lite";
 // import { toJS } from "mobx"
-import Button from '../../Components/SubComponents/Button/Button'
-import{
-  modifybooklistdb,
-  clearbooklistdb
-} from '../../Redux/booklistDB'
-import {
-  toggle
-} from '../../Redux/button.js'
+// import Button from '../../Components/SubComponents/Button/Button'
 import './booklist.css'
 
 import fetchrequest from '../../api/fetch'
@@ -21,11 +14,11 @@ const BookList = () => {
 
   const [booklist, setBooklist] = useState([])
 
-  const buttons = useSelector((state) => state.button.buttons)
-  const toggles = useSelector((state) => state.button.toggles)
-  const dispatch = useDispatch()
+  // const buttons = useSelector((state) => state.button.buttons)
+  // const toggles = useSelector((state) => state.button.toggles)
+  // const dispatch = useDispatch()
 
-  const booklistcleared = useSelector((state)=>state.downloadpicdata.booklistcleared)
+  // const booklistcleared = useSelector((state)=>state.downloadpicdata.booklistcleared)
 
   const [pagenumber, setPagenumber] = useState(1)
   // const [pageArray, setPageArray] = useState([])
@@ -194,10 +187,6 @@ const BookList = () => {
       BookList
       <br/>
       <br/>
-      <Button 
-        buttonName='findbooks'
-        displayName="Find Books"
-      />
       <br/>
       <br/>
       <div className='tableHolder'>

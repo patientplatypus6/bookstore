@@ -2,15 +2,15 @@ import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
 // import { observer} from "mobx-react-lite";
 // import { toJS } from "mobx"
-import InputBox from '../../Components/SubComponents/InputBox/InputBox'
-import TextBox from '../../Components/SubComponents/TextBox/TextBox'
-import Button from '../../Components/SubComponents/Button/Button'
+// import InputBox from '../../Components/SubComponents/InputBox/InputBox'
+// import TextBox from '../../Components/SubComponents/TextBox/TextBox'
+// import Button from '../../Components/SubComponents/Button/Button'
 import { useDispatch, useSelector } from 'react-redux';
-import RevenueCost from '../../Components/revenueCost/revenueCost';
-import {
-  modifyuploadpicdata, 
-  setcover
-} from '../../Redux/uploadpicdata'
+// import RevenueCost from '../../Components/revenueCost/revenueCost';
+// import {
+//   modifyuploadpicdata, 
+//   setcover
+// } from '../../Redux/uploadpicdata'
 import {dateFormat} from '../../utility/utility'
 import fetchrequest from '../../api/fetch'
 
@@ -29,8 +29,6 @@ const AddBook = () => {
   const [uploadpicdata, setUploadpicdata] = useState([0])
   const [picfrontindex, setPicfrontindex] = useState(0)
   const [picbackindex, setPicbackindex] = useState(0)  
-
-  const dispatch = useDispatch()
 
   useEffect(()=>{
   })
