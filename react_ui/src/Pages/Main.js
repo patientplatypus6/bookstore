@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 
 import AddBook from './Admin/AddBook'
-import BookList from '../Pages/Admin/BookList'
+import AdminDashboard from './Admin/AdminDashboard'
 import EditBook from '../Pages/Admin/EditBook'
 import Portal from '../Pages/Admin/Portal'
 
@@ -129,7 +129,7 @@ const Main = () => {
               padding: '20px',
               color: "rgb(250,250,250)"
             }}
-            exact to="/admin/booklist">Book List</NavLink>
+            exact to="/admin/dashboard">Admin Dashboard</NavLink>
             <NavLink 
             style={{
               textDecoration: 'none', 
@@ -150,7 +150,7 @@ const Main = () => {
           <Route exact path="/book" render={()=><Book/>}/>
           <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
           <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
-          <Route exact path="/admin/booklist" render={()=><BookList/>}/>
+          <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
           <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
         </Switch>
       </div>
@@ -158,44 +158,6 @@ const Main = () => {
     );
   // }
 }
-// }
 
-
-// <Route exact path="/about">
-// <About />
-// </Route>
-// <Route exact path="/book">
-// <Book />
-// </Route>
-// <Route exact path="/admin/addbook">
-// <AddBook/>
-// </Route>
-// <Route exact path="/admin/booklist">
-// <BookList/>
-// </Route>
-// <Route exact path="/admin/editbook">
-// <EditBook/>
-// </Route>
-
-
-// class Main extends React.Component{
-//   render(){
-//     return(
-//       <div>
-//         This is main
-//         <div/>
-//         <Button 
-//           buttonName='testbutton'
-//         />
-//         <InputBox
-//           buttonName='testbutton'
-//         />
-//         <TextBox
-//           buttonName='testbutton'
-//         />
-//       </div>
-//     );
-//   }
-// }
 
 export default Main;

@@ -96,13 +96,13 @@ const BookShelf = () => {
                   </tr>
                   <br/>
                   <tr>
-                    <tc  style={{padding: '5px'}}>
+                    <tc  style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
                       <img 
                         style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
                         src={process.env.PUBLIC_URL+'/No-Image-Placeholder.svg'}
                       />  
                     </tc>
-                    <tc  style={{padding: '5px'}}>
+                    <tc  style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
                       <div
                         className='button'
                       >

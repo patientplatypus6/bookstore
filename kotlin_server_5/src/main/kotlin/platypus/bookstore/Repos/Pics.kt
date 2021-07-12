@@ -47,4 +47,13 @@ interface PicRepository : CoroutineCrudRepository<Pic, Long> {
     """)
     suspend fun findcoversbybookgroup(bookuniqueidlist: List<String>):List<Pic>
 
+
+    @Modifying
+    @Query(
+      """
+        DELETE from pic where bookuniqueid = :bookuniqueid
+      """
+    )
+    suspend fun deletebybookid(bookuniqueid: String):Boolean
+
 }

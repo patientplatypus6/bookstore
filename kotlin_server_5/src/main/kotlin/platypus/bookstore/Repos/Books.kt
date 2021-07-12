@@ -21,13 +21,40 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      insert into book (title, subtitle, publisher, currentcopyright, bookedition, uniqueid, authorbio, synopsis, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :authorbio, :synopsis, :isbn)
+      insert into book (title, subtitle, publisher, currentcopyright, bookedition, uniqueid, storyinfo, condition, isbn) values (:title, :subtitle, :publisher, :currentcopyright, :bookedition, :uniqueid, :storyinfo, :condition, :isbn)
     """
     )
-    suspend fun saveabook(title:String, subtitle:String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, authorbio:String, synopsis:String, isbn:String):Boolean
+    suspend fun saveabook(title:String, subtitle:String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String):Boolean
 
     @Query("""
       select * from book
     """)
     suspend fun findBooks():List<Book>
+
+    @Modifying
+    @Query(
+      """
+        update book set 
+        title=:title,
+        subtitle=:subtitle,
+        publisher=:publisher,
+        currentcopyright=:currentcopyright,
+        bookedition=:bookedition,
+        storyinfo=:storyinfo,
+        condition=:condition,
+        isbn=:isbn
+        where
+        uniqueid=:uniqueid
+      """
+    )
+    suspend fun updateabook(title:String, subtitle:String, publisher:String, currentcopyright:String, bookedition:String, storyinfo:String, condition:String, isbn:String,uniqueid:String):Boolean
+
+    @Modifying
+    @Query(
+      """
+        DELETE from book where uniqueid = :bookuniqueid
+      """
+    )
+    suspend fun deletebybookid(uniqueid: String):Boolean
+
 }

@@ -14,14 +14,24 @@ class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
 
   suspend fun addrevenuecost(revenuecost: RevenueCost):Boolean{
     println("value of revenuecost: $revenuecost")
-    var revenueCostUpdated: Boolean = revenuecostRepo.savearevenuecost(revenuecost.uniqueid, revenuecost.bookuniqueid, revenuecost.userorderuniqueid, revenuecost.rcname, revenuecost.rcdescription, revenuecost.rcvalue, revenuecost.rcdate)
-    return revenueCostUpdated;
+    var revenueCostAdded: Boolean = revenuecostRepo.savearevenuecost(revenuecost.uniqueid, revenuecost.bookuniqueid, revenuecost.userorderuniqueid, revenuecost.rcname, revenuecost.rcdescription, revenuecost.rcvalue, revenuecost.rcdate)
+    return revenueCostAdded;
   }
 
   suspend fun findrevenuecostsbybook(bookuniqueid: String): List<RevenueCost>{
     val revenuecostlist = revenuecostRepo.findrevenuecostsbybookuniqueid(bookuniqueid)
     return revenuecostlist
   } 
+
+  suspend fun updaterevenuecosts(revenuecostlist: List<RevenueCost>, bookuniqueid: String):Boolean{
+    println("inside updaterevenuecosts and revenuecostlist: $revenuecostlist")
+    var deletebool = revenuecostRepo.deletebybookid(bookuniqueid)
+    for(revenuecost in revenuecostlist){
+      println("inside for loop and value of revenuecost: $revenuecost")
+      addrevenuecost(revenuecost)
+    }
+    return true;
+  }
 
 
 } 

@@ -19,7 +19,11 @@ data class Book(
   var currentcopyright: String = "",
   var bookedition: String = "", 
   var uniqueid: String = "",
-  var authorbio: String = "", 
-  var synopsis: String = "", 
+  var storyinfo: String = "", 
+  var condition: String = "", 
   var isbn: String = ""
+)
+
+data class BookId(
+  var bookid: String = ""
 )

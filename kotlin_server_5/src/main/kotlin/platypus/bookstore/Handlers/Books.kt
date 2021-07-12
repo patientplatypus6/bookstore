@@ -6,6 +6,11 @@ import platypus.bookstore.classes.db.RevenueCost
 import platypus.bookstore.classes.db.BookRC
 
 class BooksHandler(val bookRepo: BookRepository){
+
+  suspend fun deletebook(bookid: String):Boolean{
+    var deletedbook = bookRepo.deletebybookid(bookid)
+    return deletedbook;
+  }
   
   suspend fun findbooks():List<Book>{
     println("findBooks")
@@ -15,10 +20,18 @@ class BooksHandler(val bookRepo: BookRepository){
   }
 
   suspend fun addbook(book: Book):Boolean{
-    var bookUpdated:Boolean = bookRepo.saveabook(
+    var bookAdded:Boolean = bookRepo.saveabook(
       book.title, book.subtitle, book.publisher, 
       book.currentcopyright, book.bookedition, 
-      book.uniqueid, book.authorbio, book.synopsis, book.isbn
+      book.uniqueid, book.storyinfo, book.condition, book.isbn
+    )
+    return bookAdded
+  }
+
+  suspend fun updatebook(book: Book):Boolean{
+    var bookUpdated:Boolean = bookRepo.updateabook(
+      book.title, book.subtitle, book.publisher, 
+      book.currentcopyright, book.bookedition, book.storyinfo, book.condition, book.isbn, book.uniqueid
     )
     return bookUpdated
   }

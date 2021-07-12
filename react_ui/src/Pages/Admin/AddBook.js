@@ -1,17 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
-// import { observer} from "mobx-react-lite";
-// import { toJS } from "mobx"
-// import InputBox from '../../Components/SubComponents/InputBox/InputBox'
-// import TextBox from '../../Components/SubComponents/TextBox/TextBox'
-// import Button from '../../Components/SubComponents/Button/Button'
-import { useDispatch, useSelector } from 'react-redux';
-// import RevenueCost from '../../Components/revenueCost/revenueCost';
-// import {
-//   modifyuploadpicdata, 
-//   setcover
-// } from '../../Redux/uploadpicdata'
-import {dateFormat} from '../../utility/utility'
 import fetchrequest from '../../api/fetch'
 
 const AddBook = () => {
@@ -20,10 +8,10 @@ const AddBook = () => {
   const [title, setTitle] = useState("NONE")
   const [currentcopyright, setCurrentcopyright] = useState("NONE")
   const [bookedition, setBookedition] = useState("NONE")
-  const [authorbio, setAuthorbio] = useState("NONE")
+  const [storyinfo, setStoryinfo] = useState("NONE")
   const [subtitle, setSubtitle] = useState("NONE")
   const [publisher, setPublisher] = useState("NONE")
-  const [synopsis, setSynopsis] = useState("NONE")
+  const [condition, setCondition] = useState("NONE")
   const [revenuecostindex, setRevenuecostindex] = useState([])
   const [revenuecostitem, setRevenuecostitem] = useState([])
   const [uploadpicdata, setUploadpicdata] = useState([0])
@@ -48,10 +36,10 @@ const AddBook = () => {
     setTitle("NONE")
     setCurrentcopyright("NONE")
     setBookedition("NONE")
-    setAuthorbio("NONE")
+    setStoryinfo("NONE")
     setSubtitle("NONE")
     setPublisher("NONE")
-    setSynopsis("NONE")
+    setCondition("NONE")
     setRevenuecostindex([])
     setRevenuecostitem([])
   }
@@ -66,6 +54,12 @@ const AddBook = () => {
     
     var bookuniqueid = isbn + Date.now()
 
+    var temprevenuecostitem = revenuecostitem
+    temprevenuecostitem.forEach(item=>{
+      item.bookuniqueid = bookuniqueid
+    })
+    setRevenuecostitem([...revenuecostitem])
+
     var payload = {
       body: {
         book: {
@@ -75,8 +69,8 @@ const AddBook = () => {
           currentcopyright,
           bookedition, 
           uniqueid: bookuniqueid,  
-          authorbio, 
-          synopsis, 
+          storyinfo, 
+          condition, 
           isbn,
         },
         revenuecost: revenuecostitem
@@ -149,6 +143,27 @@ const AddBook = () => {
                   marginBottom: '5px'
                 }}>
                   <img src={image64} style={{height: 'auto', width: '10vw'}}/>
+                  <br/>
+                  <br/>
+                  <div className='button'
+                    onClick={()=>{
+                      if(key == picfrontindex){
+                        setPicfrontindex(0)
+                      }else if(key == picbackindex){
+                        setPicbackindex(0)
+                      }
+                      if(uploadpicdata.length == 1){
+                        setUploadpicdata([0])
+                      }else{
+                        var tempuploadpicdata = [...uploadpicdata]
+                        var newpicdata = tempuploadpicdata.splice(key,1)
+                        console.log("newpicdata: ", tempuploadpicdata)
+                        setUploadpicdata(tempuploadpicdata)
+                      }
+                    }}
+                  >
+                    Delete Image
+                  </div>
                 </div>
               </div>
             </div>
@@ -233,16 +248,57 @@ const AddBook = () => {
         <div>
           Revenue Cost Name
           <br/>
-          <input 
-            className='inputBox'
-            value={revenuecostitem[itemindex]['rcname']}
+          <select
             onChange={(e)=>{
               console.log("value of e.target.value: ", e.target.value)
-              var temprevenuecostitem= revenuecostitem
+              var temprevenuecostitem = revenuecostitem
               temprevenuecostitem[itemindex]['rcname'] = e.target.value
               setRevenuecostitem([...temprevenuecostitem])
             }}
-          />
+          >
+            <option value={'GENERIC'}>
+              GENERIC
+            </option>
+            <option value={'COST - BOOK PRICE (BOUGHT)'}>
+              COST - BOOK PRICE (BOUGHT)
+            </option>
+            <option value={'COST - BOOK SHIPPING (BOUGHT)'}>
+              COST - BOOK SHIPPING (BOUGHT)
+            </option>
+            <option value={'COST - BOOK SHIPPING (SOLD)'}>
+              COST - BOOK SHIPPING (SOLD)
+            </option>
+            <option value={'COST - MONTHLY (HOSTING)'}>
+              COST - MONTHLY (HOSTING)
+            </option>
+            <option value={'COST - STRIPE CHARGE (PROJECTED)'}>
+              COST - STRIPE CHARGE (PROJECTED)
+            </option>
+            <option value={'COST - STRIPE CHARGE (SOLD)'}>
+              COST - STRIPE CHARGE (SOLD)
+            </option>
+            <option value={'COST - BOOK PACKAGING (SOLD)'}>
+              COST - BOOK PACKAGING (SOLD)
+            </option>
+            <option value={'COST - OTHER FIXED (SOLD)'}>
+              COST - OTHER FIXED (SOLD)
+            </option>
+            <option value={'COST - OTHER VARIABLE (SOLD)'}>
+              COST - OTHER VARIABLE (SOLD)
+            </option>
+            <option value={'REVENUE - BOOK SHIPPING (SOLD)'}>
+              REVENUE - BOOK SHIPPING (SOLD)
+            </option>
+            <option value={'REVENUE - BOOK PRICE (SOLD)'}>
+              REVENUE - BOOK PRICE (SOLD)
+            </option>
+            <option value={'REVENUE - BOOK SHIPPING (PROSPECTIVE)'}>
+              REVENUE - BOOK SHIPPING (SOLD)
+            </option>
+            <option value={'REVENUE - BOOK PRICE (PROSPECTIVE)'}>
+              REVENUE - BOOK PRICE (SOLD)
+            </option>
+          </select>
         </div>
         <br/>
         <div>
@@ -288,7 +344,9 @@ const AddBook = () => {
           <br/>
           <div style={{fontSize: '0.8rem'}}>
             Date format must conform to <br/>
-            <span style={{fontWeight: 'bold'}}>DATETIME - format: YYYY-MM-DD HH:MI:SS</span>
+            <span style={{fontWeight: 'bold'}}> ISO-8601 calendar system - format:
+            <br/>
+            YYYY-MM-DDTHH:MI:SS</span>
           </div>
         </div>  
         <br/>
@@ -446,33 +504,32 @@ const AddBook = () => {
           </div>
           <br/>
           <div>
-            Author Biography
+            Story Info
             <br/>
             <textarea 
               className='textbox'
               rows="4" cols="30" 
-              value={authorbio}
+              value={storyinfo}
               onChange={(e)=>{
-                setAuthorbio(e.target.value)
+                setStoryinfo(e.target.value)
               }}
             />
           </div>
           <br/>
           <div>
-            Synopsis
+            Condition
             <br/>
             <textarea 
               className='textbox'
               rows="4" cols="30" 
-              value={synopsis}
+              value={condition}
               onChange={(e)=>{
-                setSynopsis(e.target.value)
+                setCondition(e.target.value)
               }}
             />
           </div>
           <br/>
           {revenuecostHandler()}
-          <div>
           <div className='button'
             onClick={()=>{
               var datestring = Date.now()
@@ -485,7 +542,8 @@ const AddBook = () => {
                 rcname: "NONE", 
                 rcdescription: "NONE", 
                 rcvalue: "NONE", 
-                rcdate: dateFormat(new Date (), "%Y-%m-%d %H:%M:%S", true)
+                rcdate: new Date().toISOString()
+                // dateFormat(new Date (), "%Y-%m-%d %H:%M:%S", true)
               })
               setRevenuecostitem(temprevenuecostitem)
               console.log("value of revenuecostitem : ", revenuecostitem)
@@ -493,7 +551,7 @@ const AddBook = () => {
           >  
             Add Revenue Cost
           </div>
-          </div>
+          <br/>
           <br/>
           <div>
             <div className='button'

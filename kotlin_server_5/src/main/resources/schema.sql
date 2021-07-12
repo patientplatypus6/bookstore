@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS book
     currentcopyright VARCHAR(65535) NOT NULL,
     bookedition VARCHAR(65535) NOT NULL,
     uniqueid VARCHAR(65535) NOT NULL,
-    authorbio VARCHAR(65535) NOT NULL,
-    synopsis VARCHAR(65535) NOT NULL,
+    storyinfo VARCHAR(65535) NOT NULL,
+    condition VARCHAR(65535) NOT NULL,
     isbn VARCHAR(65535) NOT NULL,
     dateordered DATETIME, 
     dateshipped DATETIME

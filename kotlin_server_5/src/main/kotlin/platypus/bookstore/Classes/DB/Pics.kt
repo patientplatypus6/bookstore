@@ -17,6 +17,10 @@ data class Pic(
   var uniqueid: String = ""
 )
 
-data class PicBookId(
+data class PicBookIds(
   var bookids: List<String> = listOf<String>()
+)
+
+data class PicBookId(
+  var bookid: String = ""
 )

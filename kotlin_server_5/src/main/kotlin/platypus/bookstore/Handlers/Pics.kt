@@ -3,13 +3,36 @@ package platypus.bookstore.handlers
 import platypus.bookstore.repos.PicRepository
 import platypus.bookstore.classes.db.Pic
 import platypus.bookstore.classes.db.PicBookId
+import platypus.bookstore.classes.db.PicBookIds
 import platypus.bookstore.classes.*
 import kotlin.collections.mutableListOf
+import platypus.bookstore.utility.*
 
 class PicsHandler(val picRepo: PicRepository){
 
-  suspend fun savebookpics(pics: MutableList<Pic>):Boolean{
+  suspend fun deletebookpics(bookid: String):Boolean{
+    var deletedpics = picRepo.deletebybookid(bookid)
+    return deletedpics
+  }
 
+  suspend fun savebookpics(picdata: Picdata):Boolean{
+
+		val bytearrayhandler = ByteArrayHandler()
+		val pics = mutableListOf<Pic>()
+	
+		for((index, file) in picdata.files.withIndex()){
+			val bytefile = bytearrayhandler.converttobytearray(file)
+			val newpic = Pic();
+			newpic.picbyte = bytefile;
+			if(index==picdata.frontcoverindex){
+				newpic.frontcover=true
+			}else if(index==picdata.frontcoverindex){
+				newpic.backcover=true
+			}
+			newpic.bookuniqueid = picdata.bookuniqueid
+			newpic.uniqueid = picdata.bookuniqueid+"pic"+index
+			pics.add(newpic)
+		}
 
     val bookpicssaved = false;
     for(pic in pics){
@@ -33,24 +56,22 @@ class PicsHandler(val picRepo: PicRepository){
     return true
   }
 
-  suspend fun findcovers(picbookid: PicBookId): List<Pic>{
-    var coverlist = picRepo.findcoversbybookgroup(picbookid.bookids)
+  suspend fun findcovers(picbookids: PicBookIds): List<Pic>{
+    var coverlist = picRepo.findcoversbybookgroup(picbookids.bookids)
     return coverlist
   }
-  
-  // suspend fun findbooks():List<Book>{
-  //   println("findBooks")
-  //   val books:List<Book> = bookRepo.findBooks();
-  //   println("value of books $books")
-  //   return books;
-  // }
 
-  // suspend fun addbook(book: Book):Boolean{
-  //   var bookUpdated:Boolean = bookRepo.saveabook(
-  //     book.title, book.subtitle, book.publisher, 
-  //     book.currentcopyright, book.bookedition, 
-  //     book.uniqueid, book.authorbio, book.synopsis, book.isbn
-  //   )
-  //   return bookUpdated
-  // }
+  suspend fun findimagesbybook(picbookid: PicBookId): List<Pic>{
+    var piclist = picRepo.findpicsbybook(picbookid.bookid)
+    return piclist
+  }
+  
+  suspend fun updatepics(picdata: Picdata):Boolean{
+    var deletebool = deletebookpics(picdata.bookuniqueid)
+    if(deletebool){
+      savebookpics(picdata)
+    }
+    return true;
+  }
+
 } 

@@ -13,6 +13,7 @@ import org.json.JSONObject
 import platypus.bookstore.classes.*
 import platypus.bookstore.classes.db.BookRC
 import platypus.bookstore.classes.db.Book
+import platypus.bookstore.classes.db.BookId
 
 import platypus.bookstore.handlers.BooksHandler
 import platypus.bookstore.handlers.RevenueCostsHandler
@@ -31,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile
 
 import platypus.bookstore.classes.db.Pic
 import platypus.bookstore.classes.db.PicBookId
-
+import platypus.bookstore.classes.db.PicBookIds
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -63,10 +64,19 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 
 	@PostMapping("/findcovers")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findcovers(@RequestBody picbookid: PicBookId):List<Pic>{
+	suspend fun findcovers(@RequestBody picbookids: PicBookIds):List<Pic>{
+		println("value of picbookid: $picbookids")
+		var picshandler = PicsHandler(picRepo)
+		var coverlist = picshandler.findcovers(picbookids)
+		return coverlist;
+	}
+
+	@PostMapping("/findimagesbybook")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findimagesbybook(@RequestBody picbookid: PicBookId):List<Pic>{
 		println("value of picbookid: $picbookid")
 		var picshandler = PicsHandler(picRepo)
-		var coverlist = picshandler.findcovers(picbookid)
+		var coverlist = picshandler.findimagesbybook(picbookid)
 		return coverlist;
 	}
 
@@ -77,6 +87,25 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 @RequestMapping("/book")
 public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
+	// @GetMapping("/findbook")
+	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	// suspend fun findbook():Book{
+	// 	foundbook
+	// 	return foundbook
+	// }	
+
+	@PostMapping("/deletebook")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun deletebook(@RequestBody bookuniqueid: BookId):Boolean{
+		var bookshandler = BooksHandler(bookRepo)
+		var picshandler = PicsHandler(picRepo)
+
+		bookshandler.deletebook(bookuniqueid.bookid)
+		picshandler.deletebookpics(bookuniqueid.bookid)
+
+		return true;
+	}	
+
 	@GetMapping("/findbooks")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooks():List<Book>{
@@ -85,40 +114,57 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		return totalbooks;
 	}
 
-	@GetMapping("/findrevenuecosts")
+	@PostMapping("/findrevenuecosts")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findrevenuecosts(bookuniqueid: String):List<RevenueCost>{
+	suspend fun findrevenuecosts(@RequestBody bookuniqueid: BookId):List<RevenueCost>{
+		println("value of bookuniqueid in 					findrevenuecosts: $bookuniqueid")
 		var revenuecostHandler = RevenueCostsHandler(revenuecostRepo)
-		var revenuecostlist: List<RevenueCost> = revenuecostHandler.findrevenuecostsbybook(bookuniqueid)
+		var revenuecostlist: List<RevenueCost> = revenuecostHandler.findrevenuecostsbybook(bookuniqueid.bookid)
 		return revenuecostlist;
 	}
+
+	@PostMapping("/updatepics")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun updatepics(@RequestBody picdata:Picdata):Boolean{
+
+		var picshandler = PicsHandler(picRepo)
+		var picssaved = picshandler.updatepics(picdata)
+
+		return picssaved
+	}
+
 
 	@PostMapping("/addpics")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun addpics(@RequestBody picdata:Picdata):Boolean{
-		println("inside addpics")
-		println("value of picdata: $picdata")
-		val bytearrayhandler = ByteArrayHandler()
-		val pics = mutableListOf<Pic>()
-	
-		for((index, file) in picdata.files.withIndex()){
-			val bytefile = bytearrayhandler.converttobytearray(file)
-			val newpic = Pic();
-			newpic.picbyte = bytefile;
-			if(index==picdata.frontcoverindex){
-				newpic.frontcover=true
-			}else if(index==picdata.frontcoverindex){
-				newpic.backcover=true
-			}
-			newpic.bookuniqueid = picdata.bookuniqueid
-			newpic.uniqueid = picdata.bookuniqueid+"pic"+index
-			pics.add(newpic)
-		}
 
 		var picshandler = PicsHandler(picRepo)
-		var picssaved = picshandler.savebookpics(pics)
+		var picssaved = picshandler.savebookpics(picdata)
 
 		return picssaved
+	}
+
+	@PostMapping("/updatebook")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun updatebook(@RequestBody bookrc: BookRC): Boolean {
+		var bookshandler = BooksHandler(bookRepo);
+		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo);
+		var updatedBool:Boolean;
+
+		var revenuecost = bookrc.revenuecost
+
+		println("Value of bookrc.revenuecost: $revenuecost")
+
+		updatedBool = revenuecostshandler.updaterevenuecosts(bookrc.revenuecost, bookrc.book.uniqueid)
+
+		when(updatedBool){
+			true->{
+				updatedBool = bookshandler.updatebook(bookrc.book);
+			}
+			false->{return false}
+		}
+
+		return updatedBool
 	}
 
   @PostMapping("/addbook")

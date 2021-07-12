@@ -1,27 +1,17 @@
 import React, {Component, useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import './admin.css'
-// import { observer} from "mobx-react-lite";
-// import { toJS } from "mobx"
-// import Button from '../../Components/SubComponents/Button/Button'
+import { useHistory } from "react-router-dom";
 import './booklist.css'
 
 import fetchrequest from '../../api/fetch'
 
-const BookList = () => {
+const AdminDashboard = () => {
 
-  // const booklist = useSelector((state) => state.booklistdb.booklist)
+  let history = useHistory();
 
   const [booklist, setBooklist] = useState([])
-
-  // const buttons = useSelector((state) => state.button.buttons)
-  // const toggles = useSelector((state) => state.button.toggles)
-  // const dispatch = useDispatch()
-
-  // const booklistcleared = useSelector((state)=>state.downloadpicdata.booklistcleared)
-
   const [pagenumber, setPagenumber] = useState(1)
-  // const [pageArray, setPageArray] = useState([])
   const [displayper, setDisplayper] = useState(25)
 
   const handlefetch = (payload) => {
@@ -32,16 +22,25 @@ const BookList = () => {
     return fetchasync();
   }
 
-  // const addtobooklist = (payload) => {
-  //   dispatch(modifybooklistdb(payload))
-  // }
+  const deletebookhandler = (uniqueid) => {
+    console.log("inside deletebookhandler and value of uniqueid: ", uniqueid)
+    var payload = {
+      body: {
+        bookid: uniqueid
+      }
+    }
+    payload.uri='book/deletebook' 
+    payload.requestType='post'
+    handlefetch(payload).then(result=>{
+      findbooks()
+    })
+  }
 
   const findbooks = () => {
     var payload = {}
     payload.uri='book/findbooks' 
     payload.requestType='get'
     handlefetch(payload).then(result=>{
-      // addtobooklist(result)
       setBooklist(result)
     })
   }
@@ -126,6 +125,30 @@ const BookList = () => {
                 <td>
                   {bookitem.isbn}
                 </td>
+                <td>
+                  <div
+                    className='button'
+                    onClick={()=>{
+                      history.push({
+                        pathname: '/admin/editbook',
+                        state: { bookitem: bookitem }
+                      })
+                    }}
+                  >
+                    EDIT BOOK
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className='button'
+                    style={{background: "red"}}
+                    onClick={()=>{
+                      deletebookhandler(bookitem.uniqueid)
+                    }}
+                  >
+                    DELETE BOOK
+                  </div>
+                </td>
               </tr>
             )
           })}
@@ -168,25 +191,19 @@ const BookList = () => {
 
   useEffect(()=>{
     findbooks()
-  })
-
-  // useEffect(()=>{
-  //   findbooks()
-  // }, [booklistcleared])
-
-  // useEffect(()=>{
-  //   dispatch(clearbooklistdb())
-  //   return function cleanup(){
-  //     dispatch(clearbooklistdb())
-  //   }
-  // }, [])
+  }, [])
 
 
   return(
     <div>
-      BookList
-      <br/>
-      <br/>
+      <div
+        style={{
+          fontWeight: 'bold', 
+          fontSize: '1.5rem'
+        }}
+      >
+        Book Inventory Past & Future
+      </div>
       <br/>
       <br/>
       <div className='tableHolder'>
@@ -196,4 +213,4 @@ const BookList = () => {
   )
 }
 
-export default BookList;
+export default AdminDashboard;
