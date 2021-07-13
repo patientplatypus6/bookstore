@@ -1,0 +1,65 @@
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.web.cors.reactive.CorsUtils;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.reactive.config.EnableWebFlux
+
+
+import reactor.core.publisher.Mono;
+
+
+@Configuration
+@EnableWebFlux
+class WebConfig: WebFluxConfigurer
+{
+    override fun addCorsMappings(registry: CorsRegistry)
+    {
+        registry.addMapping("/**")
+            .allowedOrigins("*") // any host or put domain(s) here
+            .allowedMethods("GET, POST") // put the http verbs you want allow
+            .allowedHeaders("Authorization") // put the http headers you want allow
+    }
+}
+
+//see here https://stackoverflow.com/questions/46978794/enable-cors-in-spring-5-webflux/47494858#47494858
+
+@Configuration
+public class CorsConfiguration {
+
+  val ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN";
+  val ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS";
+  val ALLOWED_ORIGIN = "*";
+  val MAX_AGE = "3600";
+
+  @Bean
+  fun corsWebFilter(): CorsWebFilter {
+      val corsConfig = CorsConfiguration()
+      corsConfig.addAllowedOrigin("http://localhost:3000")
+      corsConfig.addAllowedMethod("GET")
+      corsConfig.addAllowedMethod("PUT")
+      corsConfig.addAllowedMethod("POST")
+      corsConfig.addAllowedMethod("OPTION")
+      corsConfig.addAllowedMethod("DELETE")
+      corsConfig.addAllowedHeader("x-requested-with")
+      corsConfig.addAllowedHeader("authorization")
+      corsConfig.addAllowedHeader("Content-Type")
+      corsConfig.addAllowedHeader("credential")
+      corsConfig.addAllowedHeader("X-XSRF-TOKEN")
+
+      val source = UrlBasedCorsConfigurationSource().apply {
+          registerCorsConfiguration("/**", corsConfig)
+      }
+      return CorsWebFilter(source)
+  }
+
+}

@@ -3,7 +3,7 @@ import './admin.css'
 import fetchrequest from '../../api/fetch'
 import { useHistory } from "react-router-dom";
 
-import {arraybuffertobase64, sleep} from '../../utility/utility'
+import {arraybuffertobase64, sleep, base64FromUrl} from '../../utility/utility'
 
 const EditBook = () => {
 
@@ -24,6 +24,7 @@ const EditBook = () => {
   const [uploadpicdata, setUploadpicdata] = useState([0])
   const [picfrontindex, setPicfrontindex] = useState(0)
   const [picbackindex, setPicbackindex] = useState(0)  
+  const [bookurltest, setBookurltest] = useState("")
 
   const [fetchcount, setFetchcount] = useState(0)
 
@@ -137,10 +138,10 @@ const EditBook = () => {
     })
   }
 
-  const findimagesbybook = (bookuniqueid) => {
+  const findimagesbybook64 = (bookuniqueid) => {
     var payload = {
       requestType: 'post', 
-      uri: 'pic/findimagesbybook', 
+      uri: 'pic/findimagesbybook64', 
       body: {
         bookid: bookuniqueid
       }
@@ -148,20 +149,41 @@ const EditBook = () => {
     handlefetch(payload).then(result=>{
       console.log("result from findpics: ", result)
       var temppicdata = []
-      for(var i = 0; i<result.length; i++){
-        if(result[i]['frontcover']){
-          setPicfrontindex(i)
-        }
-        if(result[i]['backcover']){
-          setPicbackindex(i)
-        }
-        temppicdata.push(arraybuffertobase64(result[i]['picbyte']))
-      }
-      // console.log("tempicdata: ", temppicdata)
-      setUploadpicdata([...temppicdata])
-      console.log("value of picdata: ", uploadpicdata)
+      result.forEach(item=>{
+        temppicdata.push(item.picbyte)
+        console.log('value of item.picybyte: ', item.picbyte)
+      })  
+      setUploadpicdata(temppicdata)
     })  
   }
+
+  const imageToBase64 = (URL) => {
+    console.log("***************************************************")
+    console.log("***************************************************")
+    console.log("***************************************************")
+    console.log("***************************************************")
+    let image;
+    image = new Image();
+    image.crossOrigin = 'Anonymous';
+    console.log('before image addeventlistener loaded event')
+    image.addEventListener('load', function() {
+        console.log("inside image loaded")
+        console.log("(((((((((((((((((((((((((((((((((((")
+        let canvas = document.createElement('canvas');
+        let context = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0);
+        try {
+            console.log("inside try in imagetobase64")
+            localStorage.setItem('saved-image-example', canvas.toDataURL('image/png'));
+            console.log("value of canvas image: ",  canvas.toDataURL('image/png'))
+        } catch (err) {
+            console.error(err)
+        }
+    });
+    image.src = URL;
+  };
 
   const setbook = (bookitem) => {
     console.log("value of bookitem in setbook: ", bookitem)
@@ -188,7 +210,7 @@ const EditBook = () => {
     }else{
       var bookitemuniqueid = history.location.state.bookitem.uniqueid
       findrevenuecosts(bookitemuniqueid)
-      findimagesbybook(bookitemuniqueid)
+      findimagesbybook64(bookitemuniqueid)
       setbook(history.location.state.bookitem)
     }
   }, [])
@@ -496,6 +518,8 @@ const EditBook = () => {
 
   return(
     <>
+      {/* dummy canvas for base64 grepping */}
+      <canvas id="canvas" width="0" height="0"></canvas>
       <div
         style={{
           background: 'rgb(100,0,0)', 
@@ -712,6 +736,9 @@ const EditBook = () => {
               }
               readerHandler(0)
             }}
+          />
+          <img src={bookurltest}
+            style={{width: '50px', height: '50px'}}
           />
           {imageDisplayHandler()}
         </div>

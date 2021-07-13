@@ -22,6 +22,28 @@ function dateFormat (date, fstr, utc) {
   });
 }
 
+const base64FromUrl = async (url) => {
+  console.log("*****************************")
+  console.log("*****************************")
+  console.log("*****************************")
+  // fetch(url).then(response=>{
+  //   console.log("base64 response is: ", response)
+  // })
+  // const data = await fetch(url);
+  // const blob = await data.blob();
+  // return new Promise((resolve) => {
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(blob); 
+  //   reader.onloadend = () => {
+  //     const base64data = reader.result;   
+  //     resolve(base64data);
+  //   }
+  // });
+  console.log("*****************************")
+  console.log("*****************************")
+  console.log("*****************************")
+}
+
 function sleep(milliseconds) {
   const date = Date.now();
   let currentDate = null;
@@ -41,4 +63,4 @@ function sleep(milliseconds) {
 // }
 
 
-export {arraybuffertobase64, dateFormat, sleep}
+export {arraybuffertobase64, dateFormat, sleep, base64FromUrl}
