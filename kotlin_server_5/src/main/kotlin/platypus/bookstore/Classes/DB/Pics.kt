@@ -9,6 +9,10 @@
 
 package platypus.bookstore.classes.db
 
+
+import org.springframework.web.multipart.MultipartFile
+
+
 data class Pic(
   var picbyte:ByteArray?=null,
   var bookuniqueid: String = "", 
@@ -23,4 +27,8 @@ data class PicBookIds(
 
 data class PicBookId(
   var bookid: String = ""
+)
+
+data class PicTest(
+  var pic64: String
 )

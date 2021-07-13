@@ -47,7 +47,6 @@ interface PicRepository : CoroutineCrudRepository<Pic, Long> {
     """)
     suspend fun findcoversbybookgroup(bookuniqueidlist: List<String>):List<Pic>
 
-
     @Modifying
     @Query(
       """

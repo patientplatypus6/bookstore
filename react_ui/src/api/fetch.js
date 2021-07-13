@@ -7,7 +7,16 @@ const fetchrequest = (payload) => {
  payload
  )
  console.log("payload.requestType: ", payload.requestType)
-
+ if(payload.requestType=='postpic'){
+   const formData = new FormData();
+   formData.append('fileupload', payload.pic)
+   console.log("value of payload.pic: ", payload.pic)
+   console.log("in fetch and value of formData: ", formData.get("fileupload"))
+   return fetch(urlfull,{
+    method: "POST", 
+    file: formData
+   })
+ }
  if(payload.requestType=='post'){
   return fetch(urlfull,{
     method: "post",
