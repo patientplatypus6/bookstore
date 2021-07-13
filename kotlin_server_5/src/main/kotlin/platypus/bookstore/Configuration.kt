@@ -9,7 +9,7 @@ import org.springframework.data.r2dbc.connectionfactory.init.ConnectionFactoryIn
 import org.springframework.data.r2dbc.connectionfactory.init.ResourceDatabasePopulator
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
 import org.springframework.web.reactive.function.server.coRouter
-
+// import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 
 @Configuration
@@ -22,6 +22,11 @@ class AppConfiguration {
     //     val multipartFilter: MultipartFilter  = new MultipartFilter();
     //     multipartFilter.setMultipartResolverBeanName("multipartResolver");
     //     return multipartFilter;
+    // }
+
+    // @Override
+    // fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+    //   registry.addResourceHandler("/upload/**").addResourceLocations("file:///" + System.getProperty("user.dir") + "/src/main/upload/");
     // }
 
     @Bean

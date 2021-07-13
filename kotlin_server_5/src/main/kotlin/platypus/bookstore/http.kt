@@ -79,7 +79,7 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 		// val bytearrayhandler = ByteArrayHandler()
 		// val bytestowrite = bytearrayhandler.converttobytearray(cleaned64)
 		// File("src/main/resources/static/images/imagetest1.jpg").writeBytes(bytestowrite)
-		val pathFile = "src/main/resources/static/images/imagetest1.jpg"
+		val pathFile = "src/main/resources/static/images/imagetest2.jpg"
 
 		val imageByteArray = Base64.getDecoder().decode(cleaned64)
 		File(pathFile).writeBytes(imageByteArray)
