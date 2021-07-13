@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS useraddress
 
 -- DROP TABLE IF EXISTS pic;
 CREATE TABLE IF NOT EXISTS pic(  
-    picbyte VARBINARY(MAX) NOT NULL,
+    -- picbyte VARBINARY(MAX) NOT NULL,
+    picname VARCHAR(255) NOT NULL,
     bookuniqueid VARCHAR(255),
     frontcover Boolean, 
     backcover Boolean,
@@ -44,8 +45,8 @@ CREATE TABLE IF NOT EXISTS book
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
     subtitle  VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
     publisher  VARCHAR(255) NOT NULL, 
     currentcopyright VARCHAR(65535) NOT NULL,
     bookedition VARCHAR(65535) NOT NULL,

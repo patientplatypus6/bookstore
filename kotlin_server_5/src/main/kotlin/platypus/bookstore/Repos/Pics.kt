@@ -21,10 +21,10 @@ interface PicRepository : CoroutineCrudRepository<Pic, Long> {
     @Modifying
     @Query(
     """
-      insert into pic (picbyte, bookuniqueid, frontcover, backcover, uniqueid) values (:picbyte, :bookuniqueid, :frontcover, :backcover, :uniqueid)
+      insert into pic (picname, bookuniqueid, frontcover, backcover, uniqueid) values (:picname, :bookuniqueid, :frontcover, :backcover, :uniqueid)
     """
     )
-    suspend fun savebookpic(picbyte: ByteArray?, bookuniqueid: String, frontcover: Boolean, backcover: Boolean, uniqueid: String):Boolean
+    suspend fun savebookpic(picname: String, bookuniqueid: String, frontcover: Boolean, backcover: Boolean, uniqueid: String):Boolean
 
     @Query("""
     select * from pic

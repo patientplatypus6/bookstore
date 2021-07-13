@@ -12,33 +12,16 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.json.JSONObject
 
 import platypus.bookstore.classes.*
-import platypus.bookstore.classes.db.BookRC
-import platypus.bookstore.classes.db.Book
-import platypus.bookstore.classes.db.BookId
-
-import platypus.bookstore.handlers.BooksHandler
-import platypus.bookstore.handlers.RevenueCostsHandler
-import platypus.bookstore.handlers.PicsHandler
-
-import platypus.bookstore.repos.BookRepository
-import platypus.bookstore.repos.RevenueCostRepository
-import platypus.bookstore.repos.PicRepository
+import platypus.bookstore.classes.db.*
+import platypus.bookstore.handlers.*
+import platypus.bookstore.repos.*
 
 import org.springframework.stereotype.Component
 import platypus.bookstore.utility.*
 
-import platypus.bookstore.classes.db.RevenueCost
 import org.springframework.web.multipart.MultipartFile
 
-import platypus.bookstore.classes.db.Pic
-import platypus.bookstore.classes.db.PicTest
-import platypus.bookstore.classes.db.PicBookId
-import platypus.bookstore.classes.db.PicBookIds
-import platypus.bookstore.classes.db.RevenueCostBookName
-
 import java.io.*  
-
-// import java.io.File
 import java.util.Base64
   
 
@@ -75,54 +58,9 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 	suspend fun uploadtest(@RequestBody pictest: PicTest):Boolean{
 
 		val cleaned64 = pictest.pic64.split(",")[1]
-
-		// val bytearrayhandler = ByteArrayHandler()
-		// val bytestowrite = bytearrayhandler.converttobytearray(cleaned64)
-		// File("src/main/resources/static/images/imagetest1.jpg").writeBytes(bytestowrite)
 		val pathFile = "src/main/resources/static/images/imagetest2.jpg"
-
 		val imageByteArray = Base64.getDecoder().decode(cleaned64)
 		File(pathFile).writeBytes(imageByteArray)
-
-		// val bytearrayhandler = ByteArrayHandler()
-		// val bytestowrite = bytearrayhandler.converttobytearray(pictest.picbyte)
-    
-		// val imagetest1 = "src/main/resources/static/images/imagetest1.jpg"
-		// var file1 = File(imagetest1)
-		// var os = FileOutputStream(file1);
-    // os.write(fileupload.file.getBytes());
-    // os.close();
-
-		// val imagetest = "src/main/resources/static/images/imagetest.jpg"
-		// var file = File(imagetest)
-		// file.writeBytes(bytestowrite)
-
-
-		// val imagetxt = "src/main/resources/static/text.txt"
-		// var filenew = File(imagetxt)
-		// var osnew = FileOutputStream(filenew);
-		// val newbytestowrite = bytearrayhandler.converttobytearray("hello there sailor")
-    // osnew.write(newbytestowrite);
-    // osnew.close();
-
-		// val imagetest = "src/main/resources/static/images/imagetest.jpg"
-		// var file = File(imagetest)
-		// file.writeBytes(bytestowrite)
-
-		// val file:String = "src/main/resources/public/images/imagetest.png"
-		// val data:String = fileData.text.toString()  
-		// val fileOutputStream:FileOutputStream  
-		// try {  
-		// 		fileOutputStream = openFileOutput(file, Context.MODE_PRIVATE)  
-		// 		fileOutputStream.write(data.toByteArray())  
-		// }catch (e: Exception){  
-		// 		e.printStackTrace()  
-		// }  
-
-		// try (OutputStream out = new BufferedOutputStream(new FileOutputStream(path))) {
-		// 	out.write(bytes);
-		// }
-
 		return true;
 	}
 
@@ -205,7 +143,9 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		var picshandler = PicsHandler(picRepo)
 		var picssaved = picshandler.savebookpics(picdata)
 
-		return picssaved
+		
+		return true;
+		// return picssaved
 	}
 
 	@PostMapping("/updatebook")

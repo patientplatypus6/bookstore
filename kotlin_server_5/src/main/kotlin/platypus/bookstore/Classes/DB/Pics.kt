@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile
 
 
 data class Pic(
-  var picbyte:ByteArray?=null,
+  var picname:String = "",
   var bookuniqueid: String = "", 
   var frontcover: Boolean = false, 
   var backcover: Boolean = false, 
