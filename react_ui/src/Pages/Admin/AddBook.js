@@ -4,6 +4,8 @@ import fetchrequest from '../../api/fetch'
 
 import { useHistory } from "react-router-dom";
 
+import {arraybuffertobase64, sleep, base64FromUrl, downloadBase64File, downloadformat} from '../../utility/utility'
+
 const AddBook = () => {
 
   let history = useHistory();
@@ -160,24 +162,45 @@ const AddBook = () => {
                   <img src={image64} style={{height: 'auto', width: '10vw'}}/>
                   <br/>
                   <br/>
-                  <div className='button'
-                    onClick={()=>{
-                      if(key == picfrontindex){
-                        setPicfrontindex(0)
-                      }else if(key == picbackindex){
-                        setPicbackindex(0)
-                      }
-                      if(uploadpicdata.length == 1){
-                        setUploadpicdata([0])
-                      }else{
-                        var tempuploadpicdata = [...uploadpicdata]
-                        var newpicdata = tempuploadpicdata.splice(key,1)
-                        console.log("newpicdata: ", tempuploadpicdata)
-                        setUploadpicdata(tempuploadpicdata)
-                      }
-                    }}
+                  <div
+                    style={{display: 'inline-block'}}
                   >
-                    Delete Image
+                    <div className='button'
+                      style={{
+                        marginRight: '5px',
+                        position: 'relative', 
+                        color: 'white', 
+                        cursor: 'pointer'
+                      }}
+                    > 
+                      <a 
+                      style={{
+                        textDecoration: 'inherit',
+                        color: 'inherit',
+                        cursor: 'pointer'
+                      }}
+                      download={downloadformat(image64)} href={image64}>Download</a>
+                    </div>
+                    <div className='button'
+                      style={{background: 'red'}}
+                      onClick={()=>{
+                        if(key == picfrontindex){
+                          setPicfrontindex(0)
+                        }else if(key == picbackindex){
+                          setPicbackindex(0)
+                        }
+                        if(uploadpicdata.length == 1){
+                          setUploadpicdata([0])
+                        }else{
+                          var tempuploadpicdata = [...uploadpicdata]
+                          var newpicdata = tempuploadpicdata.splice(key,1)
+                          console.log("newpicdata: ", tempuploadpicdata)
+                          setUploadpicdata(tempuploadpicdata)
+                        }
+                      }}
+                    >
+                      Delete
+                    </div>
                   </div>
                 </div>
               </div>
@@ -367,6 +390,7 @@ const AddBook = () => {
         <br/>
         <div>
           <div className='button'
+            style={{background: 'red'}}
             onClick={()=>{
 
               var temprevenuecostitem = [...revenuecostitem]

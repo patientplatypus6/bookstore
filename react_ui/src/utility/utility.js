@@ -22,26 +22,45 @@ function dateFormat (date, fstr, utc) {
   });
 }
 
+const downloadformat = (image64) => {
+  const beginstr = image64.substring(0, 25)
+  console.log("beginstr: ", beginstr)
+  if(beginstr.includes("data:image/jpg;base64,")){
+    return "image.jpg"
+  }
+  if(beginstr.includes("data:image/jpeg;base64,")){
+    return "image.jpeg"
+  }
+  if(beginstr.includes("data:image/png;base64,")){
+    return "image.png"
+  }
+  if(beginstr.includes("data:image/gif;base64,")){
+    return "image.gif"
+  }
+  if(beginstr.includes("data:image/pdf;base64,")){
+    return "image.pdf"
+  }
+}
+
+// function downloadBase64File(contentBase64, fileName) {
+//   const linkSource = contentBase64.replace("data:image", "data:application")
+//   window.location.href = 'data:application/octet-stream;base64,' + contentBase64;
+// }
+
 const base64FromUrl = async (url) => {
-  console.log("*****************************")
-  console.log("*****************************")
-  console.log("*****************************")
-  // fetch(url).then(response=>{
-  //   console.log("base64 response is: ", response)
-  // })
-  // const data = await fetch(url);
-  // const blob = await data.blob();
-  // return new Promise((resolve) => {
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(blob); 
-  //   reader.onloadend = () => {
-  //     const base64data = reader.result;   
-  //     resolve(base64data);
-  //   }
-  // });
-  console.log("*****************************")
-  console.log("*****************************")
-  console.log("*****************************")
+  fetch(url).then(response=>{
+    console.log("base64 response is: ", response)
+  })
+  const data = await fetch(url);
+  const blob = await data.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob); 
+    reader.onloadend = () => {
+      const base64data = reader.result;   
+      resolve(base64data);
+    }
+  });
 }
 
 function sleep(milliseconds) {
@@ -63,4 +82,4 @@ function sleep(milliseconds) {
 // }
 
 
-export {arraybuffertobase64, dateFormat, sleep, base64FromUrl}
+export {arraybuffertobase64, dateFormat, sleep, base64FromUrl, downloadformat}
