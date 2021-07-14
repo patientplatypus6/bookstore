@@ -4,7 +4,7 @@ import './library.css'
 // import { toJS } from "mobx"
 
 import { useHistory } from "react-router-dom";
-import fetchrequest from '../../api/fetch'
+import {fetchrequest, handlefetch} from '../../api/fetch'
 import './book.css'
 
 const Book = () => {
@@ -87,23 +87,46 @@ const Book = () => {
           </div>
         </div>
         <div className="mainpics">
-          <div className='roundedcontainer'>
-          </div> 
+          <div className='fixedcontainer'>
+            <div className='roundedcontainer'>
+              test
+            </div> 
+          </div>
         </div>
         <div className="allpicsb">
-          
+          <div className='fixedcontainer'>
+            <div className='roundedcontainer'>
+              test
+            </div> 
+          </div>
         </div>
         <div className="artistbox">
-          
+          <div className='fixedcontainer'>
+            <div className='roundedcontainer'>
+              test
+            </div> 
+          </div>
         </div>
         <div className="synopsisb">
-          
+          <div className='fixedcontainer'>
+            <div className='roundedcontainer'>
+              test
+            </div> 
+          </div>
         </div>
         <div className="pricesbox">
-          
+          <div className='fixedcontainer'>
+            <div className='roundedcontainer'>
+              test
+            </div> 
+          </div>
         </div>
         <div className="condition">
-          
+          <div className='fixedcontainer'>
+            <div className='roundedcontainer'>
+              test
+            </div> 
+          </div>
         </div>
       </div>
     </div>

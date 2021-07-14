@@ -14,32 +14,53 @@ import {
 import AddBook from './Admin/AddBook'
 import AdminDashboard from './Admin/AdminDashboard'
 import EditBook from '../Pages/Admin/EditBook'
-import Portal from '../Pages/Admin/Portal'
-
-import BillShip from '../Pages/Cart/BillShip'
-import Cart from '../Pages/Cart/Cart'
-import Confirmation from '../Pages/Cart/Confirmation'
-
 import Book from '../Pages/Library/Book'
 import BookShelf from '../Pages/Library/BookShelf'
 import About from '../Pages/Library/About'
 
-import Message from '../Pages/User/Message'
-import OrderHistory from '../Pages/User/OrderHistory'
-import UserInfo from '../Pages/User/UserInfo'
 // import ActionHandler from '../Redux/actionhandler.js'
 
 import { useLocation } from 'react-router-dom'
 import AddRevenueCost from './Admin/AddRevenueCost';
 
-// class Main extends React.Component{
+import {fetchrequest} from '../api/fetch'
 
-
+import './main.css'
 
 const Main = () => {
   // render(){
 
     // var location = useLocation().pathname
+
+
+
+    const handlefetch = (payload) => {
+      console.log('inside handlefetch and value of payload: ', payload)
+      const fetchasync = async () => {
+        var fetchresult = await fetchrequest(payload)
+        return fetchresult
+      }
+      return fetchasync();
+    }
+    
+
+
+    const[username, setUsername] = useState("")
+    const[password, setPassword] = useState("")
+
+    const handleLogin = () => {
+      var payload = {
+        body: {
+          username,
+          password
+        },
+        requestType: "post", 
+        uri: "user/login"
+      } 
+      handlefetch(payload).then(result=>{
+        console.log('value of result: ', result)
+      })
+    }
 
     const usePathname = () => {
       const location = useLocation();
@@ -49,111 +70,118 @@ const Main = () => {
 
     return(
       <Router>
-      <div>
-        <nav>
+      <div
+        style={{
+          background: 'black', 
+          padding: '5px', 
+          height: '20px'
+        }}
+      >
+        <nav style={{display: "inline-block"}}>
+          <NavLink 
+          style={{
+            textDecoration: 'none', 
+            color: "rgb(180,180,180)", 
+            padding: '20px'
+          }} 
+          activeStyle={{
+            textDecoration: 'underline',
+            padding: '20px',
+            color: "rgb(250,250,250)"
+          }}
+          exact to="/">Book Shelf</NavLink>
+          <NavLink 
+          style={{
+            textDecoration: 'none', 
+            color: "rgb(180,180,180)", 
+            padding: '20px'
+          }} 
+          activeStyle={{
+            textDecoration: 'underline',
+            padding: '20px',
+            color: "rgb(250,250,250)"
+          }}
+          exact to="/about">About</NavLink>
+          <NavLink 
+          style={{
+            textDecoration: 'none', 
+            color: "rgb(180,180,180)", 
+            padding: '20px'
+          }} 
+          activeStyle={{
+            textDecoration: 'underline',
+            padding: '20px',
+            color: "rgb(250,250,250)"
+          }}
+          exact to="/book">Book</NavLink>
+          <NavLink 
+          style={{
+            textDecoration: 'none', 
+            color: "rgb(180,180,180)", 
+            padding: '20px'
+          }} 
+          activeStyle={{
+            textDecoration: 'underline',
+            padding: '20px',
+            color: "rgb(250,250,250)"
+          }}
+          exact to="/admin/addrevenuecost">Add Revenue Cost</NavLink>
+          <NavLink 
+          style={{
+            textDecoration: 'none', 
+            color: "rgb(180,180,180)", 
+            padding: '20px'
+          }} 
+          activeStyle={{
+            textDecoration: 'underline',
+            padding: '20px',
+            color: "rgb(250,250,250)"
+          }}
+          exact to="/admin/dashboard">Admin Dashboard</NavLink>
+        </nav> 
+        <div 
+          style={{
+            display: 'inline-block', float: 'right', marginRight: '10px'
+          }}
+        >
+          <div style={{display: 'inline', marginRight: '10px'}}>
+            <span style={{marginRight: '5px', color: 'rgb(200,200,200)'}}>user</span>
+            <input 
+              value={username}
+              onChange={(e)=>{
+                setUsername(e.target.value)
+              }}
+            />
+          </div>
+          <div style={{display: 'inline', marginRight: '10px'}}>
+            <span style={{marginRight: '5px', color: 'rgb(200,200,200)'}}>pass</span>
+            <input 
+              value={password}
+              onChange={(e)=>{
+                setPassword(e.target.value)
+              }}
+            />
+          </div>
           <div
-            style={{
-              background: 'black', 
-              padding: '5px', 
-              height: '20px'
+            className='button'
+            style={{display: 'inline'}}
+            onClick={()=>{
+              handleLogin()
             }}
           >
-            <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/">Book Shelf</NavLink>
-            <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/about">About</NavLink>
-            <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/book">Book</NavLink>
-            {/* <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/admin/addbook">Add Book</NavLink> */}
-            <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/admin/addrevenuecost">Add Revenue Cost</NavLink>
-            <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/admin/dashboard">Admin Dashboard</NavLink>
-            {/* <NavLink 
-            style={{
-              textDecoration: 'none', 
-              color: "rgb(180,180,180)", 
-              padding: '20px'
-            }} 
-            activeStyle={{
-              textDecoration: 'underline',
-              padding: '20px',
-              color: "rgb(250,250,250)"
-            }}
-            exact to="/admin/editbook">Edit Book</NavLink> */}
+            login
           </div>
-        </nav>  
-        <Switch>
-            <Route exact path="/" render={()=><BookShelf/>}/>
-            <Route exact path="/about" render={()=><About/>}/>
-            <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
-            <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
-            <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
-            <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
-            <Route exact path="/book" render={()=><Book/>}/>
-        </Switch>
-      </div>
+        </div>
+      </div> 
+      <Switch>
+          <Route exact path="/" render={()=><BookShelf/>}/>
+          <Route exact path="/about" render={()=><About/>}/>
+          <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
+          <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
+          <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
+          <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
+          <Route exact path="/book" render={()=><Book/>}/>
+      </Switch>
     </Router>
     );
   // }

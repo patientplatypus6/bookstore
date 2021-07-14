@@ -26,92 +26,8 @@ import java.io.*
 import java.util.Base64
   
 
-@RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-@RequestMapping("/test")
-public class RequestTest{
-	
-	@GetMapping
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun stringfunc():Comment{
-		val comment = Comment(
-			author = "test",
-			content = "test",
-		)
-		return comment
-	}
-}
-
-@RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-@RequestMapping("/user")
-public class RequestUser{
-  
-}
-
-@RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-@RequestMapping("/pic")
-public class RequestPic(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
-
-	@PostMapping("/uploadtest")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun uploadtest(@RequestBody pictest: PicTest):Boolean{
-
-		val cleaned64 = pictest.pic64.split(",")[1]
-		val pathFile = "src/main/resources/static/images/imagetest2.jpg"
-		val imageByteArray = Base64.getDecoder().decode(cleaned64)
-		File(pathFile).writeBytes(imageByteArray)
-		return true;
-	}
-
-	@PostMapping("/findcovers")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findcovers(@RequestBody picbookids: PicBookIds):List<Pic>{
-		println("value of picbookid: $picbookids")
-		var picshandler = PicsHandler(picRepo)
-		var coverlist = picshandler.findcovers(picbookids)
-		return coverlist;
-	}
 
 
-	@PostMapping("/findimagesbybook")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findimagesbybook(@RequestBody picbookid: PicBookId):List<Pic>{
-		println("value of picbookid: $picbookid")
-		var picshandler = PicsHandler(picRepo)
-		var coverlist = picshandler.findimagesbybook(picbookid)
-		return coverlist;
-	}
-
-
-	@PostMapping("/findimagesbybook64")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findimagesbybook64(@RequestBody picbookid: PicBookId):List<Pic64>{
-		println("value of picbookid: $picbookid")
-		var picshandler = PicsHandler(picRepo)
-		var coverlist = picshandler.findimagesbybook64(picbookid)
-		return coverlist;
-	}
-
-}
-
-// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-// @RequestMapping("/images")
-// public Object rooms() {
-
-// }
-
-// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-// @GetMapping("/images")
-// public Object images() 
-
-@RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-@RequestMapping("/images")
-public class ImagesHolder(){
-
-}
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -127,7 +43,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		var revenuecosthandler = RevenueCostsHandler(revenuecostRepo)
 
 		var booklist:List<Book> = bookshandler.findbooks()
-		var picbookids = PicBookIds()
+		var picbookids = PicBookIds()	
 
 		for(book in booklist){
 			picbookids.bookids+=book.uniqueid
@@ -168,7 +84,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			}
 
 			tempbookshelfbook.picnamefront = frontpicname
-			tempbookshelfbook.picnameback = frontpicname
+			tempbookshelfbook.picnameback = backpicname
 			tempbookshelfbook.allpics = piclist
 
 			var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(book.uniqueid)
@@ -301,46 +217,4 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 }
 
-@RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-@RequestMapping("/revenuecost")
-public class RequestRevenueCost(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
-	@PostMapping("/allrcbyname")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun allrcbyname(@RequestBody rcname: RevenueCostBookName):List<RevenueCost>{
-		var revenuecostname:String = rcname.rcname;
-		var revenuecostHandler = RevenueCostsHandler(revenuecostRepo)
-
-		var revenuecostlist:List<RevenueCost> = revenuecostHandler.allrcbyname(revenuecostname);
-
-		return revenuecostlist;
-	}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// @PostMapping("/addpics")
-	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	// suspend fun addpics(@RequestParam(value = "file",required = false) file: MultipartFile):Comment{
-	// 	println("inside book/addpics")
-	// 	println("value of file $file")
-	// 	// val filestring: String = String(file.getBytes());
-	// 	// println("value of file $file")
-	// 	val comment = Comment(
-	// 		author = "test",
-	// 		content = "test",
-	// 	)
-	// 	return comment
-	// }

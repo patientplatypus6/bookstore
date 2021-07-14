@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //   setcover
 // } from '../../Redux/uploadpicdata'
 import {dateFormat} from '../../utility/utility'
-import fetchrequest from '../../api/fetch'
+import {fetchrequest, handlefetch} from '../../api/fetch'
 
 const AddRevenueCost = () => {
 
@@ -32,16 +32,6 @@ const AddRevenueCost = () => {
 
   useEffect(()=>{
   })
-
-
-  const handlefetch = (payload) => {
-    console.log('inside handlefetch and value of payload: ', payload)
-    const fetchasync = async () => {
-      var fetchresult = await fetchrequest(payload)
-      return fetchresult
-    }
-    return fetchasync();
-  }
 
   const resetBookEntries = () => {
     setIsbn("NONE")

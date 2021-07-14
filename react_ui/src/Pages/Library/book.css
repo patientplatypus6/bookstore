@@ -102,14 +102,18 @@ book price */
 .roundedcontainer{
   display: inline-block;
   margin: 5px;
-  border-radius: 2px solid black;
-  padding: 5px;  
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;  
+  color: rgb(0, 0, 0);
+  background: rgb(153, 142, 119);
+  height: calc(100% - 34px);
+  width:  calc(100% - 34px);
 }
 
 .fixedcontainer{
   display: inline-block;
-  position: fixed;
-  background-color: black;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -127,32 +131,32 @@ book price */
 
 .allpicsb{
   grid-area: allpicsb;
-  background: rgb(19, 250, 31);
+  position: relative;
+  /* background: rgb(19, 250, 31); */
 }
 
 .artistbox{
   grid-area: artistbox;
-  background: rgb(24, 111, 151);
+  position: relative;
+  /* background: rgb(24, 111, 151); */
 }
 
 .synopsisb{
   grid-area: synopsisb;
-  background: rgb(52, 34, 153);
+  position: relative;
+  /* background: rgb(52, 34, 153); */
 }
 
 .condition{
   grid-area: condition;
-  background: rgb(26, 218, 202);
-}
-
-.blurbsbox{
-  grid-area: blurbsbox;
-  background: darkgoldenrod;
+  position: relative;
+  /* background: rgb(26, 218, 202); */
 }
 
 .pricesbox{
   grid-area: pricesbox;
-  background: teal;
+  position: relative;
+  /* background: teal; */
 }
 
 .erratbox{
@@ -173,5 +177,6 @@ book price */
 
 .mainpics{
   grid-area: mainpics;
-  background: green;
+  position: relative;
+  /* background: green; */
 }

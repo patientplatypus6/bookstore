@@ -31,6 +31,11 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     """)
     suspend fun findBooks():List<Book>
 
+    @Query("""
+      select * from book where dateordered is null
+    """)
+    suspend fun findBooksforsale():List<Book>
+
     @Modifying
     @Query(
       """

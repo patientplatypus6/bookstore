@@ -55,7 +55,8 @@ CREATE TABLE IF NOT EXISTS book
     condition VARCHAR(65535) NOT NULL,
     isbn VARCHAR(65535) NOT NULL,
     dateordered DATETIME, 
-    dateshipped DATETIME
+    dateshipped DATETIME, 
+    cartaddedlast DATETIME
 );
 
 -- DROP TABLE IF EXISTS bookerrata;

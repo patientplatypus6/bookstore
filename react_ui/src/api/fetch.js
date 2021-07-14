@@ -1,4 +1,13 @@
-  import axios from 'axios'
+
+const handlefetch = (payload) => {
+  console.log('inside handlefetch and value of payload: ', payload)
+  const fetchasync = async () => {
+    var fetchresult = await fetchrequest(payload)
+    return fetchresult
+  }
+  return fetchasync();
+}
+
 
 const fetchrequest = (payload) => { 
  var url = "http://localhost:8080/"
@@ -104,4 +113,4 @@ const fetchrequest = (payload) => {
 
 }
 
-export default fetchrequest;
+export {fetchrequest, handlefetch};

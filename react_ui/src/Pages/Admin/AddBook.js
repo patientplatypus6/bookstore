@@ -1,6 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
-import fetchrequest from '../../api/fetch'
+import {fetchrequest, handlefetch} from '../../api/fetch'
 
 import { useHistory } from "react-router-dom";
 
@@ -29,16 +29,6 @@ const AddBook = () => {
 
   useEffect(()=>{
   })
-
-
-  const handlefetch = (payload) => {
-    console.log('inside handlefetch and value of payload: ', payload)
-    const fetchasync = async () => {
-      var fetchresult = await fetchrequest(payload)
-      return fetchresult
-    }
-    return fetchasync();
-  }
 
   const resetBookEntries = () => {
     setIsbn("NONE")
@@ -103,6 +93,7 @@ const AddBook = () => {
       requestType:"post",
       uri:"book/addpics"
     }
+    console.log('adding book and value of picturepayload: ', picturepayload)
     handlefetch(payload).then(result=>{
       resetBookEntries()
       handlefetch(picturepayload).then(result=>{
@@ -212,9 +203,12 @@ const AddBook = () => {
         <div style={{marginTop: '5px'}}>
           <span style={{marginRight: '5px'}}> Select Front Cover Image Index </span>
           <select
+            value={picfrontindex}
             onChange={(e)=>{
               console.log("value of e.target.value: ", e.target.value)
               setPicfrontindex(e.target.value)
+              console.log('value of picfrontindex: ', picfrontindex)
+              console.log('value of picbackindex: ', picbackindex)
             }}
           >
             {uploadpicdata.map((image64, key)=>{
@@ -236,9 +230,12 @@ const AddBook = () => {
           <div style={{marginTop: '5px'}}>
             <span style={{marginRight: '5px'}}> Select Back Cover Image Index </span>
             <select
+              value={picbackindex}
               onChange={(e)=>{
                 console.log("value of e.target.value: ", e.target.value)
                 setPicbackindex(e.target.value)
+                console.log('value of picfrontindex: ', picfrontindex)
+                console.log('value of picbackindex: ', picbackindex)
               }}
             >
               {uploadpicdata.map((image64, key)=>{
@@ -448,7 +445,8 @@ const AddBook = () => {
           display: 'inline-block', 
           padding: '20px', 
           verticalAlign: 'top',
-          marginBottom: '20px'
+          marginBottom: '20px', 
+          marginTop: '20px'
         }}    
       >
         <div

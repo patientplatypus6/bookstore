@@ -19,6 +19,14 @@ class BooksHandler(val bookRepo: BookRepository){
     return books;
   }
 
+
+  suspend fun findbooksforsale():List<Book>{
+    println("findBooks")
+    val books:List<Book> = bookRepo.findBooksforsale();
+    println("value of books $books")
+    return books;
+  }
+
   suspend fun addbook(book: Book):Boolean{
     var bookAdded:Boolean = bookRepo.saveabook(
       book.title, book.subtitle, book.author, book.publisher, 

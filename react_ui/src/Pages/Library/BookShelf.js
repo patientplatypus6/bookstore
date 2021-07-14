@@ -3,7 +3,7 @@ import './library.css'
 import { useSelector, useDispatch } from 'react-redux'
 import {arraybuffertobase64, sleep} from '../../utility/utility'
 
-import fetchrequest from '../../api/fetch'
+import {fetchrequest, handlefetch} from '../../api/fetch'
 import { useHistory } from "react-router-dom";
 
 const BookShelf = () => {
@@ -22,14 +22,6 @@ const BookShelf = () => {
   const [coverlist, setCoverlist] = useState([])
 
   let history = useHistory();
-
-  const handlefetch = (payload) => {
-    const fetchasync = async () => {
-      var fetchresult = await fetchrequest(payload)
-      return fetchresult
-    }
-    return fetchasync();
-  }
 
   const findbooks = () => {
     var payload = {}

@@ -1,6 +1,6 @@
 import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
-import fetchrequest from '../../api/fetch'
+import {fetchrequest, handlefetch} from '../../api/fetch'
 import { useHistory } from "react-router-dom";
 
 import {arraybuffertobase64, sleep, base64FromUrl, downloadBase64File, downloadformat} from '../../utility/utility'
@@ -29,15 +29,6 @@ const EditBook = () => {
   const [bookurltest, setBookurltest] = useState("")
 
   const [fetchcount, setFetchcount] = useState(0)
-
-  const handlefetch = (payload) => {
-    console.log('inside handlefetch and value of payload: ', payload)
-    const fetchasync = async () => {
-      var fetchresult = await fetchrequest(payload)
-      return fetchresult
-    }
-    return fetchasync();
-  }
 
   const resetBookEntries = () => {
     setIsbn("NONE")

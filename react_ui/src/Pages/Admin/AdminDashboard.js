@@ -2,7 +2,7 @@ import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
 import { useHistory } from "react-router-dom";
 import './booklist.css'
-import fetchrequest from '../../api/fetch'
+import {fetchrequest, handlefetch} from '../../api/fetch'
 
 const AdminDashboard = () => {
 
@@ -12,14 +12,6 @@ const AdminDashboard = () => {
   const [pagenumber, setPagenumber] = useState(1)
   const [displayper, setDisplayper] = useState(25)
   const [dashmessage, setDashmessage] = useState("Welcome to the Administator dashboard! \n Action messages will appear hear from state changes in the database \n Thank you!")
-
-  const handlefetch = (payload) => {
-    const fetchasync = async () => {
-      var fetchresult = await fetchrequest(payload)
-      return fetchresult
-    }
-    return fetchasync();
-  }
 
   const deletebookhandler = (title, uniqueid) => {
     console.log("inside deletebookhandler and value of uniqueid: ", uniqueid)
