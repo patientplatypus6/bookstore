@@ -41,12 +41,11 @@ interface PicRepository : CoroutineCrudRepository<Pic, Long> {
     """)
     suspend fun findpicsbybook(bookuniqueid: String):List<Pic>
 
-
     @Query("""
       select * from pic where frontcover = 1 and bookuniqueid in (:bookuniqueidlist)
     """)
     suspend fun findcoversbybookgroup(bookuniqueidlist: List<String>):List<Pic>
-
+    
     @Modifying
     @Query(
       """

@@ -25,11 +25,27 @@ data class Book(
   var isbn: String = ""
 )
 
+data class BookshelfBook(
+  var title: String = "",
+  var subtitle: String = "",
+  var author: String = "",
+  var publisher: String = "", 
+  var currentcopyright: String = "",
+  var bookedition: String = "", 
+  var uniqueid: String = "",
+  var storyinfo: String = "", 
+  var condition: String = "", 
+  var isbn: String = "",
+  var usershipping: String = "", 
+  var userprice: String = "",
+  var picname: String? = ""
+)
+
 data class ShelfBook(
   var title: String = "",
   var author: String = "", 
-  var projectedshippingprice: RevenueCost,
-  var projectedbookprice: RevenueCost
+  var projectedshippingprice:String = "",
+  var projectedbookprice:String = ""
 )
 
 data class BookId(

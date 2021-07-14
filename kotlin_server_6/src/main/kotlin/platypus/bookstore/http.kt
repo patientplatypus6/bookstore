@@ -74,6 +74,7 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 		return coverlist;
 	}
 
+
 	@PostMapping("/findimagesbybook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findimagesbybook(@RequestBody picbookid: PicBookId):List<Pic>{
@@ -117,12 +118,72 @@ public class ImagesHolder(){
 @RequestMapping("/book")
 public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
-	// @GetMapping("/findbook")
-	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	// suspend fun findbook():Book{
-	// 	foundbook
-	// 	return foundbook
-	// }	
+	@GetMapping("/findbookshelfbooks")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbookshelfbooks():List<BookshelfBook>{
+		var bookshelfbooks:List<BookshelfBook> = listOf<BookshelfBook>()
+		var picshandler = PicsHandler(picRepo)
+		var bookshandler = BooksHandler(bookRepo)
+		var revenuecosthandler = RevenueCostsHandler(revenuecostRepo)
+
+		var booklist:List<Book> = bookshandler.findbooks()
+		var picbookids = PicBookIds()
+
+		for(book in booklist){
+			picbookids.bookids+=book.uniqueid
+		}
+
+		var coverpiclist:List<Pic> = picshandler.findcovers(picbookids)
+		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
+		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
+		
+		for(book in booklist){
+			var tempbookshelfbook = BookshelfBook()
+
+			tempbookshelfbook.title = book.title
+			tempbookshelfbook.subtitle = book.subtitle
+			tempbookshelfbook.author = book.author
+			tempbookshelfbook.publisher = book.publisher
+			tempbookshelfbook.currentcopyright = book.currentcopyright
+			tempbookshelfbook.bookedition = book.bookedition
+			tempbookshelfbook.uniqueid = book.uniqueid
+			tempbookshelfbook.storyinfo = book.storyinfo
+			tempbookshelfbook.condition = book.condition
+			tempbookshelfbook.isbn = book.isbn
+
+			var coverpicname = ""
+
+			for(coverpic in coverpiclist){
+				if(coverpic.bookuniqueid==book.uniqueid){
+					coverpicname = coverpic.picname
+				}
+			}
+
+			tempbookshelfbook.picname = coverpicname
+
+			var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(book.uniqueid)
+
+			var usershipping = ""
+			var userprice = ""
+
+			for(bookrevenuecost in bookrevenuecosts){
+				if(bookrevenuecost.rcname==shippingstring){
+					usershipping = bookrevenuecost.rcvalue
+				}
+				if(bookrevenuecost.rcname==pricestring){
+					userprice = bookrevenuecost.rcvalue
+				}
+			}
+
+			tempbookshelfbook.usershipping = usershipping
+			tempbookshelfbook.userprice = userprice
+			
+			bookshelfbooks+=tempbookshelfbook
+
+		}
+
+		return bookshelfbooks
+	}
 
 	@PostMapping("/deletebook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")

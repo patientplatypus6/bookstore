@@ -216,9 +216,16 @@ const EditBook = () => {
   }, [])
 
   const imageDisplayHandler = () => {
+    console.log("*********")
+    console.log("*********")
+    console.log("*********")
+    console.log('value of uploadpicdata: ', uploadpicdata)
+    console.log("*********")
+    console.log("*********")
+    console.log("*********")
     return(
       <div>
-        {uploadpicdata[0]==0?
+        {uploadpicdata.length==0?
         <div
           style={{
             border: '2px solid black',
@@ -736,9 +743,6 @@ const EditBook = () => {
               }
               readerHandler(0)
             }}
-          />
-          <img src={bookurltest}
-            style={{width: '50px', height: '50px'}}
           />
           {imageDisplayHandler()}
         </div>
