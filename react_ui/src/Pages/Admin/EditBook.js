@@ -225,7 +225,7 @@ const EditBook = () => {
     console.log("*********")
     return(
       <div>
-        {uploadpicdata.length==0?
+        {uploadpicdata.length==0||uploadpicdata[0]==0?
         <div
           style={{
             border: '2px solid black',

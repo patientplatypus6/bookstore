@@ -38,7 +38,9 @@ data class BookshelfBook(
   var isbn: String = "",
   var usershipping: String = "", 
   var userprice: String = "",
-  var picname: String? = ""
+  var picnamefront: String = "",
+  var picnameback: String = "",
+  var allpics: List<String> = listOf<String>()
 )
 
 data class ShelfBook(

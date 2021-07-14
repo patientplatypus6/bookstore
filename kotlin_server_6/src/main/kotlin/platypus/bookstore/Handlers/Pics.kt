@@ -8,6 +8,12 @@ import platypus.bookstore.utility.*
 
 class PicsHandler(val picRepo: PicRepository){
 
+  suspend fun findallpics():List<Pic>
+  {
+    var allpics = picRepo.findallpics()
+    return allpics
+  }
+
   suspend fun deletebookpics(bookid: String):Boolean{
     var filesubstring =  bookid+"pic" 
     deleteprev(filesubstring)

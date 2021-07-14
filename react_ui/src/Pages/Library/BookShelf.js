@@ -54,7 +54,7 @@ const BookShelf = () => {
           </div>
         :<div/>}
         {bookshelfbooks.map((book)=>{
-          if (book.picname == ""){
+          if (book.picnamefront == ""){
             return(
               <div key={book.bookuniqueid}>
                 <table style={{width: '100%', background: "lightorange"}}>
@@ -110,7 +110,7 @@ const BookShelf = () => {
                       <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
                         <img 
                         style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                        src={`http://localhost:8080/images/${book.picname}`}/>    
+                        src={`http://localhost:8080/images/${book.picnamefront}`}/>    
                       </div>
                       <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top', width: "25vw", background: "lightblue", borderRadius: '5px'}}>
                         <div>

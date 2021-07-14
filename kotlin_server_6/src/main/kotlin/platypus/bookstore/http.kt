@@ -133,7 +133,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			picbookids.bookids+=book.uniqueid
 		}
 
-		var coverpiclist:List<Pic> = picshandler.findcovers(picbookids)
+		var allpics:List<Pic> = picshandler.findallpics()
 		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
 		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
 		
@@ -151,15 +151,25 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			tempbookshelfbook.condition = book.condition
 			tempbookshelfbook.isbn = book.isbn
 
-			var coverpicname = ""
+			var frontpicname = ""
+			var backpicname = ""
+			var piclist:List<String> = listOf<String>()
 
-			for(coverpic in coverpiclist){
-				if(coverpic.bookuniqueid==book.uniqueid){
-					coverpicname = coverpic.picname
+			for(pic in allpics){
+				if(pic.bookuniqueid==book.uniqueid && pic.frontcover){
+					frontpicname = pic.picname
+				}
+				if(pic.bookuniqueid==book.uniqueid && pic.backcover){
+					backpicname = pic.picname
+				}
+				if(pic.bookuniqueid==book.uniqueid){
+					piclist+=pic.picname
 				}
 			}
 
-			tempbookshelfbook.picname = coverpicname
+			tempbookshelfbook.picnamefront = frontpicname
+			tempbookshelfbook.picnameback = frontpicname
+			tempbookshelfbook.allpics = piclist
 
 			var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(book.uniqueid)
 
