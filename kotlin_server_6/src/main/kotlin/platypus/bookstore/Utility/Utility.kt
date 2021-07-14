@@ -16,6 +16,9 @@ class ByteArrayHandler(){
   }
 }
 
+
+//--------- picture handler functions ---------
+
 suspend fun deleteprev(filesubstring: String){
   var pathFile = "src/main/resources/static/images"
   File(pathFile).walk().forEach {
@@ -24,6 +27,15 @@ suspend fun deleteprev(filesubstring: String){
       var pathstring: String = it.toString();
       File(pathstring).delete()
     }
+  }
+}
+
+suspend fun deleteall(){
+  var pathFile = "src/main/resources/static/images"
+  File(pathFile).walk().forEach {
+    println(it)
+    println("now deleting pic on startup")
+    it.delete()
   }
 }
 

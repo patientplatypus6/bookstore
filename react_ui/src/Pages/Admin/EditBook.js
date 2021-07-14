@@ -525,14 +525,13 @@ const EditBook = () => {
 
   return(
     <>
-      {/* dummy canvas for base64 grepping */}
-      <canvas id="canvas" width="0" height="0"></canvas>
       <div
         style={{
           background: 'rgb(100,0,0)', 
           display: 'inline-block', 
           padding: '20px', 
           verticalAlign: 'top',
+          marginTop: '20px',
           marginBottom: '20px'
         }}    
       >

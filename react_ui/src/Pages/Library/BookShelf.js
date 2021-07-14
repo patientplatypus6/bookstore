@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {arraybuffertobase64, sleep} from '../../utility/utility'
 
 import fetchrequest from '../../api/fetch'
+import { useHistory } from "react-router-dom";
 
 const BookShelf = () => {
 
@@ -19,6 +20,8 @@ const BookShelf = () => {
   const forceUpdate = React.useCallback(() => updateState({}), []);
 
   const [coverlist, setCoverlist] = useState([])
+
+  let history = useHistory();
 
   const handlefetch = (payload) => {
     const fetchasync = async () => {
@@ -126,6 +129,12 @@ const BookShelf = () => {
                         </div>
                         <div
                           className='button'
+                          onClick={()=>{
+                            history.push({
+                              pathname: '/book',
+                              book
+                            })
+                          }}
                         >
                           View Book
                         </div>

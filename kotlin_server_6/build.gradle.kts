@@ -23,12 +23,6 @@ repositories {
 	// url "https://kotlin.bintray.com/kotlinx"
 }
 
-// configure<SpringBootExtension> {
-//       mainClassName = "platypus.bookstore.BookstoreApplication"
-// }
-
-// 20210307
-
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
@@ -39,6 +33,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
 	// implementation("org.json:json:201701018")
 	implementation("org.json:json:20210307")
 	// implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")

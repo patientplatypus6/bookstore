@@ -8,4 +8,125 @@
   border-radius: 2px;
   font-family: monospace;
 }
+/* 
+allpics: Array(4) [ "NONE1626232674327pic0.jpeg", "NONE1626232674327pic1.jpeg", "NONE1626232674327pic2.jpeg", … ]
+author: ""
+bookedition: "NONE"
+condition: ""
+currentcopyright: "NONE"
+isbn: "NONE"
+picnameback: "NONE1626232674327pic0.jpeg"
+picnamefront: "NONE1626232674327pic0.jpeg"
+publisher: "NONE"
+storyinfo: ""
+subtitle: "NONE"
+title: "NONE"
+uniqueid: "NONE1626232674327"
+userprice: ""
+usershipping: "" */
+/* 
 
+titlebox
+
+title
+subtitle
+author
+
+erratabox
+
+publisher
+bookedition
+current copyright
+isbn
+
+mainpics
+
+picfront
+picback
+
+piccarousel
+allpics
+
+blurbsbox
+
+storyinfo
+condition
+
+pricebox
+
+shipping price
+book price */
+
+.wrapper {
+  display: grid;
+  width: 100%;
+  height: calc(100vh - 30px);
+  grid-gap: 0px;
+  grid-template-columns: 5vw 18vw 18vw 18vw 18vw 18vw 5vw;
+  grid-template-areas:
+            "sidemarginl ... ...      ...      ...           ... sidemarginr"
+            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"
+            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"
+            "sidemarginl ... ...      ...      ...           ... sidemarginr"
+            "sidemarginl ... erratbox erratbox erratbox      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...           ... sidemarginr"           
+            "sidemarginl mainpics mainpics pricesbox pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics pricesbox pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"           
+            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"                
+            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"  
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"
+            "sidemarginl ... ...      ...      ...      ... sidemarginr"
+            "sidemarginl ... ...      ...      ...      ... sidemarginr";
+  /* background-color: ; */
+  color: #444;
+}
+
+.sidemarginl{
+  grid-area: sidemarginl;
+  background: blue;
+}
+.sidemarginr{
+  grid-area: sidemarginr;
+  background: blue;
+}
+.titlebox{
+  grid-area: titlebox;
+  background: red;
+} 
+
+.blurbsbox{
+  grid-area: blurbsbox;
+  background: darkgoldenrod;
+}
+
+.pricesbox{
+  grid-area: pricesbox;
+  background: teal;
+}
+
+.erratbox{
+  grid-area: erratbox;
+  background: brown;
+} 
+
+.mainpics{
+  grid-area: mainpics;
+  background: green;
+}

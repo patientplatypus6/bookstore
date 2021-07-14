@@ -54,8 +54,8 @@ const Main = () => {
           <div
             style={{
               background: 'black', 
-              padding: '5px',
-              marginBottom: '20px'
+              padding: '5px', 
+              height: '20px'
             }}
           >
             <NavLink 
@@ -145,13 +145,13 @@ const Main = () => {
           </div>
         </nav>  
         <Switch>
-          <Route exact path="/" render={()=><BookShelf/>}/>
-          <Route exact path="/about" render={()=><About/>}/>
-          <Route exact path="/book" render={()=><Book/>}/>
-          <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
-          <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
-          <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
-          <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
+            <Route exact path="/" render={()=><BookShelf/>}/>
+            <Route exact path="/about" render={()=><About/>}/>
+            <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
+            <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
+            <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
+            <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
+            <Route exact path="/book" render={()=><Book/>}/>
         </Switch>
       </div>
     </Router>

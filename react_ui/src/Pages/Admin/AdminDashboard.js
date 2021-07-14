@@ -214,6 +214,7 @@ const AdminDashboard = () => {
           display: "inline-block",
           background: 'black', 
           borderRadius: '5px', 
+          marginTop: '20px',
           padding: "10px",
           whiteSpace: "pre-line", 
           marginBottom: '10px'
