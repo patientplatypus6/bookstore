@@ -58,58 +58,92 @@ shipping price
 book price */
 
 .wrapper {
-  display: grid;
-  width: 100%;
+  display: grid;  
   height: calc(100vh - 30px);
   grid-gap: 0px;
-  grid-template-columns: 5vw 18vw 18vw 18vw 18vw 18vw 5vw;
+  min-height: 100vh;
+  max-width: 100vw;
+  /* grid-template-rows: 20vw; */
+  grid-auto-rows: 35px;
+  grid-template-columns: auto 18vw 18vw 18vw 18vw 18vw auto;
   grid-template-areas:
-            "sidemarginl ... ...      ...      ...           ... sidemarginr"
-            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"
-            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"
-            "sidemarginl ... ...      ...      ...           ... sidemarginr"
+            "sidemarginl ... ...      ...      ...           ... sidemarginr"  
+            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"  
+            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"  
+            "sidemarginl ... titlebox titlebox titlebox      ... sidemarginr"  
+            "sidemarginl ... ...      ...      ...           ... sidemarginr"  
             "sidemarginl ... erratbox erratbox erratbox      ... sidemarginr"           
             "sidemarginl ... ...      ...      ...           ... sidemarginr"           
-            "sidemarginl mainpics mainpics pricesbox pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics pricesbox pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"  
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"           
-            "sidemarginl mainpics mainpics blurbsbox blurbsbox blurbsbox sidemarginr"                
-            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"            "sidemarginl ...      ...      blurbsbox blurbsbox blurbsbox sidemarginr"
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"           
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"  
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"
-            "sidemarginl ... ...      ...      ...      ... sidemarginr"
-            "sidemarginl ... ...      ...      ...      ... sidemarginr";
-  /* background-color: ; */
+            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"           
+            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"                
+            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"
+            "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"           
+            "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"           
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr";           
   color: #444;
+}
+
+.roundedcontainer{
+  display: inline-block;
+  margin: 5px;
+  border-radius: 2px solid black;
+  padding: 5px;  
+}
+
+.fixedcontainer{
+  display: inline-block;
+  position: fixed;
+  background-color: black;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .sidemarginl{
   grid-area: sidemarginl;
-  background: blue;
+  background: rgb(43, 43, 59);
 }
 .sidemarginr{
   grid-area: sidemarginr;
-  background: blue;
+  background: rgb(43, 43, 59);
 }
-.titlebox{
-  grid-area: titlebox;
-  background: red;
-} 
+
+.allpicsb{
+  grid-area: allpicsb;
+  background: rgb(19, 250, 31);
+}
+
+.artistbox{
+  grid-area: artistbox;
+  background: rgb(24, 111, 151);
+}
+
+.synopsisb{
+  grid-area: synopsisb;
+  background: rgb(52, 34, 153);
+}
+
+.condition{
+  grid-area: condition;
+  background: rgb(26, 218, 202);
+}
 
 .blurbsbox{
   grid-area: blurbsbox;
@@ -123,7 +157,18 @@ book price */
 
 .erratbox{
   grid-area: erratbox;
-  background: brown;
+  background: rgb(182, 86, 8);
+  border: 2px solid black;
+  color: black;
+  border-radius: 5px;
+} 
+
+.titlebox{
+  grid-area: titlebox;
+  border: 2px solid black;
+  color: black;
+  border-radius: 5px;
+  background: rgb(151, 58, 4);
 } 
 
 .mainpics{

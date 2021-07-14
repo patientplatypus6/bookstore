@@ -100,6 +100,9 @@ const EditBook = () => {
       requestType:"post",
       uri:"book/updatepics"
     }
+
+    console.log("before request and value of picturepayload: ", picturepayload)
+
     handlefetch(payload).then(result=>{
       console.log("value of results: ", result)
       resetBookEntries()
@@ -149,11 +152,17 @@ const EditBook = () => {
     handlefetch(payload).then(result=>{
       console.log("result from findpics: ", result)
       var temppicdata = []
-      result.forEach(item=>{
+      var temppicfrontindex = 0
+      var temppicbackindex = 0
+      result.forEach((item,i)=>{
         temppicdata.push(item.picbyte)
+        temppicfrontindex = item.frontcover?i:temppicfrontindex
+        temppicbackindex = item.backcover?i:temppicbackindex
         console.log('value of item.picybyte: ', item.picbyte)
       })  
       setUploadpicdata(temppicdata)
+      setPicfrontindex(temppicfrontindex)
+      setPicbackindex(temppicbackindex)
     })  
   }
 
@@ -297,6 +306,7 @@ const EditBook = () => {
         <div style={{marginTop: '5px'}}>
           <span style={{marginRight: '5px'}}> Select Front Cover Image Index </span>
           <select
+            value={picfrontindex}
             onChange={(e)=>{
               console.log("value of e.target.value: ", e.target.value)
               setPicfrontindex(e.target.value)
@@ -321,6 +331,7 @@ const EditBook = () => {
           <div style={{marginTop: '5px'}}>
             <span style={{marginRight: '5px'}}> Select Back Cover Image Index </span>
             <select
+              value={picbackindex}
               onChange={(e)=>{
                 console.log("value of e.target.value: ", e.target.value)
                 setPicbackindex(e.target.value)
@@ -560,10 +571,17 @@ const EditBook = () => {
             <input 
               className='inputBox'
               value={isbn}
+              disabled
               onChange={(e)=>{
                 setIsbn(e.target.value)
               }}
             />
+            <br/>
+            <div
+              style={{fontSize: '0.75rem'}}
+            >
+              Book ID tied to ISBN+Date.now(). <br/><span style={{fontWeight: 'bold'}}>If change needed, delete and reupload book info.</span>
+            </div>
           </div>
           <br/>
           <div>

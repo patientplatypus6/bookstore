@@ -423,7 +423,6 @@ const AddBook = () => {
           background: 'rgb(100,0,0)', 
           display: 'inline-block', 
           padding: '20px', 
-          marginTop: '20px',
           verticalAlign: 'top',
           marginBottom: '20px'
         }}    

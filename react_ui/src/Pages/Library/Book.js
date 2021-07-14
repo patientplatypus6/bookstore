@@ -27,34 +27,83 @@ const Book = () => {
     <div>
       <div className="wrapper">
         <div className="titlebox">
-          <div 
-            style={{
-              marginTop: '20px',
-              fontWeight: 'bold',
-
-            }}
-          >
+          <h2 style={{lineHeight: '1rem'}}>
             {book!=null?book.title:""}
-          </div>
+          </h2>
+          <p>
+            {book!=null?book.author:""}
+          </p>
         </div>
         <div className="sidemarginl">
-          k
+          
         </div>
         <div className="sidemarginr">
-          k
+          
         </div>
         <div className="erratbox">
-          k
+          <div 
+            style={{
+              display: 'flex', 
+              flexDirection: 'row', 
+              width: '100%', 
+              height: '100%',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                flex: 1, 
+
+              }}
+            >
+              {book!=null?book.publisher:""}
+            </div>
+            <div
+              style={{
+                flex: 1
+              }}
+            >
+              {book!=null?book.edition:""}
+            </div>
+            <div
+              style={{
+                flex: 1
+              }}
+            >
+              {book!=null?book.currentcopyright:""}
+            </div>
+            <div
+              style={{
+                flex: 1
+              }}
+            >
+              {book!=null?book.isbn:""}
+            </div>
+            <div
+              style={{
+                flex: 1
+              }}
+            />
+          </div>
         </div>
         <div className="mainpics">
-          k
+          <div className='roundedcontainer'>
+          </div> 
         </div>
-        <div className="blurbsbox">
-          k
+        <div className="allpicsb">
+          
         </div>
-
+        <div className="artistbox">
+          
+        </div>
+        <div className="synopsisb">
+          
+        </div>
         <div className="pricesbox">
-          k
+          
+        </div>
+        <div className="condition">
+          
         </div>
       </div>
     </div>
