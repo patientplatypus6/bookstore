@@ -201,7 +201,7 @@ const EditBook = () => {
   }
 
   useEffect(()=>{ 
-    console.log("value of uploadpicdata: ", uploadpicdata)
+    // console.log("value of uploadpicdata: ", uploadpicdata)
   }, [])
 
   useEffect(()=>{
@@ -221,7 +221,7 @@ const EditBook = () => {
     console.log("*********")
     console.log("*********")
     console.log("*********")
-    console.log('value of uploadpicdata: ', uploadpicdata)
+    // console.log('value of uploadpicdata: ', uploadpicdata)
     console.log("*********")
     console.log("*********")
     console.log("*********")

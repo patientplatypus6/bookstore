@@ -48,8 +48,10 @@ suspend fun deleteall(){
   var pathFile = "src/main/resources/static/images"
   File(pathFile).walk().forEach {
     println(it)
-    println("now deleting pic on startup")
-    it.delete()
+    println(it.toString())
+    if(it.toString().contains(".")){
+      it.delete()
+    }
   }
 }
 
@@ -94,6 +96,7 @@ suspend fun picextrev(picstring: String):String{
 }
 
 suspend fun writepic(picstring: String, filename: String){
+  // println("inside writepic and picstring $picstring and filename $filename")
   val cleaned64 = picstring.split(",")[1]
   val pathFile = "src/main/resources/static/images/"+filename
   val imageByteArray = Base64.getDecoder().decode(cleaned64)

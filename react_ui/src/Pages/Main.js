@@ -320,7 +320,7 @@ const Main = () => {
             register
           </div>
         </div>:
-        <div style={{display: 'inline-block'}}>
+        <div style={{display: 'inline-block', float: 'right', marginRight: '10px'}}>
           <div style={{display: 'inline-block', color: 'white', marginRight: '10px'}}>
             Welcome {localStorage.getItem('username')}!
           </div>

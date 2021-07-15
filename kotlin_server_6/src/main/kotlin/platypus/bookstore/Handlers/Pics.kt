@@ -24,9 +24,13 @@ class PicsHandler(val picRepo: PicRepository){
 
   suspend fun savebookpics(picdata: Picdata):Boolean{
     println("inside savebookpics in pic handler")
+    var filesubstring =  picdata.bookuniqueid+"pic"
+    
+    println("value of filesubstring $filesubstring")
 
-    var filesubstring =  picdata.bookuniqueid+"pic" 
     deleteprev(filesubstring)
+
+    println("after deleteprev handler")
 
     if(picdata.files[0].length!=1){
       for((index, file) in picdata.files.withIndex()){
