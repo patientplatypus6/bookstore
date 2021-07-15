@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 // import Button from '../Components/SubComponents/Button/Button'
 // import InputBox from '../Components/SubComponents/InputBox/InputBox'
 // import TextBox from '../Components/SubComponents/TextBox/TextBox'
@@ -18,21 +18,22 @@ import Book from '../Pages/Library/Book'
 import BookShelf from '../Pages/Library/BookShelf'
 import About from '../Pages/Library/About'
 
-// import ActionHandler from '../Redux/actionhandler.js'
-
 import { useLocation } from 'react-router-dom'
 import AddRevenueCost from './Admin/AddRevenueCost';
 
 import {fetchrequest} from '../api/fetch'
 
 import './main.css'
+import { render } from '@vue/runtime-dom';
 
 const Main = () => {
-  // render(){
 
-    // var location = useLocation().pathname
-
-
+    const[username, setUsername] = useState("")
+    const[password, setPassword] = useState("")
+    const[login, setLogin] = useState([])
+    const[loginmodal, setLoginmodal] = useState(false)
+    const[modalmessage, setModalmessage] = useState("")
+    const[loggedin, setLoggedin] = useState(false)
 
     const handlefetch = (payload) => {
       console.log('inside handlefetch and value of payload: ', payload)
@@ -42,11 +43,22 @@ const Main = () => {
       }
       return fetchasync();
     }
-    
 
-
-    const[username, setUsername] = useState("")
-    const[password, setPassword] = useState("")
+    const handleLogout = () => {
+      var payload = {
+        body: {
+          username, 
+          password
+        },
+        requestType: "post", 
+        uri: "user/logout"
+      } 
+      handlefetch(payload).then(result=>{
+        setLoggedin(false)
+        localStorage.removeItem('username')
+        localStorage.removeItem('cookie')
+      })     
+    }
 
     const handleLogin = () => {
       var payload = {
@@ -59,16 +71,142 @@ const Main = () => {
       } 
       handlefetch(payload).then(result=>{
         console.log('value of result: ', result)
+        setLogin(result)
+        if(!result.success){
+          setUsername("")
+          setPassword("")
+          setModalmessage(`Username or password was not found in database. \n Please register as a new user or retry.`)
+          console.log('value of login: ', login)
+          console.log('value of loginmodal: ', loginmodal)
+          setLoginmodal(true)
+        }else{
+          setLoginmodal(false)
+          setLoggedin(true)
+          localStorage.setItem('username', username)
+          localStorage.setItem('cookie', result.cookie)
+          setUsername("")
+          setPassword("")
+        }
       })
     }
 
-    const usePathname = () => {
-      const location = useLocation();
-      console.log('value of location.pathname: ', location.pathname)
-      return location.pathname;
+    const handleRegister = () => {
+      var payload = {
+        body: {
+          username,
+          password
+        },
+        requestType: "post", 
+        uri: "user/register"
+      } 
+      handlefetch(payload).then(result=>{
+        console.log('value of result: ', result)
+        setLogin(result)
+        if(!result.success){
+          setUsername("")
+          setPassword("")
+          setModalmessage(`Username already in use. \n Please register a new username and password or log in to an existing account.`)
+          console.log('value of login: ', login)
+          console.log('value of loginmodal: ', loginmodal)
+          setLoginmodal(true)
+        }else{
+          setLoginmodal(false)
+          setLoggedin(true)
+          localStorage.setItem('username', username)
+          localStorage.setItem('cookie', result.cookie)
+          setUsername("")
+          setPassword("")
+        }
+      })
+    }
+
+    const renderLoginModal = () => {
+      console.log('value of loginmodal in renderLoginModal: ', loginmodal)
+      if(loginmodal==true){
+        return(
+          <div
+            style={{
+              position: 'fixed',
+              top: 0, left: 0, bottom: 0, right: 0, 
+              background: 'rgba(0,0,0,0.6)', 
+              color: 'white'
+            }}
+          >
+            <div
+              style={{
+                width: '100%', 
+                height: '100%', 
+                position: 'relative'
+              }}
+            >
+              <div
+                style={{
+                  width: '50vw', 
+                  marginLeft: '25vw', 
+                  marginRight: '25vw', 
+                  background: 'grey',
+                  color: 'black',
+                  borderRadius: '5px', 
+                  border: '2px solid blue', 
+                  marginTop: '20vh', 
+                  padding: '10px', 
+                  textAlign: 'center'
+                }}
+              >
+                <br/>
+                {modalmessage}
+                <br/><br/>
+                <div style={{display: 'inline', marginRight: '10px'}}>
+                  <span style={{marginRight: '5px', color: 'rgb(0,0,0)'}}>user</span>
+                  <input 
+                    value={username}
+                    onChange={(e)=>{
+                      setUsername(e.target.value)
+                    }}
+                  />
+                </div>
+                <div style={{display: 'inline', marginRight: '10px'}}>
+                  <span style={{marginRight: '5px', color: 'rgb(0,0,0)'}}>pass</span>
+                  <input 
+                    value={password}
+                    type='password'
+                    onChange={(e)=>{
+                      setPassword(e.target.value)
+                    }}
+                  />
+                </div>
+                <div
+                  className='button'
+                  style={{display: 'inline', marginRight: '5px'}}
+                  onClick={()=>{
+                    handleLogin()
+                  }}
+                >
+                  login
+                </div>
+                <div
+                  className='button'
+                  style={{display: 'inline'}}
+                  onClick={()=>{
+                    handleRegister()
+                  }}
+                >
+                  register
+                </div>
+                <br/>
+                <br/>
+              </div>
+            </div>
+          </div>
+        )
+      }else{
+        return(<div/>)
+      }
     }
 
     return(
+      <div>
+      {renderLoginModal()}
       <Router>
       <div
         style={{
@@ -139,7 +277,7 @@ const Main = () => {
           }}
           exact to="/admin/dashboard">Admin Dashboard</NavLink>
         </nav> 
-        <div 
+        {!loggedin?<div 
           style={{
             display: 'inline-block', float: 'right', marginRight: '10px'
           }}
@@ -157,6 +295,7 @@ const Main = () => {
             <span style={{marginRight: '5px', color: 'rgb(200,200,200)'}}>pass</span>
             <input 
               value={password}
+              type='password'
               onChange={(e)=>{
                 setPassword(e.target.value)
               }}
@@ -164,14 +303,35 @@ const Main = () => {
           </div>
           <div
             className='button'
-            style={{display: 'inline'}}
+            style={{display: 'inline', marginRight: '5px'}}
             onClick={()=>{
               handleLogin()
             }}
           >
             login
           </div>
-        </div>
+          <div
+            className='button'
+            style={{display: 'inline'}}
+            onClick={()=>{
+              handleRegister()
+            }}
+          >
+            register
+          </div>
+        </div>:
+        <div style={{display: 'inline-block'}}>
+          <div style={{display: 'inline-block', color: 'white', marginRight: '10px'}}>
+            Welcome {localStorage.getItem('username')}!
+          </div>
+          <div className='button'
+            onClick={()=>{
+              handleLogout()
+            }}
+          >
+            log out
+          </div>
+        </div>}
       </div> 
       <Switch>
           <Route exact path="/" render={()=><BookShelf/>}/>
@@ -183,8 +343,8 @@ const Main = () => {
           <Route exact path="/book" render={()=><Book/>}/>
       </Switch>
     </Router>
+    </div>
     );
-  // }
 }
 
 

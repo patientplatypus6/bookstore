@@ -13,12 +13,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-
 router.get("/test", function(req, res, next){
   console.log('in get /test')
-  res.send({somejson: 'reply'})
+  res.send({reply: 'reply'})
 })
-
 
 router.get("/retrieve", function(req, res, next){
   console.log('in get /retrieve')

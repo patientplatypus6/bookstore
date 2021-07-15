@@ -1,7 +1,9 @@
 package platypus.bookstore.utility
 
+
 import java.io.File
 import java.util.Base64
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/to-byte-array.html
 
@@ -16,6 +18,18 @@ class ByteArrayHandler(){
   }
 }
 
+
+//--------- picture handler functions ---------
+
+suspend fun encodestring(input: String):String{
+  var encoder = BCryptPasswordEncoder()
+  return encoder.encode(input)
+}
+
+suspend fun matchencode(input: String, hash: String):Boolean{
+  var encoder = BCryptPasswordEncoder()
+  return encoder.matches(input, hash)
+}
 
 //--------- picture handler functions ---------
 

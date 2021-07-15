@@ -26,40 +26,44 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     )
     suspend fun saveabook(title:String, subtitle:String, author: String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String):Boolean
 
-    @Query("""
+    @Query(
+    """
       select * from book
-    """)
+    """
+    )
     suspend fun findBooks():List<Book>
 
-    @Query("""
+    @Query(
+    """
       select * from book where dateordered is null
-    """)
+    """
+    )
     suspend fun findBooksforsale():List<Book>
 
     @Modifying
     @Query(
-      """
-        update book set 
-        title=:title,
-        subtitle=:subtitle,
-        author=:author,
-        publisher=:publisher,
-        currentcopyright=:currentcopyright,
-        bookedition=:bookedition,
-        storyinfo=:storyinfo,
-        condition=:condition,
-        isbn=:isbn
-        where
-        uniqueid=:uniqueid
-      """
+    """
+      update book set 
+      title=:title,
+      subtitle=:subtitle,
+      author=:author,
+      publisher=:publisher,
+      currentcopyright=:currentcopyright,
+      bookedition=:bookedition,
+      storyinfo=:storyinfo,
+      condition=:condition,
+      isbn=:isbn
+      where
+      uniqueid=:uniqueid
+    """
     )
     suspend fun updateabook(title:String, subtitle:String, author:String, publisher:String, currentcopyright:String, bookedition:String, storyinfo:String, condition:String, isbn:String,uniqueid:String):Boolean
 
     @Modifying
     @Query(
-      """
-        DELETE from book where uniqueid = :bookuniqueid
-      """
+    """
+      DELETE from book where uniqueid = :bookuniqueid
+    """
     )
     suspend fun deletebybookid(uniqueid: String):Boolean
 

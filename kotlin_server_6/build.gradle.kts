@@ -37,6 +37,9 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.12.4")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.+")
 	// https://mvnrepository.com/artifact/com.github.kittinunf.fuel/fuel
 	// implementation("com.github.kittinunf.fuel:fuel:1.12.1")
 

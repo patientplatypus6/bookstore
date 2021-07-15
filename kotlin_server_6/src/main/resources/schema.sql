@@ -9,10 +9,10 @@ DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS userorder;
 DROP TABLE IF EXISTS administrator;
 
-CREATE TABLE IF NOT EXISTS administrator(
-    username VARCHAR(255) NOT NULL,
-    passphrase VARCHAR(255) NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS administrator(
+--     username VARCHAR(255) NOT NULL,
+--     passphrase VARCHAR(255) NOT NULL
+-- );
 
 -- DROP TABLE IF EXISTS useraddress;
 CREATE TABLE IF NOT EXISTS useraddress
@@ -98,10 +98,12 @@ CREATE TABLE IF NOT EXISTS revenuecost
 CREATE TABLE IF NOT EXISTS user
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
-    phone INT, 
+    phone VARCHAR(255), 
     email VARCHAR(255),
-    firstname VARCHAR(255) NOT NULL,
-    lastname VARCHAR(255) NOT NULL
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    username VARCHAR(255), 
+    hashedpassword VARCHAR(255)
 );
 
 -- DROP TABLE IF EXISTS userorder;
