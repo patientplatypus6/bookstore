@@ -26,9 +26,6 @@ import java.io.*
 import java.util.Base64
   
 
-
-
-
 @RestController
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/book")

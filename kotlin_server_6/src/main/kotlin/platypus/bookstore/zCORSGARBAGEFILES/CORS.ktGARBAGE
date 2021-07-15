@@ -11,8 +11,8 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.reactive.config.EnableWebFlux
+
+
 
 
 import reactor.core.publisher.Mono;
@@ -44,22 +44,37 @@ public class CorsConfiguration {
   @Bean
   fun corsWebFilter(): CorsWebFilter {
       val corsConfig = CorsConfiguration()
-      corsConfig.addAllowedOrigin("http://localhost:3000")
-      corsConfig.addAllowedMethod("GET")
-      corsConfig.addAllowedMethod("PUT")
-      corsConfig.addAllowedMethod("POST")
-      corsConfig.addAllowedMethod("OPTION")
-      corsConfig.addAllowedMethod("DELETE")
-      corsConfig.addAllowedHeader("x-requested-with")
-      corsConfig.addAllowedHeader("authorization")
-      corsConfig.addAllowedHeader("Content-Type")
-      corsConfig.addAllowedHeader("credential")
-      corsConfig.addAllowedHeader("X-XSRF-TOKEN")
-
-      val source = UrlBasedCorsConfigurationSource().apply {
-          registerCorsConfiguration("/**", corsConfig)
-      }
+      corsConfig.allowedOrigins = Arrays.asList(ALLOWED_ORIGIN)
+      corsConfig.maxAge = MAX_AGE.toLong()
+      //Notice it's singular. Can't be comma separated list
+      corsConfig.addAllowedMethod(ALLOWED_METHOD)
+      corsConfig.addAllowedHeader(ALLOWED_HEADER)
+  
+      val source = UrlBasedCorsConfigurationSource()
+      source.registerCorsConfiguration(MATCH_ALL_PATH_SEGMENTS, corsConfig)
+  
       return CorsWebFilter(source)
   }
+
+  // @Bean
+  // fun corsWebFilter(): CorsWebFilter {
+  //     val corsConfig = CorsConfiguration()
+  //     corsConfig.addAllowedOrigin("http://localhost:3000")
+  //     corsConfig.addAllowedMethod("GET")
+  //     corsConfig.addAllowedMethod("PUT")
+  //     corsConfig.addAllowedMethod("POST")
+  //     corsConfig.addAllowedMethod("OPTION")
+  //     corsConfig.addAllowedMethod("DELETE")
+  //     corsConfig.addAllowedHeader("x-requested-with")
+  //     corsConfig.addAllowedHeader("authorization")
+  //     corsConfig.addAllowedHeader("Content-Type")
+  //     corsConfig.addAllowedHeader("credential")
+  //     corsConfig.addAllowedHeader("X-XSRF-TOKEN")
+
+  //     val source = UrlBasedCorsConfigurationSource().apply {
+  //         registerCorsConfiguration("/**", corsConfig)
+  //     }
+  //     return CorsWebFilter(source)
+  // }
 
 }

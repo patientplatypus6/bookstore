@@ -24,9 +24,22 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+
+	// // https://www.baeldung.com/spring-session-reactive
+	// // https://mvnrepository.com/artifact/org.springframework.session/spring-session-core
+	// implementation("org.springframework.session:spring-session-core")
+	// // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+  // implementation("org.springframework.boot:spring-boot-starter-data-redis")
+  // // https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis
+  // implementation("org.springframework.session:spring-session-data-redis")
+
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+
+	// https://mvnrepository.com/artifact/com.github.kittinunf.fuel/fuel
+	// implementation("com.github.kittinunf.fuel:fuel:1.12.1")
+
 
 
 	// need special cors filter if importing spring-boot-starter-security in project
