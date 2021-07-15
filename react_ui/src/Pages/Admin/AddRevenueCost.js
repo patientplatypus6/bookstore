@@ -1,20 +1,13 @@
 import React, {Component, useState, useEffect} from 'react';
 import './admin.css'
-// import { observer} from "mobx-react-lite";
-// import { toJS } from "mobx"
-// import InputBox from '../../Components/SubComponents/InputBox/InputBox'
-// import TextBox from '../../Components/SubComponents/TextBox/TextBox'
-// import Button from '../../Components/SubComponents/Button/Button'
-import { useDispatch, useSelector } from 'react-redux';
-// import RevenueCost from '../../Components/revenueCost/revenueCost';
-// import {
-//   modifyuploadpicdata, 
-//   setcover
-// } from '../../Redux/uploadpicdata'
 import {dateFormat} from '../../utility/utility'
 import {fetchrequest, handlefetch} from '../../api/fetch'
 
+import { useHistory } from "react-router-dom";
+
 const AddRevenueCost = () => {
+
+  let history = useHistory();
 
   const [isbn, setIsbn] = useState("NONE")
   const [title, setTitle] = useState("NONE")
@@ -52,45 +45,32 @@ const AddRevenueCost = () => {
     setPicbackindex(0)
   }
 
-  const addbookhandler = () => {
-    
-    var bookuniqueid = isbn + Date.now()
+  const addrevenuecosthandler = () => {
+
+    console.log("value of revenuecostitem: ", revenuecostitem)
 
     var payload = {
       body: {
-        book: {
-          title, 
-          subtitle,
-          publisher,
-          currentcopyright,
-          bookedition, 
-          uniqueid: bookuniqueid,  
-          authorbio, 
-          synopsis, 
-          isbn,
-        },
-        revenuecost: revenuecostitem
+        revenuecostlist: revenuecostitem
       }, 
       requestType:"post",
-      uri:"book/addbook"
+      uri:"revenuecost/addrevenuecosts"
     }
-    var picturepayload = {
-      body: {
-        frontcoverindex: picfrontindex, 
-        backcoverindex: picbackindex, 
-        bookuniqueid, 
-        files: uploadpicdata
-      }, 
-      requestType:"post",
-      uri:"book/addpics"
-    }
+
     handlefetch(payload).then(result=>{
+      console.log("**********************")
+      console.log("**********************")
+      console.log("**********************")
+
       console.log("value of results: ", result)
-      resetBookEntries()
-    })
-    handlefetch(picturepayload).then(result=>{
-      console.log("value of results: ", result)
-      resetPicEntries()
+      
+      console.log("**********************")
+      console.log("**********************")
+      console.log("**********************")
+      history.push({
+        pathname: '/admin/dashboard',
+        dashmessage: `Revenue cost has been added to database`
+      })
     })
   }
 
@@ -223,16 +203,33 @@ const AddRevenueCost = () => {
         <div>
           Revenue Cost Name
           <br/>
-          <input 
-            className='inputBox'
-            value={revenuecostitem[itemindex]['rcname']}
+          <select
             onChange={(e)=>{
               console.log("value of e.target.value: ", e.target.value)
-              var temprevenuecostitem= revenuecostitem
+              var temprevenuecostitem = revenuecostitem
               temprevenuecostitem[itemindex]['rcname'] = e.target.value
               setRevenuecostitem([...temprevenuecostitem])
             }}
-          />
+          >
+            <option value={'GENERIC'}>
+              GENERIC
+            </option>
+            <option value={'COST - MONTHLY (HOSTING)'}>
+              COST - MONTHLY (HOSTING)
+            </option>
+            <option value={'COST - STRIPE CHARGE (PROJECTED)'}>
+              COST - STRIPE CHARGE (PROJECTED)
+            </option>
+            <option value={'COST - STRIPE CHARGE (SOLD)'}>
+              COST - STRIPE CHARGE (SOLD)
+            </option>
+            <option value={'COST - OTHER FIXED (SOLD)'}>
+              COST - OTHER FIXED (SOLD)
+            </option>
+            <option value={'COST - OTHER VARIABLE (SOLD)'}>
+              COST - OTHER VARIABLE (SOLD)
+            </option>
+          </select>
         </div>
         <br/>
         <div>
@@ -333,6 +330,27 @@ const AddRevenueCost = () => {
     )
   }
 
+  const initrc = () => {
+
+    var datestring = Date.now()
+    var tempindex = revenuecostindex
+    tempindex.push(datestring)
+    setRevenuecostindex(tempindex)
+    var temprevenuecostitem = [...revenuecostitem]
+    temprevenuecostitem.push({
+      uniqueid: datestring,
+      rcname: "NONE", 
+      rcdescription: "NONE", 
+      rcvalue: "NONE", 
+      rcdate: dateFormat(new Date (), "%Y-%m-%d %H:%M:%S", true)
+    })
+    setRevenuecostitem(temprevenuecostitem)
+  }
+
+  useEffect(()=>{
+    initrc()
+  }, [])
+
   return(
     <>
       <div
@@ -341,7 +359,8 @@ const AddRevenueCost = () => {
           display: 'inline-block', 
           padding: '20px', 
           verticalAlign: 'top',
-          marginBottom: '20px'
+          marginBottom: '20px', 
+          marginTop: '20px'
         }}    
       >
         <div
@@ -359,182 +378,30 @@ const AddRevenueCost = () => {
               display: 'inline-block'
             }}
           >
-            Add Book
+            Add Revenue Cost
           </div>
           <br/>
-          <br/>
-          <div>
-            ISBN
-            <br/>
-            <input 
-              className='inputBox'
-              value={isbn}
-              onChange={(e)=>{
-                setIsbn(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Title
-            <br/>
-            <input 
-              className='inputBox'
-              value={title}
-              onChange={(e)=>{
-                setTitle(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Sub Title
-            <br/>
-            <input 
-              className='inputBox'
-              value={subtitle}
-              onChange={(e)=>{
-                setSubtitle(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Publisher
-            <br/>
-            <input 
-              className='inputBox'
-              value={publisher}
-              onChange={(e)=>{
-                setPublisher(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Current Copyright
-            <br/>
-            <input 
-              className='inputBox'
-              value={currentcopyright}
-              onChange={(e)=>{
-                setCurrentcopyright(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Edition
-            <br/>
-            <input 
-              className='inputBox'
-              value={bookedition}
-              onChange={(e)=>{
-                setBookedition(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Author Biography
-            <br/>
-            <textarea 
-              className='textbox'
-              rows="4" cols="30" 
-              value={authorbio}
-              onChange={(e)=>{
-                setAuthorbio(e.target.value)
-              }}
-            />
-          </div>
-          <br/>
-          <div>
-            Synopsis
-            <br/>
-            <textarea 
-              className='textbox'
-              rows="4" cols="30" 
-              value={synopsis}
-              onChange={(e)=>{
-                setSynopsis(e.target.value)
-              }}
-            />
-          </div>
           <br/>
           {revenuecostHandler()}
           <div>
           <div className='button'
             onClick={()=>{
-              var datestring = Date.now()
-              var tempindex = revenuecostindex
-              tempindex.push(datestring)
-              setRevenuecostindex(tempindex)
-              var temprevenuecostitem = [...revenuecostitem]
-              temprevenuecostitem.push({
-                uniqueid: datestring,
-                rcname: "NONE", 
-                rcdescription: "NONE", 
-                rcvalue: "NONE", 
-                rcdate: dateFormat(new Date (), "%Y-%m-%d %H:%M:%S", true)
-              })
-              setRevenuecostitem(temprevenuecostitem)
-              console.log("value of revenuecostitem : ", revenuecostitem)
+              initrc()
             }}
           >  
-            Add Revenue Cost
+            Add Revenue Cost Item
           </div>
           </div>
           <br/>
           <div>
             <div className='button'
               onClick={()=>{
-                addbookhandler()
+                addrevenuecosthandler()
               }}
             >  
-              Add Book
+              Add Revenue Costs
             </div>
           </div>
-        </div>
-        <div
-          style={{
-            background: 'grey', 
-            display: 'inline-block', 
-            padding: '20px', 
-            marginLeft: '5px',
-            verticalAlign: 'top',
-          }}
-        >
-          <div
-            style={{
-              fontWeight: 'bold', 
-              fontSize: '1.5rem', 
-              display: 'inline-block'
-            }}
-          >
-            Add Book Images
-          </div>
-          <br/><br/>
-          <input type='file' multiple
-            onChange={(e)=>{
-              const fileList = e.target.files
-              var base64List = []
-              const readerHandler = (i) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                  base64List.push(e.target.result)
-                  if(i<fileList.length - 1){
-                    i++
-                    readerHandler(i)
-                  }else if (i == fileList.length - 1){
-                    setUploadpicdata(base64List)
-                  }
-                } 
-                reader.readAsDataURL(fileList[i])
-              }
-              readerHandler(0)
-            }}
-          />
-          {imageDisplayHandler()}
         </div>
       </div>
     </>

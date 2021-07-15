@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS book
     isbn VARCHAR(65535) NOT NULL,
     dateordered DATETIME, 
     dateshipped DATETIME, 
-    cartaddedlast DATETIME
+    incart VARCHAR(255) NOT NULL
 );
 
 -- DROP TABLE IF EXISTS bookerrata;
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS revenuecost
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
     uniqueid VARCHAR(255) NOT NULL,
-    bookuniqueid VARCHAR(255) NOT NULL,
+    bookuniqueid VARCHAR(255),
     userorderuniqueid VARCHAR(255) NOT NULL,
     rcname VARCHAR(255) NOT NULL,
     rcdescription VARCHAR(65535) NOT NULL,

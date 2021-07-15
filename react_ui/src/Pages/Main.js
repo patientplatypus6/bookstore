@@ -252,7 +252,7 @@ const Main = () => {
             color: "rgb(250,250,250)"
           }}
           exact to="/book">Book</NavLink>
-          <NavLink 
+          {/* <NavLink 
           style={{
             textDecoration: 'none', 
             color: "rgb(180,180,180)", 
@@ -263,7 +263,7 @@ const Main = () => {
             padding: '20px',
             color: "rgb(250,250,250)"
           }}
-          exact to="/admin/addrevenuecost">Add Revenue Cost</NavLink>
+          exact to="/admin/addrevenuecost">Add Revenue Cost</NavLink> */}
           <NavLink 
           style={{
             textDecoration: 'none', 

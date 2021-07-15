@@ -14,6 +14,10 @@ data class RevenueCost(
   var rcdate: LocalDateTime = LocalDateTime.now()
 )
 
+data class RevenueCostList(
+  var revenuecosts: List<RevenueCost> = listOf<RevenueCost>()
+)
+
 data class RevenueCostBookName(
   var rcname: String = ""
 )

@@ -9,6 +9,7 @@ const AdminDashboard = () => {
   let history = useHistory();
 
   const [booklist, setBooklist] = useState([])
+  const [revenuecostlist, setRevenuecostlist] = useState([])
   const [pagenumber, setPagenumber] = useState(1)
   const [displayper, setDisplayper] = useState(25)
   const [dashmessage, setDashmessage] = useState("Welcome to the Administator dashboard! \n Action messages will appear hear from state changes in the database \n Thank you!")
@@ -34,6 +35,16 @@ const AdminDashboard = () => {
     payload.requestType='get'
     handlefetch(payload).then(result=>{
       setBooklist(result)
+    })
+  }
+
+  const findrevenuecosts = () => {
+    var payload = {}
+    payload.uri='revenuecost/allrevenuecosts' 
+    payload.requestType='get'
+    handlefetch(payload).then(result=>{
+      console.log("value of revenuecosts list: ", result)
+      setRevenuecostlist(result)
     })
   }
 
@@ -189,6 +200,7 @@ const AdminDashboard = () => {
 
   useEffect(()=>{
     findbooks()
+    findrevenuecosts()
     console.log("value of history: ", history)
     if(history!=undefined && history.location!=null && history.location.dashmessage!=null & history.location.dashmessage!=undefined){
       setDashmessage(history.location.dashmessage)

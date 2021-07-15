@@ -8,6 +8,10 @@ data class Comment(
   val content: String
 )
 
+data class DefaultReturn(
+  val message: String = "operation successful"
+)
+
 data class ResultString(
   val result: String
 )

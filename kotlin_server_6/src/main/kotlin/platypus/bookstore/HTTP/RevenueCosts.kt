@@ -43,4 +43,25 @@ public class RequestRevenueCost(private val bookRepo: BookRepository, private va
 		return revenuecostlist;
 	}
 
+	@GetMapping("/allrevenuecosts")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")	
+	suspend fun allrevenuecosts():List<RevenueCost>{
+		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
+		var revenuecosts:List<RevenueCost> = revenuecostshandler.findrevenuecosts()
+		return revenuecosts
+	}
+
+	@PostMapping("/addrevenuecosts")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")	
+	suspend fun addrevenuecosts(@RequestBody revenuecostlist: RevenueCostList):DefaultReturn{
+		println("value of revenuecosts: $revenuecostlist")
+		var updatedBool = true;
+		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
+		for(revenuecost in revenuecostlist.revenuecosts){
+			updatedBool = revenuecostshandler.addrevenuecost(revenuecost)
+		}
+		var default = DefaultReturn()
+		return default
+	}
+
 }

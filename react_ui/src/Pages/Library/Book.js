@@ -202,7 +202,7 @@ const Book = () => {
                 <div style={{background: 'darkgrey', color: 'black', padding: '5px'}}>
                   <div style={{fontWeight: 'bold'}}>My Guarantee to You</div>
                   <div>
-                    All of these books are currently in stock in the condition reported. They will be shipped in a timely manner to the address provided. All sales final.
+                    All books are currently in stock in the condition reported. They will be shipped in a timely manner to the address provided. All sales final.
                   </div>
                 </div>
               </div>
