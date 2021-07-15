@@ -56,6 +56,27 @@ pricebox
 
 shipping price
 book price */
+/* 
+.scrollcarousel {
+  animation-duration: 20s;
+  animation-name: scrollcarouselanim;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.scrollcarousel:hover{
+  animation-name: none;
+}
+
+@keyframes scrollcarouselanim {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+} */
 
 .wrapper {
   display: grid;  
@@ -74,28 +95,27 @@ book price */
             "sidemarginl ... ...      ...      ...           ... sidemarginr"  
             "sidemarginl ... erratbox erratbox erratbox      ... sidemarginr"           
             "sidemarginl ... ...      ...      ...           ... sidemarginr"           
-            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb pricesbox pricesbox sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"  
-            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"           
-            "sidemarginl mainpics mainpics synopsisb condition condition sidemarginr"                
-            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"            "sidemarginl allpicsb allpicsb synopsisb condition condition sidemarginr"
+            "sidemarginl mainpics mainpics storyinfob pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob pricesbox pricesbox sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob condition condition sidemarginr"  
+            "sidemarginl mainpics mainpics storyinfob condition condition sidemarginr"           
+            "sidemarginl mainpics mainpics storyinfob condition condition sidemarginr"                
+            "sidemarginl allpicsb allpicsb storyinfob condition condition sidemarginr"           
+            "sidemarginl allpicsb allpicsb storyinfob condition condition sidemarginr"            "sidemarginl allpicsb allpicsb storyinfob condition condition sidemarginr"            "sidemarginl allpicsb allpicsb storyinfob condition condition sidemarginr"            "sidemarginl allpicsb allpicsb storyinfob condition condition sidemarginr"            "sidemarginl allpicsb allpicsb storyinfob condition condition sidemarginr"
             "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"           
             "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"           
+            "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"
+            "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"
+            "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"
+            "sidemarginl allpicsb allpicsb artistbox artistbox artistbox sidemarginr"
             "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr"
-            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr";           
+            "sidemarginl ...      ...      artistbox artistbox artistbox sidemarginr";    
   color: #444;
 }
 
@@ -109,6 +129,7 @@ book price */
   background: rgb(153, 142, 119);
   height: calc(100% - 34px);
   width:  calc(100% - 34px);
+  overflow-y: auto;
 }
 
 .fixedcontainer{
@@ -141,8 +162,8 @@ book price */
   /* background: rgb(24, 111, 151); */
 }
 
-.synopsisb{
-  grid-area: synopsisb;
+.storyinfob{
+  grid-area: storyinfob;
   position: relative;
   /* background: rgb(52, 34, 153); */
 }
