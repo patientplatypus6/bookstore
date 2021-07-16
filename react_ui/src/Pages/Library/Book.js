@@ -32,7 +32,8 @@ const Book = (props) => {
   const addcartuser = () => {
     var payload = {
       body:{
-        bookuniqueid: book.uniqueid
+        bookuniqueid: book.uniqueid, 
+        username: localStorage.getItem('username')
       }
     }
     payload.requestType="postcookie"

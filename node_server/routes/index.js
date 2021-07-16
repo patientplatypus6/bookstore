@@ -18,9 +18,10 @@ router.get("/test", function(req, res, next){
   res.send({reply: 'reply'})
 })
 
-router.get("/retrieve", function(req, res, next){
+router.post("/retrieve", function(req, res, next){
   console.log('in get /retrieve')
-  client.get('framework', function(err, reply) {
+  console.log('and value of key: ', req.body.key)
+  client.get(req.body.key, function(err, reply) {
     console.log(reply); // ReactJS
     res.send({reply})
   });

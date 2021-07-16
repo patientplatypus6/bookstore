@@ -12,6 +12,14 @@ data class BookRC(
   var revenuecost: List<RevenueCost>
 )
 
+data class BookTime(
+  var book: Book = Book(),
+  var timeordered: String = "0",
+  var timeshipped: String = "0",
+  var incartguest: String = "0",
+  var incartuser: String = "0"
+)
+
 data class Book(
   var title: String = "",
   var subtitle: String = "", 

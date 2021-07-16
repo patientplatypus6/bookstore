@@ -30,9 +30,14 @@ class UsersHandler(val userRepo: UserRepository){
   }
 
   suspend fun loginredis(username: String):String{
-    var timehash = encodestring(System.currentTimeMillis().toString())
-    postredis(username, timehash)
-    return timehash
+    var systemtimesave = System.currentTimeMillis().toString()
+    postredis(username, systemtimesave)
+    var timehashcookie = encodestring(systemtimesave)
+    return timehashcookie
+  }
+
+  suspend fun checkloginredis(username: String, timehash: String):Boolean{
+    return matchencode(getkeyredis(username).get("reply")!!, timehash)
   }
 
   suspend fun newuser(userlogin: UserLogin):Boolean{

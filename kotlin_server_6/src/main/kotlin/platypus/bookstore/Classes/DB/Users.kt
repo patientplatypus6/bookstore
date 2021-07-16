@@ -11,15 +11,20 @@ data class UserLogout(
 )
 
 data class User(
-    val phone: String = "", 
-    val email: String = "",
-    val firstname: String = "",
-    val lastname: String = "",
-    val username: String = "", 
-    val hashedpassword: String = ""  
+  val phone: String = "", 
+  val email: String = "",
+  val firstname: String = "",
+  val lastname: String = "",
+  val username: String = "", 
+  val hashedpassword: String = ""  
 )
 
 data class Loggedin(
   var success: Boolean = false, 
   var cookie: String = ""
+)
+
+data class UserBookID(
+  var bookuniqueid: String = "",
+  var username: String = ""
 )

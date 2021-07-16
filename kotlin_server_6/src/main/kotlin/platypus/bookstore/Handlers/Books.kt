@@ -1,9 +1,9 @@
 package platypus.bookstore.handlers
 
 import platypus.bookstore.repos.BookRepository
-import platypus.bookstore.classes.db.Book
-import platypus.bookstore.classes.db.RevenueCost
-import platypus.bookstore.classes.db.BookRC
+import platypus.bookstore.classes.db.*
+
+// import java.math.BigInteger
 
 class BooksHandler(val bookRepo: BookRepository){
 
@@ -19,7 +19,6 @@ class BooksHandler(val bookRepo: BookRepository){
     return books;
   }
 
-
   suspend fun findbooksforsale():List<Book>{
     println("findBooks")
     val books:List<Book> = bookRepo.findBooksforsale();
@@ -28,10 +27,15 @@ class BooksHandler(val bookRepo: BookRepository){
   }
 
   suspend fun addbook(book: Book):Boolean{
+
+    var booktime = BookTime(book);
+
+    booktime.book = book
+
     var bookAdded:Boolean = bookRepo.saveabook(
-      book.title, book.subtitle, book.author, book.publisher, 
-      book.currentcopyright, book.bookedition, 
-      book.uniqueid, book.storyinfo, book.condition, book.isbn
+      booktime.book.title, booktime.book.subtitle, booktime.book.author, booktime.book.publisher, 
+      booktime.book.currentcopyright, booktime.book.bookedition, 
+      booktime.book.uniqueid, booktime.book.storyinfo, booktime.book.condition, booktime.book.isbn, booktime.timeordered, booktime.timeshipped, booktime.incartguest, booktime.incartuser
     )
     return bookAdded
   }
@@ -49,7 +53,7 @@ class BooksHandler(val bookRepo: BookRepository){
     var booknotorderednotcart:List<Book> = bookRepo.findBookIdNotOrderedNotCart(bookuniqueid, System.currentTimeMillis())
     for (book in booknotorderednotcart){
       println("value of book $book")
-      bookupdated = bookRepo.updateBookIdNotOrderedNotCartUser(System.currentTimeMillis())
+      bookupdated = bookRepo.updateBookIdinCartUser(bookuniqueid, System.currentTimeMillis())
     }
     return bookupdated
   }
@@ -59,7 +63,7 @@ class BooksHandler(val bookRepo: BookRepository){
     var booknotorderednotcart = bookRepo.findBookIdNotOrderedNotCart(bookuniqueid, System.currentTimeMillis())
     for (book in booknotorderednotcart){
       println("value of book $book")
-      bookupdated = bookRepo.updateBookIdNotOrderedNotCartGuest(System.currentTimeMillis())
+      bookupdated = bookRepo.updateBookIdinCartGuest(bookuniqueid, System.currentTimeMillis())
     }
     return bookupdated
   }

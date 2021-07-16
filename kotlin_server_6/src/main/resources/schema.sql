@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS pic(
 );
 
 -- DROP TABLE IF EXISTS book;
-CREATE TABLE IF NOT EXISTS book
+CREATE TABLE IF NOT EXISTS books
 (
-    -- id     INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     subtitle  VARCHAR(255) NOT NULL,
     author VARCHAR(255) NOT NULL,
@@ -54,10 +54,10 @@ CREATE TABLE IF NOT EXISTS book
     storyinfo VARCHAR(65535) NOT NULL,
     condition VARCHAR(65535) NOT NULL,
     isbn VARCHAR(65535) NOT NULL,
-    timeordered  BIGINT, 
-    timeshipped  BIGINT, 
-    incartguest BIGINT, 
-    incartuser BIGINT
+    timeordered VARCHAR(65535) NOT NULL, 
+    timeshipped VARCHAR(65535) NOT NULL, 
+    incartguest VARCHAR(65535) NOT NULL, 
+    incartuser VARCHAR(65535) NOT NULL
 );
 
 -- DROP TABLE IF EXISTS bookerrata;

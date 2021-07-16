@@ -9,6 +9,7 @@ import org.springframework.data.r2dbc.repository.Modifying
 import platypus.bookstore.classes.db.Book
 import platypus.bookstore.classes.ResultString
 import org.springframework.stereotype.Repository
+import java.math.BigInteger
 
 @Repository
 interface BookRepository : CoroutineCrudRepository<Book, Long> {
@@ -21,32 +22,65 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      insert into book (title, subtitle, author, publisher, currentcopyright, bookedition, uniqueid, storyinfo, condition, isbn, timeordered, timeshipped, incartguest, incartuser) values (:title, :subtitle, :author, :publisher, :currentcopyright, :bookedition, :uniqueid, :storyinfo, :condition, :isbn, 0, 0, 0, 0)
+      insert into books 
+      (
+        title, 
+        subtitle, 
+        author, 
+        publisher, 
+        currentcopyright, 
+        bookedition, 
+        uniqueid, 
+        storyinfo, 
+        condition, 
+        isbn, 
+        timeordered, 
+        timeshipped, 
+        incartguest, 
+        incartuser
+      ) 
+      values 
+      (
+        :title, 
+        :subtitle, 
+        :author, 
+        :publisher, 
+        :currentcopyright, 
+        :bookedition, 
+        :uniqueid, 
+        :storyinfo, 
+        :condition, 
+        :isbn, 
+        :timeordered, 
+        :timeshipped, 
+        :incartguest, 
+        :incartuser
+      )
     """
     )
-    suspend fun saveabook(title:String, subtitle:String, author: String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String):Boolean
+    suspend fun saveabook(title:String, subtitle:String, author: String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String, timeordered:String, timeshipped:String, incartguest:String, incartuser:String):Boolean
 
     @Query(
     """
-      select * from book
+      select * from books
     """
     )
     suspend fun findBooks():List<Book>
 
     @Query(
       """
-        select * from book 
+        select * from books 
         where 
         timeordered = 0 and
         uniqueid = :uniqueid and 
         (
           (
             incartguest=0 or
-            (incartguest - :currentmilliseconds < 300000)
+            (:currentmilliseconds - incartguest > 300000)
           ) or 
           (
             incartuser=0 or
-            (incartuser - :currentmilliseconds < 3600000)
+            (:currentmilliseconds - incartuser > 3600000)
           ) 
         )
       """    
@@ -55,7 +89,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
 
     @Query(
     """
-      select * from book where dateordered=''
+      select * from books where dateordered=''
     """
     )
     suspend fun findBooksforsale():List<Book>
@@ -63,47 +97,51 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      update book set
+      update books set
       incartguest=:currentmilliseconds
       where
+      uniqueid=:bookuniqueid
+      and
       (
         (
           incartguest=0 or
-          (incartguest - :currentmilliseconds < 300000)
+          (:currentmilliseconds - incartguest > 300000)
         ) or 
         (
           incartuser=0 or
-          (incartuser - :currentmilliseconds < 3600000)
+          (:currentmilliseconds - incartuser > 3600000)
         )   
       )
     """
     )
-    suspend fun updateBookIdNotOrderedNotCartGuest(currentmilliseconds: Long):Boolean
+    suspend fun updateBookIdinCartGuest(bookuniqueid: String, currentmilliseconds: Long):Boolean
 
     @Modifying
     @Query(
     """
-      update book set
+      update books set
       incartguest=:currentmilliseconds
       where
+      uniqueid=:bookuniqueid
+      and
       (
         (
           incartguest=0 or
-          (incartguest - :currentmilliseconds < 300000)
+          (:currentmilliseconds - incartguest > 300000)
         ) or 
         (
           incartuser=0 or
-          (incartuser - :currentmilliseconds < 3600000)
+          (:currentmilliseconds - incartuser > 3600000)
         ) 
       )
     """
     )
-    suspend fun updateBookIdNotOrderedNotCartUser(currentmilliseconds: Long):Boolean
+    suspend fun updateBookIdinCartUser(bookuniqueid: String, currentmilliseconds: Long):Boolean
 
     @Modifying
     @Query(
     """
-      update book set 
+      update books set 
       title=:title,
       subtitle=:subtitle,
       author=:author,
@@ -122,7 +160,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      DELETE from book where uniqueid = :bookuniqueid
+      DELETE from books where uniqueid = :bookuniqueid
     """
     )
     suspend fun deletebybookid(uniqueid: String):Boolean

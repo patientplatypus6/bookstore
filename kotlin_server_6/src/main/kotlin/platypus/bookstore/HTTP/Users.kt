@@ -82,15 +82,18 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 		return successreturn
 	}
 
-	// 
-
 	@PostMapping("/addbooktocartuser")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addbooktocartuser(@RequestBody bookuniqueid: BookUniqueID, @CookieValue(name = "usercookie") usercookie: String):SuccessReturn{
+	suspend fun addbooktocartuser(@RequestBody userbookid: UserBookID, @CookieValue(name = "usercookie") usercookie: String):SuccessReturn{
 		println("value of cookie: $usercookie")
 		var bookhandler = BooksHandler(bookRepo)
+		var usershandler = UsersHandler(userRepo)
 		var successreturn = SuccessReturn()
-		successreturn.result = bookhandler.addbooktocartuser(bookuniqueid.bookuniqueid)
+		if(usershandler.checkloginredis(userbookid.username, usercookie)){
+			successreturn.result = bookhandler.addbooktocartuser(userbookid.bookuniqueid)
+		}else{
+			successreturn.result = false
+		}
 		return successreturn
 	}
 
