@@ -87,20 +87,10 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
         select * from bookz 
         where 
         timeordered = 0 and
-        uniqueid = :uniqueid and 
-        (
-          (
-            incartguest=0 or
-            (:currentmilliseconds - incartguest > 300000)
-          ) or 
-          (
-            incartuser=0 or
-            (:currentmilliseconds - incartuser > 3600000)
-          ) 
-        )
+        uniqueid = :uniqueid
       """    
     )
-    suspend fun findBookIdNotOrderedNotCart(uniqueid: String, currentmilliseconds: Long):List<Book>
+    suspend fun findBookIdNotOrdered(uniqueid: String):List<BookTime>
 
     @Query(
     """

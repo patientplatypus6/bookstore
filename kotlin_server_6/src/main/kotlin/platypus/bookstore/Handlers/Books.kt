@@ -78,21 +78,54 @@ class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun addbooktocartuser(bookuniqueid: String):Boolean{
     var bookupdated = false;
-    var booknotorderednotcart:List<Book> = bookRepo.findBookIdNotOrderedNotCart(bookuniqueid, System.currentTimeMillis())
-    for (book in booknotorderednotcart){
-      println("value of book $book")
-      bookupdated = bookRepo.updateBookIdinCartUser(bookuniqueid, System.currentTimeMillis())
+    var milliseconds:Long = System.currentTimeMillis()
+    var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrdered(bookuniqueid)
+    if(booknotorderednotcart.size>0){
+      for (book in booknotorderednotcart){
+        if(
+          (book.incartguest == 0.toLong() || milliseconds - book.incartguest > 300000.toLong()) &&
+          (book.incartuser == 0.toLong() || milliseconds - book.incartuser > 3600000.toLong())
+        ){
+          bookupdated = bookRepo.updateBookIdinCartUser(bookuniqueid, milliseconds)
+        }
+      }
+      return bookupdated
+    }else{
+      return false
     }
-    return bookupdated
   }
 
   suspend fun addbooktocartguest(bookuniqueid: String):Boolean{
     var bookupdated = false;
-    var booknotorderednotcart = bookRepo.findBookIdNotOrderedNotCart(bookuniqueid, System.currentTimeMillis())
-    for (book in booknotorderednotcart){
-      println("value of book $book")
-      bookupdated = bookRepo.updateBookIdinCartGuest(bookuniqueid, System.currentTimeMillis())
+    var milliseconds:Long = System.currentTimeMillis()
+    var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrdered(bookuniqueid)
+    if(booknotorderednotcart.size>0){
+      for (book in booknotorderednotcart){
+        
+        var incartguestzero = (book.incartguest == 0.toLong())
+        println("book.incartguest == 0.toLong() $incartguestzero")
+        var incartguestmilliseconds = (milliseconds - book.incartguest < 300000.toLong())
+        println("milliseconds - book.incartguest < 300000.toLong()  $incartguestmilliseconds")
+
+
+        var incartuserzero = (book.incartuser == 0.toLong())
+        println("book.incartuser ==  0.toLong() $incartuserzero")
+        var incartusermilliseconds = (milliseconds - book.incartuser < 3600000.toLong())
+        println("milliseconds - book.incartuser < 3600000.toLong()  $incartusermilliseconds")
+
+        
+        if(
+          (book.incartguest == 0.toLong() || milliseconds - book.incartguest > 300000.toLong()) &&
+          (book.incartuser == 0.toLong() || milliseconds - book.incartuser > 3600000.toLong())
+        ){
+          println("inside if statement")
+          bookupdated = bookRepo.updateBookIdinCartGuest(bookuniqueid, milliseconds)
+          println("bookupdated in if and value $bookupdated")
+        }
+      }
+      return bookupdated
+    }else{
+      return false
     }
-    return bookupdated
   }
 } 

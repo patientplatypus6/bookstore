@@ -39,7 +39,7 @@ const Book = (props) => {
     payload.requestType="postcookie"
     payload.uri='user/addbooktocartuser'
     handlefetch(payload).then(result=>{
-      console.log('value of result from addcartguest: ', result)
+      console.log('value of result from addcartuser: ', result)
     })
   }
 
@@ -53,7 +53,7 @@ const Book = (props) => {
     payload.requestType="post"
     payload.uri='user/addbooktocartguest'
     handlefetch(payload).then(result=>{
-      console.log('value of result from addcartuser: ', result)
+      console.log('value of result from addcartguest: ', result)
     })
   }
 
@@ -257,14 +257,14 @@ const Book = (props) => {
                   float: 'right'
                 }}
                 onClick={()=>{
-                  if(localStorage.getItem('username')==""){
+                  if(localStorage.getItem('username')==null){
                     addcartguest()
                   }else{
                     addcartuser()
                   }
                 }}
                 >
-                  {localStorage.getItem('username')==''?'Buy Now':'Add to Cart'}
+                  {localStorage.getItem('username')==null?'Buy Now':'Add to Cart'}
                 </div>
               </div>
             </div> 
