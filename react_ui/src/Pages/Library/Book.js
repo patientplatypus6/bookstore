@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import {fetchrequest, handlefetch} from '../../api/fetch'
 import './book.css'
 
-const Book = () => {
+const Book = (props) => {
   let history = useHistory();
 
   const [book, setBook] = useState(null)
@@ -19,20 +19,6 @@ const Book = () => {
     if(book!=null){
       setTotalprice(book.userprice+book.usershipping)
     }
-    // if(book!=null){
-    //   setInterval(() => {
-    //     console.log("book.allpics.length : ", book.allpics.length)
-    //     console.log("value of translate: ", translate)
-    //     if(translate<book.allpics.length - 1 && !hovercarousel){
-    //       var newtranslate = translate + 1
-    //       console.log('value of new translate: ', newtranslate)
-    //       setTranslate(newtranslate)
-    //     }else if(translate == book.allpics.length - 1 && !hovercarousel){
-    //       setTranslate(0)
-    //     }
-    //   }, 3000);
-    // }
-
   }, [book])
 
   useEffect(()=>{
@@ -42,6 +28,33 @@ const Book = () => {
     }
 
   }, [])
+
+  const addcartuser = () => {
+    var payload = {
+      body:{
+        bookuniqueid: book.uniqueid
+      }
+    }
+    payload.requestType="postcookie"
+    payload.uri='user/addbooktocartuser'
+    handlefetch(payload).then(result=>{
+      console.log('value of result from addcartguest: ', result)
+    })
+  }
+
+  const addcartguest = () => {
+    console.log('book.uniqueid: ', book.uniqueid)
+    var payload = {
+      body: {
+        bookuniqueid: book.uniqueid
+      }
+    }
+    payload.requestType="post"
+    payload.uri='user/addbooktocartguest'
+    handlefetch(payload).then(result=>{
+      console.log('value of result from addcartuser: ', result)
+    })
+  }
 
   return(
     <div>
@@ -243,10 +256,14 @@ const Book = () => {
                   float: 'right'
                 }}
                 onClick={()=>{
-
+                  if(localStorage.getItem('username')==""){
+                    addcartguest()
+                  }else{
+                    addcartuser()
+                  }
                 }}
                 >
-                  Add to Cart
+                  {localStorage.getItem('username')==''?'Buy Now':'Add to Cart'}
                 </div>
               </div>
             </div> 

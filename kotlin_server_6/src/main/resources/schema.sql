@@ -54,9 +54,10 @@ CREATE TABLE IF NOT EXISTS book
     storyinfo VARCHAR(65535) NOT NULL,
     condition VARCHAR(65535) NOT NULL,
     isbn VARCHAR(65535) NOT NULL,
-    dateordered  VARCHAR(255), 
-    dateshipped  VARCHAR(255), 
-    incart VARCHAR(255)
+    timeordered  BIGINT, 
+    timeshipped  BIGINT, 
+    incartguest BIGINT, 
+    incartuser BIGINT
 );
 
 -- DROP TABLE IF EXISTS bookerrata;

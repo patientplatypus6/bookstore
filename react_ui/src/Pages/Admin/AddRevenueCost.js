@@ -300,6 +300,14 @@ const AddRevenueCost = () => {
                 }
               })
               setRevenuecostindex(newcostindex)
+
+              if(newcostindex.length==0){
+                history.push({
+                  pathname: '/admin/dashboard',
+                  dashmessage: `No revenue costs have been added`
+                })
+              }
+
             }}
           >  
             Delete Revenue Cost Entry

@@ -43,4 +43,24 @@ class BooksHandler(val bookRepo: BookRepository){
     )
     return bookUpdated
   }
+
+  suspend fun addbooktocartuser(bookuniqueid: String):Boolean{
+    var bookupdated = false;
+    var booknotorderednotcart:List<Book> = bookRepo.findBookIdNotOrderedNotCart(bookuniqueid, System.currentTimeMillis())
+    for (book in booknotorderednotcart){
+      println("value of book $book")
+      bookupdated = bookRepo.updateBookIdNotOrderedNotCartUser(System.currentTimeMillis())
+    }
+    return bookupdated
+  }
+
+  suspend fun addbooktocartguest(bookuniqueid: String):Boolean{
+    var bookupdated = false;
+    var booknotorderednotcart = bookRepo.findBookIdNotOrderedNotCart(bookuniqueid, System.currentTimeMillis())
+    for (book in booknotorderednotcart){
+      println("value of book $book")
+      bookupdated = bookRepo.updateBookIdNotOrderedNotCartGuest(System.currentTimeMillis())
+    }
+    return bookupdated
+  }
 } 

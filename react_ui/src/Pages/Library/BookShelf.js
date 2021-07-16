@@ -6,7 +6,7 @@ import {arraybuffertobase64, sleep} from '../../utility/utility'
 import {fetchrequest, handlefetch} from '../../api/fetch'
 import { useHistory } from "react-router-dom";
 
-const BookShelf = () => {
+const BookShelf = (props) => {
 
   const focushandlerref = useRef(null);
   const containerref = useRef(null);

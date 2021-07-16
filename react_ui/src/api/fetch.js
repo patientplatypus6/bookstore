@@ -43,6 +43,30 @@ const fetchrequest = (payload) => {
     return data
   })
  }
+
+ if(payload.requestType=='postcookie'){
+  document.cookie = 'usercookie='+localStorage.getItem("cookie")
+  console.log("inside postcookie and value of payload: ", payload)
+  var headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
+  console.log("inside postcookie and value of headers: ", headers)
+  return fetch(urlfull,{
+    method: "post",
+    headers,
+    credentials: 'include',
+    // credentials: 'same-origin', //from same domain
+    body: JSON.stringify(payload.body)
+  })
+  .then(response => {
+    console.log('value of response: ', response)
+    return response.json()
+  })
+  .then(data => {
+    return data
+  })
+ }
  
  if(payload.requestType=='get'){
   return fetch(urlfull,{

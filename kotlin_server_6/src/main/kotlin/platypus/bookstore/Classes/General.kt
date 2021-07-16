@@ -32,3 +32,11 @@ data class PicdataByte(
   var backcoverindex: Int = -1,
   var files: List<ByteArray> = mutableListOf<ByteArray>()
 )
+
+data class SuccessReturn(
+  var result: Boolean = false
+)
+
+data class BookUniqueID(
+  var bookuniqueid: String = ""
+)

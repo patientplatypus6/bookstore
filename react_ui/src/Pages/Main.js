@@ -17,6 +17,8 @@ import EditBook from '../Pages/Admin/EditBook'
 import Book from '../Pages/Library/Book'
 import BookShelf from '../Pages/Library/BookShelf'
 import About from '../Pages/Library/About'
+import Cart from '../Pages/Cart/Cart'
+import Purchase from '../Pages/Cart/Purchase'
 
 import { useLocation } from 'react-router-dom'
 import AddRevenueCost from './Admin/AddRevenueCost';
@@ -34,6 +36,13 @@ const Main = () => {
     const[loginmodal, setLoginmodal] = useState(false)
     const[modalmessage, setModalmessage] = useState("")
     const[loggedin, setLoggedin] = useState(false)
+    const[cartbookids, setCartbookids] = useState([])
+
+    const updatecartbookids = (updated) => {
+      var tempcartbookids = [...cartbookids]; 
+      tempcartbookids = updated
+      setCartbookids([...tempcartbookids])
+    }
 
     const handlefetch = (payload) => {
       console.log('inside handlefetch and value of payload: ', payload)
@@ -43,6 +52,13 @@ const Main = () => {
       }
       return fetchasync();
     }
+
+    useEffect(()=>{
+      if(localStorage.getItem('username')!='' && localStorage.getItem('cookie')!=''){
+        setUsername(localStorage.getItem('username'))
+        setLoggedin(true)
+      }
+    }, [])
 
     const handleLogout = () => {
       var payload = {
@@ -124,10 +140,11 @@ const Main = () => {
       console.log('value of loginmodal in renderLoginModal: ', loginmodal)
       if(loginmodal==true){
         return(
-          <div
+          <div  
             style={{
               position: 'fixed',
               top: 0, left: 0, bottom: 0, right: 0, 
+              zIndex: '999',
               background: 'rgba(0,0,0,0.6)', 
               color: 'white'
             }}
@@ -252,7 +269,7 @@ const Main = () => {
             color: "rgb(250,250,250)"
           }}
           exact to="/book">Book</NavLink>
-          {/* <NavLink 
+          <NavLink 
           style={{
             textDecoration: 'none', 
             color: "rgb(180,180,180)", 
@@ -263,7 +280,19 @@ const Main = () => {
             padding: '20px',
             color: "rgb(250,250,250)"
           }}
-          exact to="/admin/addrevenuecost">Add Revenue Cost</NavLink> */}
+          exact to="/cart">Cart</NavLink>
+          <NavLink 
+          style={{
+            textDecoration: 'none', 
+            color: "rgb(180,180,180)", 
+            padding: '20px'
+          }} 
+          activeStyle={{
+            textDecoration: 'underline',
+            padding: '20px',
+            color: "rgb(250,250,250)"
+          }}
+          exact to="/purchase">Purchase</NavLink>
           <NavLink 
           style={{
             textDecoration: 'none', 
@@ -334,13 +363,27 @@ const Main = () => {
         </div>}
       </div> 
       <Switch>
-          <Route exact path="/" render={()=><BookShelf/>}/>
+          <Route exact path="/" render={()=><BookShelf
+            cartbookids={cartbookids}
+            updatecartbooks={(newids)=>{updatecartbookids(newids)}}
+          />}/>
           <Route exact path="/about" render={()=><About/>}/>
           <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
           <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
           <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
           <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
-          <Route exact path="/book" render={()=><Book/>}/>
+          <Route exact path="/book" render={()=><Book
+            cartbookids={cartbookids}
+            updatecartbooks={(newids)=>{updatecartbookids(newids)}}
+          />}/>
+          <Route exact path="/cart" render={()=><Cart
+            cartbookids={cartbookids}
+            updatecartbooks={(newids)=>{updatecartbookids(newids)}}
+          />}/>
+          <Route exact path="/purchase" render={()=><Purchase
+            cartbookids={cartbookids}
+            updatecartbooks={(newids)=>{updatecartbookids(newids)}}
+          />}/>
       </Switch>
     </Router>
     </div>
