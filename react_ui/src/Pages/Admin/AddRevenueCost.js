@@ -51,7 +51,8 @@ const AddRevenueCost = () => {
 
     var payload = {
       body: {
-        revenuecostlist: revenuecostitem
+        revenuecost: revenuecostitem
+        // hello: "test"
       }, 
       requestType:"post",
       uri:"revenuecost/addrevenuecosts"

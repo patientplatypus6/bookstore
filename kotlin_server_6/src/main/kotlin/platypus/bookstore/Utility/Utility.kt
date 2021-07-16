@@ -3,7 +3,24 @@ package platypus.bookstore.utility
 
 import java.io.File
 import java.util.Base64
+import java.time.format.DateTimeFormatter
+import java.time.LocalDateTime
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+
+// parse datetime
+
+suspend fun convertdatetime(input:String):LocalDateTime{
+  println("inside convertdatetime")
+  println("value of input $input")
+  println("is of pattern ? yyyy-MM-dd HH:mm:ss")
+  var returndatetime = LocalDateTime.parse(
+    input, 
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+  );
+  println("value of returndatetime: $returndatetime")
+  return returndatetime
+}
 
 // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/to-byte-array.html
 
@@ -17,7 +34,6 @@ class ByteArrayHandler(){
     return byteArray.toString(charset)
   }
 }
-
 
 //--------- picture handler functions ---------
 
@@ -43,6 +59,8 @@ suspend fun deleteprev(filesubstring: String){
     }
   }
 }
+
+
 
 suspend fun deleteall(){
   var pathFile = "src/main/resources/static/images"

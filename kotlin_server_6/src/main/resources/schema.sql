@@ -91,7 +91,8 @@ CREATE TABLE IF NOT EXISTS revenuecost
     rcname VARCHAR(255) NOT NULL,
     rcdescription VARCHAR(65535) NOT NULL,
     rcvalue VARCHAR(65535) NOT NULL,
-    rcdate DATETIME NOT NULL
+    -- rcdate DATETIME NOT NULL
+    rcdate VARCHAR(255) NOT NULL
 );
 
 -- DROP TABLE IF EXISTS user;

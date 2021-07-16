@@ -4,16 +4,26 @@ import platypus.bookstore.repos.RevenueCostRepository
 import platypus.bookstore.classes.db.Book
 import platypus.bookstore.classes.db.RevenueCost
 
+import java.time.LocalDateTime
+
+import platypus.bookstore.utility.*
+
 class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
 
   suspend fun findrevenuecosts():List<RevenueCost>{
     println("findRevenueCosts")
     val revenuecosts:List<RevenueCost> = revenuecostRepo.findrevenuecosts()
+    println("after val revenuecosts:List<RevenueCost> = revenuecostRepo.findrevenuecosts()")
     return revenuecosts;
   }
 
   suspend fun addrevenuecost(revenuecost: RevenueCost):Boolean{
     println("value of revenuecost: $revenuecost")
+
+    // var rcdatetime = convertdatetime(revenuecost.rcdate)
+
+    // println("value of rcdatetime: $rcdatetime")
+
     var revenueCostAdded: Boolean = revenuecostRepo.savearevenuecost(revenuecost.uniqueid, revenuecost.bookuniqueid, revenuecost.userorderuniqueid, revenuecost.rcname, revenuecost.rcdescription, revenuecost.rcvalue, revenuecost.rcdate)
     return revenueCostAdded;
   }

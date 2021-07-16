@@ -55,9 +55,9 @@ public class RequestRevenueCost(private val bookRepo: BookRepository, private va
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")	
 	suspend fun addrevenuecosts(@RequestBody revenuecostlist: RevenueCostList):DefaultReturn{
 		println("value of revenuecosts: $revenuecostlist")
-		var updatedBool = true;
+		var updatedBool = false;
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
-		for(revenuecost in revenuecostlist.revenuecosts){
+		for(revenuecost in revenuecostlist.revenuecost){
 			updatedBool = revenuecostshandler.addrevenuecost(revenuecost)
 		}
 		var default = DefaultReturn()
@@ -65,3 +65,34 @@ public class RequestRevenueCost(private val bookRepo: BookRepository, private va
 	}
 
 }
+
+
+
+		// revenuecostlist: HashMap<String, List<HashMap<String, String>>>
+		// var rclist = revenuecostlist.get("revenuecost")
+		// println("value of revenuecosts: $rclist")
+		// rclist?.map{
+		// 	var newrevenuecost = RevenueCost()
+		// 	// {revenuecost=[{rcvalue=NONE, rcname=NONE, rcdate=2021-07-16 01:50:24, rcdescription=NONE, uniqueid=1626400224073}]}
+		// 	newrevenuecost.rcvalue = it.get("rcvalue")!!
+		// 	newrevenuecost.rcname = it.get("rcname")!!
+		// 	newrevenuecost.rcdate = it.get("rcdate")!!
+		// 	newrevenuecost.rcdescription = it.get("rcdescription")!!
+
+		// 	var rcvalue = it.get("rcvalue")
+		// 	println("rcvalue $rcvalue")
+		// }
+		// var updatedBool = true;
+		// var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
+
+		// for(revenuecost in revenuecostlist){
+		// 	updatedBool = revenuecostshandler.addrevenuecost(revenuecost)
+		// }
+		// var revenuecostiterator:List<HashMap<String, String>> = revenuecostlist.get("revenuecost");
+		// for(revenuecost in revenuecostlist.get("revenuecost")){
+		// 	var rc = RevenueCost()
+		// 	rc.rcvalue = revenuecost.get("rcvalue")
+		// 	rc.rcname = revenuecost.get("rcname")
+		// 	rc.rcdescription = revenuecost.get("rcdescription")
+		// 	rc.uniqueid = revenuecost.get("uniqueid")
+		// }
