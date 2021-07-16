@@ -24,40 +24,17 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-
-	// // https://www.baeldung.com/spring-session-reactive
-	// // https://mvnrepository.com/artifact/org.springframework.session/spring-session-core
-	// implementation("org.springframework.session:spring-session-core")
-	// // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
-  // implementation("org.springframework.boot:spring-boot-starter-data-redis")
-  // // https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis
-  // implementation("org.springframework.session:spring-session-data-redis")
-
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-
-// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.12.4")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.+")
-	// https://mvnrepository.com/artifact/com.github.kittinunf.fuel/fuel
-	// implementation("com.github.kittinunf.fuel:fuel:1.12.1")
-
-
-
-	// need special cors filter if importing spring-boot-starter-security in project
-	// using subpackages for crypo currently
-	// implementation("org.springframework.boot:spring-boot-starter-security")
-  // implementation("org.springframework.security:spring-security-test")
 	implementation("org.springframework.security:spring-security-crypto:5.5.1")
-
-
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
 	implementation("org.json:json:20210307")
-	
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("dev.miku:r2dbc-mysql")
 	runtimeOnly("io.r2dbc:r2dbc-h2")

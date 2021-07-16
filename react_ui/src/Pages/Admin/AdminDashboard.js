@@ -10,9 +10,15 @@ const AdminDashboard = () => {
 
   const [booklist, setBooklist] = useState([])
   const [revenuecostlist, setRevenuecostlist] = useState([])
-  const [pagenumber, setPagenumber] = useState(1)
+  const [pagenumberbook, setPagenumberbook] = useState(1)
+  const [pagenumberrevenuecost, setPagenumberrevenuecost] = useState(1)
   const [displayper, setDisplayper] = useState(25)
   const [dashmessage, setDashmessage] = useState("Welcome to the Administator dashboard! \n Action messages will appear hear from state changes in the database \n Thank you!")
+
+  const [totalcost, setTotalcost] = useState(0)
+  const [totalrevenue, setTotalrevenue] = useState(0)
+  const [totalprojectedcost, setTotalprojectedcost] = useState(0)
+  const [totalprojectedrevenue, setTotalprojectedrevenue] = useState(0)
 
   const deletebookhandler = (title, uniqueid) => {
     console.log("inside deletebookhandler and value of uniqueid: ", uniqueid)
@@ -34,9 +40,54 @@ const AdminDashboard = () => {
     payload.uri='book/findbooks' 
     payload.requestType='get'
     handlefetch(payload).then(result=>{
+      console.log("value of booklist: ", booklist)
       setBooklist(result)
     })
   }
+
+  const totalscalculationrevenuecost = () => {
+
+    var temptotalcost = 0
+    var temptotalrevenue = 0
+    var temptotalprojectedrevenue = 0
+    var temptotalprojectedcost = 0
+
+    revenuecostlist.forEach(rc=>{
+      var costitem = 
+      (rc.rcname.includes("COST") &&
+      !rc.rcname.includes("PROJECTED"))?
+      rc.rcvalue:'0'
+      var revenueitem = 
+      (rc.rcname.includes("REVENUE") &&
+      !rc.rcname.includes("PROJECTED"))?
+      rc.rcvalue:'0'
+      var costitemprojected = 
+      (rc.rcname.includes("COST") &&
+      rc.rcname.includes("PROJECTED"))?
+      rc.rcvalue:'0'
+      var revenueitemprojected = 
+      (rc.rcname.includes("REVENUE") &&
+      rc.rcname.includes("PROJECTED"))?
+      rc.rcvalue:'0'
+
+      temptotalcost += parseFloat(costitem)
+      temptotalrevenue += parseFloat(revenueitem)
+      temptotalprojectedrevenue += parseFloat(revenueitemprojected)
+      temptotalprojectedcost += parseFloat(costitemprojected)
+
+      console.log("&&&&&&&rc: ", rc)
+    })
+
+    setTotalcost(temptotalcost)
+    setTotalrevenue(temptotalrevenue)
+    setTotalprojectedcost(temptotalprojectedcost)
+    setTotalprojectedrevenue(temptotalprojectedrevenue)
+  
+  }
+
+  useEffect(()=>{
+    totalscalculationrevenuecost()
+  }, [revenuecostlist])
 
   const findrevenuecosts = () => {
     var payload = {}
@@ -48,7 +99,7 @@ const AdminDashboard = () => {
     })
   }
 
-  const pageNumberHandler = (numberpages) => {
+  const pageNumberHandler = (numberpages, pagenumber, type) => {
     console.log('value of numberpages: ', numberpages)
     let pageArray = [...Array(numberpages).keys()].map(x=>++x)
     console.log('value of pageArray: ', pageArray)
@@ -66,7 +117,11 @@ const AdminDashboard = () => {
               }}
               onClick={()=>{
                 if(pageNumberDisp!=pagenumber)
-                setPagenumber(pageNumberDisp)
+                if(type=='book'){
+                  setPagenumberbook(pageNumberDisp)
+                }else if(type=='revenuecost'){
+                  setPagenumberrevenuecost(pageNumberDisp)
+                }
               }}
             >
               {pageNumberDisp}
@@ -77,12 +132,170 @@ const AdminDashboard = () => {
     )
   }
 
+  const totalrevenuecostsTable = () => {
+    return(
+      <table>
+        <tr>
+          <td className='columnHeaders'>
+            Revenue
+          </td>
+          <td className='columnHeaders'>
+            Cost
+          </td>
+        </tr>
+        <tr>
+          <td className='columnHeaders' style={{color: 'green'}}>
+            {totalrevenue}
+          </td>
+          <td className='columnHeaders' style={{color: 'red'}}>
+            {totalcost}
+          </td>
+        </tr>
+      </table>
+    )
+  }
+
+  const revenuecostlistTable = (revenuecostlist) => {
+    let numberpages = Math.floor(revenuecostlist.length / displayper) + 1
+    let indexstart = (pagenumberrevenuecost-1)*displayper
+    return(
+      <>
+        <table>
+          <tr>
+            <td className='columnHeaders'>
+              
+            </td>
+            <td className='columnHeaders' colSpan='2'>
+              Actual
+            </td>
+            <td className='columnHeaders' colSpan='2'>
+              Projected
+            </td>
+            <td className='columnHeaders'>
+              
+            </td>
+            <td className='columnHeaders'>
+
+            </td>
+            <td className='columnHeaders'>
+              
+            </td>
+          </tr>
+          <tr>
+            <td className='columnHeaders'>
+              Description
+            </td>
+            <td className='columnHeaders'>
+              Revenue
+            </td>
+            <td className='columnHeaders'>
+              Cost
+            </td>
+            <td className='columnHeaders'>
+              Revenue
+            </td>
+            <td className='columnHeaders'>
+              Cost
+            </td>
+            <td className='columnHeaders'>
+              Date
+            </td>
+            <td className='columnHeaders'>
+              Book ID
+            </td>
+            <td className='columnHeaders'>
+              ID
+            </td>
+          </tr>
+          {revenuecostlist.map((revenuecostitem, key)=>{
+
+            var costitem = 
+            (revenuecostitem.rcname.includes("COST") &&
+            !revenuecostitem.rcname.includes("PROJECTED"))?
+            revenuecostitem.rcvalue:'0'
+            var revenueitem = 
+            (revenuecostitem.rcname.includes("REVENUE") &&
+            !revenuecostitem.rcname.includes("PROJECTED"))?
+            revenuecostitem.rcvalue:'0'
+            var costitemprojected = 
+            (revenuecostitem.rcname.includes("COST") &&
+            revenuecostitem.rcname.includes("PROJECTED"))?
+            revenuecostitem.rcvalue:'0'
+            var revenueitemprojected = 
+            (revenuecostitem.rcname.includes("REVENUE") &&
+            revenuecostitem.rcname.includes("PROJECTED"))?
+            revenuecostitem.rcvalue:'0'
+
+            if(key>=indexstart&&key<indexstart+displayper)
+            return(
+              <tr key={key}>
+                <td>
+                  {revenuecostitem.rcdescription}
+                </td>
+                <td style={{color: 'green', fontWeight: 'bold'}}>
+                  {revenueitem}
+                </td>
+                <td style={{color: 'red', fontWeight: 'bold'}}>
+                  {costitem}
+                </td>
+                <td style={{color: 'green', fontWeight: 'bold', background:'rgba(0,0,0,0.3)'}}>
+                  {revenueitemprojected}
+                </td>
+                <td style={{color: 'red', fontWeight: 'bold', background:'rgba(0,0,0,0.3)'}}>
+                  {costitemprojected}
+                </td>
+                <td>
+                  {revenuecostitem.rcdate}
+                </td>
+                <td>
+                  {revenuecostitem.bookuniqueid}
+                </td>
+                <td>
+                  {revenuecostitem.uniqueid}
+                </td>
+              </tr>
+            )
+          })}
+        </table>
+        <br/>
+        <div>
+        <div 
+          className='button'
+          style={{
+            display: 'inline-block', 
+            // float: 'left'
+          }}
+          onClick={()=>{
+            if(pagenumberrevenuecost>1){
+              setPagenumberrevenuecost(pagenumberrevenuecost-1)
+            }
+          }}
+        >
+          &#x3c;
+        </div>
+        <span style={{paddingRight: '5px', paddingLeft: '5px'}}>{pageNumberHandler(numberpages, pagenumberrevenuecost, 'revenuecost')}</span>
+        <div 
+          className='button'
+          style={{
+            display: 'inline-block',
+            // float: 'right'
+          }}
+          onClick={()=>{
+            if(pagenumberrevenuecost<numberpages){
+              setPagenumberrevenuecost(pagenumberrevenuecost+1)
+            }
+          }}
+        >
+          &#x3e;
+        </div>
+        </div>
+      </>
+    )
+  }
+
   const booklistTable = (booklist) => {
-    let moduluslength = booklist.length % displayper
     let numberpages = Math.floor(booklist.length / displayper) + 1
-    let indexstart = (pagenumber-1)*displayper
-    let indexend = pagenumber*displayper
-    console.log('value of indexstart: ', indexstart)
+    let indexstart = (pagenumberbook-1)*displayper
     return(
       <>
         <table>
@@ -91,22 +304,16 @@ const AdminDashboard = () => {
               Title
             </td>
             <td className='columnHeaders'>
-              Subtitle
-            </td>
-            <td className='columnHeaders'>
               Author
             </td>
             <td className='columnHeaders'>
               Publisher
             </td>
             <td className='columnHeaders'>
-              Current Copyright
-            </td>
-            <td className='columnHeaders'>
-              Edition
-            </td>
-            <td className='columnHeaders'>
               ISBN
+            </td>
+            <td className='columnHeaders'>
+              ID
             </td>
           </tr>
           {booklist.map((bookitem, key)=>{
@@ -117,22 +324,16 @@ const AdminDashboard = () => {
                   {bookitem.title}
                 </td>
                 <td>
-                  {bookitem.subtitle}
-                </td>
-                <td>
                   {bookitem.author}
                 </td>
                 <td>
                   {bookitem.publisher}
                 </td>
                 <td>
-                  {bookitem.currentcopyright}
-                </td> 
-                <td>
-                  {bookitem.bookedition}
+                  {bookitem.isbn}
                 </td>
                 <td>
-                  {bookitem.isbn}
+                  {bookitem.uniqueid}
                 </td>
                 <td>
                   <div
@@ -171,14 +372,14 @@ const AdminDashboard = () => {
               // float: 'left'
             }}
             onClick={()=>{
-              if(pagenumber>1){
-                setPagenumber(pagenumber-1)
+              if(pagenumberbook>1){
+                setPagenumberbook(pagenumberbook-1)
               }
             }}
           >
             &#x3c;
           </div>
-          <span style={{paddingRight: '5px', paddingLeft: '5px'}}>{pageNumberHandler(numberpages)}</span>
+          <span style={{paddingRight: '5px', paddingLeft: '5px'}}>{pageNumberHandler(numberpages, pagenumberbook, 'book')}</span>
           <div 
             className='button'
             style={{
@@ -186,8 +387,8 @@ const AdminDashboard = () => {
               // float: 'right'
             }}
             onClick={()=>{
-              if(pagenumber<numberpages){
-                setPagenumber(pagenumber+1)
+              if(pagenumberbook<numberpages){
+                setPagenumberbook(pagenumberbook+1)
               }
             }}
           >
@@ -300,8 +501,38 @@ const AdminDashboard = () => {
           background: "grey"
         }}
       >
-        Revenue Cost Table
+        Revenue Costs
       </div>
+      <br/>
+      <br/>
+      <div 
+        style={{
+          fontWeight: 'bold',
+          fontSize: '1.5rem', 
+          marginBottom: '20px'
+        }}
+      >
+        Total Revenue Costs
+      </div>
+      <div className='tableHolder'>
+        {totalrevenuecostsTable()}
+      </div>        
+      <br/>
+      <br/>
+      <div 
+        style={{
+          fontWeight: 'bold',
+          fontSize: '1.5rem', 
+          marginBottom: '20px'
+        }}
+      >
+        Revenue Costs Table
+      </div>
+      <div className='tableHolder'>
+        {revenuecostlistTable(revenuecostlist)}
+      </div>
+      <br/> 
+      <br/>
     </div>
   )
 }

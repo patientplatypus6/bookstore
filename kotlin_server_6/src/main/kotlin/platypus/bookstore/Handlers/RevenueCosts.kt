@@ -19,11 +19,6 @@ class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
 
   suspend fun addrevenuecost(revenuecost: RevenueCost):Boolean{
     println("value of revenuecost: $revenuecost")
-
-    // var rcdatetime = convertdatetime(revenuecost.rcdate)
-
-    // println("value of rcdatetime: $rcdatetime")
-
     var revenueCostAdded: Boolean = revenuecostRepo.savearevenuecost(revenuecost.uniqueid, revenuecost.bookuniqueid, revenuecost.userorderuniqueid, revenuecost.rcname, revenuecost.rcdescription, revenuecost.rcvalue, revenuecost.rcdate)
     return revenueCostAdded;
   }

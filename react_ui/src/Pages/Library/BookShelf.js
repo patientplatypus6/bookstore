@@ -81,6 +81,12 @@ const BookShelf = () => {
                         </div>
                         <div
                           className='button'
+                          onClick={()=>{
+                            history.push({
+                              pathname: '/book',
+                              book
+                            })
+                          }}
                         >
                           View Book
                         </div>

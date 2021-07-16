@@ -420,9 +420,6 @@ const EditBook = () => {
               setRevenuecostitem([...temprevenuecostitem])
             }}
           >
-            <option value={'GENERIC'}>
-              GENERIC
-            </option>
             <option value={'COST - BOOK PRICE (BOUGHT)'}>
               COST - BOOK PRICE (BOUGHT)
             </option>
@@ -432,23 +429,8 @@ const EditBook = () => {
             <option value={'COST - BOOK SHIPPING (SOLD)'}>
               COST - BOOK SHIPPING (SOLD)
             </option>
-            <option value={'COST - MONTHLY (HOSTING)'}>
-              COST - MONTHLY (HOSTING)
-            </option>
-            <option value={'COST - STRIPE CHARGE (PROJECTED)'}>
-              COST - STRIPE CHARGE (PROJECTED)
-            </option>
-            <option value={'COST - STRIPE CHARGE (SOLD)'}>
-              COST - STRIPE CHARGE (SOLD)
-            </option>
             <option value={'COST - BOOK PACKAGING (SOLD)'}>
               COST - BOOK PACKAGING (SOLD)
-            </option>
-            <option value={'COST - OTHER FIXED (SOLD)'}>
-              COST - OTHER FIXED (SOLD)
-            </option>
-            <option value={'COST - OTHER VARIABLE (SOLD)'}>
-              COST - OTHER VARIABLE (SOLD)
             </option>
             <option value={'REVENUE - BOOK SHIPPING (SOLD)'}>
               REVENUE - BOOK SHIPPING (SOLD)
@@ -461,6 +443,12 @@ const EditBook = () => {
             </option>
             <option value={'REVENUE - BOOK PRICE (PROJECTED)'}>
               REVENUE - BOOK PRICE (PROJECTED)
+            </option>
+            <option value={'COST - STRIPE CHARGE (PROJECTED)'}>
+              COST - STRIPE CHARGE (PROJECTED)
+            </option>
+            <option value={'COST - STRIPE CHARGE (SOLD)'}>
+              COST - STRIPE CHARGE (SOLD)
             </option>
           </select>
         </div>

@@ -35,7 +35,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
 
     @Query(
     """
-      select * from book where dateordered is null and (incart is null or incart='none')
+      select * from book where dateordered='' and (incart='' or incart='none')
     """
     )
     suspend fun findBooksforsale():List<Book>

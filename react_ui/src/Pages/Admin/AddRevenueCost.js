@@ -125,8 +125,6 @@ const AddRevenueCost = () => {
             </div>
           )
         })}
-        
-        {/* {files.length>1? */}
         <div style={{marginTop: '5px'}}>
           <span style={{marginRight: '5px'}}> Select Front Cover Image Index </span>
           <select
@@ -147,10 +145,6 @@ const AddRevenueCost = () => {
             })}
           </select>
         </div>
-
-          {/* :<div/>} */}
-
-        {/* {files.length>1? */}
           <div style={{marginTop: '5px'}}>
             <span style={{marginRight: '5px'}}> Select Back Cover Image Index </span>
             <select
@@ -171,7 +165,6 @@ const AddRevenueCost = () => {
               })}
             </select>
           </div>
-          {/* :<div/>} */}
       </div>
     )
   }
@@ -212,23 +205,26 @@ const AddRevenueCost = () => {
               setRevenuecostitem([...temprevenuecostitem])
             }}
           >
-            <option value={'GENERIC'}>
-              GENERIC
-            </option>
             <option value={'COST - MONTHLY (HOSTING)'}>
               COST - MONTHLY (HOSTING)
             </option>
-            <option value={'COST - STRIPE CHARGE (PROJECTED)'}>
+            <option value={'COST - STRIPE CHARGE NON-UNIT (PROJECTED)'}>
               COST - STRIPE CHARGE (PROJECTED)
             </option>
-            <option value={'COST - STRIPE CHARGE (SOLD)'}>
+            <option value={'COST - STRIPE CHARGE NON-UNIT (SOLD)'}>
               COST - STRIPE CHARGE (SOLD)
             </option>
-            <option value={'COST - OTHER FIXED (SOLD)'}>
-              COST - OTHER FIXED (SOLD)
+            <option value={'COST - OTHER FIXED'}>
+              COST - OTHER FIXED
             </option>
-            <option value={'COST - OTHER VARIABLE (SOLD)'}>
-              COST - OTHER VARIABLE (SOLD)
+            <option value={'COST - OTHER VARIABLE'}>
+              COST - OTHER VARIABLE
+            </option>
+            <option value={'COST - OTHER FIXED (PROJECTED)'}>
+              COST - OTHER FIXED (PROJECTED)
+            </option>
+            <option value={'COST - OTHER VARIABLE (PROJECTED)'}>
+              COST - OTHER VARIABLE (PROJECTED)
             </option>
           </select>
         </div>
