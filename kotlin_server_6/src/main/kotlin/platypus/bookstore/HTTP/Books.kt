@@ -39,7 +39,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		var bookshandler = BooksHandler(bookRepo)
 		var revenuecosthandler = RevenueCostsHandler(revenuecostRepo)
 
-		var booklist:List<Book> = bookshandler.findbooks()
+		var booklist:List<BookTime> = bookshandler.findbooks()
 		var picbookids = PicBookIds()	
 
 		for(book in booklist){
@@ -124,8 +124,23 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooks():List<Book>{
 		var bookshandler = BooksHandler(bookRepo)
-		var totalbooks: List<Book> = bookshandler.findbooks()
-		return totalbooks;
+		var totalbooks: List<BookTime> = bookshandler.findbooks()
+		var returnbooks: List<Book> = listOf<Book>()
+		for(booktime in totalbooks){
+			var booktemp = Book()
+			booktemp.title = booktime.title
+			booktemp.subtitle = booktime.subtitle
+			booktemp.author = booktime.author
+			booktemp.publisher = booktime.publisher
+			booktemp.currentcopyright = booktime.currentcopyright
+			booktemp.bookedition = booktime.bookedition
+			booktemp.uniqueid = booktime.uniqueid
+			booktemp.storyinfo = booktime.storyinfo
+			booktemp.condition = booktime.condition
+			booktemp.isbn = booktime.isbn
+			returnbooks+=booktemp
+		}
+		return returnbooks;
 	}
 
 	@PostMapping("/findrevenuecosts")

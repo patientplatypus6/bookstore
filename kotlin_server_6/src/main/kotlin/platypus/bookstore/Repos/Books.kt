@@ -6,7 +6,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository;
 import org.springframework.data.r2dbc.repository.Query  
 import org.springframework.data.repository.query.Param 
 import org.springframework.data.r2dbc.repository.Modifying
-import platypus.bookstore.classes.db.Book
+import platypus.bookstore.classes.db.*
 import platypus.bookstore.classes.ResultString
 import org.springframework.stereotype.Repository
 import java.math.BigInteger
@@ -22,54 +22,69 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      insert into books 
+      insert into bookz
       (
-        title, 
+        title,
         subtitle, 
-        author, 
+        author,
         publisher, 
-        currentcopyright, 
+        currentcopyright,
         bookedition, 
-        uniqueid, 
+        uniqueid,
         storyinfo, 
         condition, 
-        isbn, 
-        timeordered, 
-        timeshipped, 
-        incartguest, 
+        isbn,
+        timeordered,
+        timeshipped,
+        incartguest,
         incartuser
       ) 
       values 
       (
-        :title, 
+        :title,
         :subtitle, 
-        :author, 
+        :author,
         :publisher, 
-        :currentcopyright, 
+        :currentcopyright,
         :bookedition, 
-        :uniqueid, 
+        :uniqueid,
         :storyinfo, 
         :condition, 
-        :isbn, 
-        :timeordered, 
-        :timeshipped, 
-        :incartguest, 
+        :isbn,
+        :timeordered,
+        :timeshipped,
+        :incartguest,
         :incartuser
       )
     """
     )
-    suspend fun saveabook(title:String, subtitle:String, author: String, publisher:String, currentcopyright:String, bookedition:String, uniqueid:String, storyinfo:String, condition:String, isbn:String, timeordered:String, timeshipped:String, incartguest:String, incartuser:String):Boolean
+    suspend fun saveabook(        
+      title: String,
+      subtitle: String, 
+      author: String,
+      publisher: String, 
+      currentcopyright: String,
+      bookedition: String, 
+      uniqueid: String,
+      storyinfo: String, 
+      condition: String, 
+      isbn: String,
+      timeordered: Long,
+      timeshipped: Long,
+      incartguest: Long,
+      incartuser: Long
+    ):Boolean
 
     @Query(
     """
-      select * from books
+      select * from bookz
     """
     )
-    suspend fun findBooks():List<Book>
+    suspend fun findBooks():List<BookTime>
 
     @Query(
       """
-        select * from books 
+        select * from bookz 
         where 
         timeordered = 0 and
         uniqueid = :uniqueid and 
@@ -89,7 +104,17 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
 
     @Query(
     """
-      select * from books where dateordered=''
+      select * from bookz where dateordered='' and 
+      (
+        (
+          incartguest=0 or
+          (:currentmilliseconds - incartguest > 300000)
+        ) or 
+        (
+          incartuser=0 or
+          (:currentmilliseconds - incartuser > 3600000)
+        ) 
+      )
     """
     )
     suspend fun findBooksforsale():List<Book>
@@ -97,7 +122,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      update books set
+      update bookz set
       incartguest=:currentmilliseconds
       where
       uniqueid=:bookuniqueid
@@ -119,7 +144,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      update books set
+      update bookz set
       incartguest=:currentmilliseconds
       where
       uniqueid=:bookuniqueid
@@ -141,7 +166,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      update books set 
+      update bookz set 
       title=:title,
       subtitle=:subtitle,
       author=:author,
@@ -160,7 +185,7 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     @Modifying
     @Query(
     """
-      DELETE from books where uniqueid = :bookuniqueid
+      DELETE from bookz where uniqueid = :bookuniqueid
     """
     )
     suspend fun deletebybookid(uniqueid: String):Boolean

@@ -13,11 +13,20 @@ data class BookRC(
 )
 
 data class BookTime(
-  var book: Book = Book(),
-  var timeordered: String = "0",
-  var timeshipped: String = "0",
-  var incartguest: String = "0",
-  var incartuser: String = "0"
+  var title: String = "",
+  var subtitle: String = "", 
+  var author: String = "",
+  var publisher: String = "", 
+  var currentcopyright: String = "",
+  var bookedition: String = "", 
+  var uniqueid: String = "",
+  var storyinfo: String = "", 
+  var condition: String = "", 
+  var isbn: String = "",
+  var timeordered: Long = 0,
+  var timeshipped: Long = 0,
+  var incartguest: Long = 0,
+  var incartuser: Long = 0
 )
 
 data class Book(
@@ -32,6 +41,8 @@ data class Book(
   var condition: String = "", 
   var isbn: String = ""
 )
+
+
 
 data class BookshelfBook(
   var title: String = "",

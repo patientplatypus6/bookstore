@@ -1,13 +1,35 @@
 
-DROP TABLE IF EXISTS useraddress;
-DROP TABLE IF EXISTS pic;
-DROP TABLE IF EXISTS book;
-DROP TABLE IF EXISTS bookerrata;
-DROP TABLE IF EXISTS messageuser;
-DROP TABLE IF EXISTS revenuecost;
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS userorder;
-DROP TABLE IF EXISTS administrator;
+-- DROP TABLE IF EXISTS useraddress;
+-- DROP TABLE IF EXISTS pic;
+-- DROP TABLE books;
+-- DROP TABLE IF EXISTS bookerrata;
+-- DROP TABLE IF EXISTS messageuser;
+-- DROP TABLE IF EXISTS revenuecost;
+-- DROP TABLE IF EXISTS user;
+-- DROP TABLE IF EXISTS userorder;
+-- DROP TABLE IF EXISTS administrator;
+
+-- SELECT concat('DROP TABLE IF EXISTS `', table_name, '`;')
+-- FROM information_schema.tables
+-- WHERE table_schema = 'dbname';
+
+-- select concat('drop table if exists ', table_name, ' cascade;')
+--   from information_schema.tables;
+
+-- SELECT
+--     table_name
+-- FROM
+--     information_schema.tables
+-- WHERE
+--     table_schema = 'dbname';
+
+-- DECLARE @sql NVARCHAR(max)=''
+
+-- SELECT @sql += ' Drop table ' + QUOTENAME(TABLE_SCHEMA) + '.'+ QUOTENAME(TABLE_NAME) + '; '
+-- FROM   INFORMATION_SCHEMA.TABLES
+-- WHERE  TABLE_TYPE = 'BASE TABLE'
+
+-- Exec Sp_executesql @sql
 
 -- CREATE TABLE IF NOT EXISTS administrator(
 --     username VARCHAR(255) NOT NULL,
@@ -40,24 +62,33 @@ CREATE TABLE IF NOT EXISTS pic(
     uniqueid VARCHAR(255) NOT NULL
 );
 
--- DROP TABLE IF EXISTS book;
-CREATE TABLE IF NOT EXISTS books
+
+
+-- BEGIN TRY  
+--     DROP TABLE book;
+-- END TRY  
+-- BEGIN CATCH
+--     DROP TABLE books;  
+-- END CATCH;   
+
+-- DROP TABLE books;
+CREATE TABLE IF NOT EXISTS bookz
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    subtitle  VARCHAR(255) NOT NULL,
-    author VARCHAR(255) NOT NULL,
-    publisher  VARCHAR(255) NOT NULL, 
+    title VARCHAR(65535) NOT NULL,
+    subtitle VARCHAR(65535) NOT NULL, 
+    author VARCHAR(65535) NOT NULL,
+    publisher VARCHAR(65535) NOT NULL, 
     currentcopyright VARCHAR(65535) NOT NULL,
-    bookedition VARCHAR(65535) NOT NULL,
+    bookedition VARCHAR(65535) NOT NULL, 
     uniqueid VARCHAR(65535) NOT NULL,
-    storyinfo VARCHAR(65535) NOT NULL,
-    condition VARCHAR(65535) NOT NULL,
+    storyinfo VARCHAR(65535) NOT NULL, 
+    condition VARCHAR(65535) NOT NULL, 
     isbn VARCHAR(65535) NOT NULL,
-    timeordered VARCHAR(65535) NOT NULL, 
-    timeshipped VARCHAR(65535) NOT NULL, 
-    incartguest VARCHAR(65535) NOT NULL, 
-    incartuser VARCHAR(65535) NOT NULL
+    timeordered BIGINT NOT NULL, 
+    timeshipped BIGINT NOT NULL, 
+    incartguest BIGINT NOT NULL, 
+    incartuser BIGINT NOT NULL
 );
 
 -- DROP TABLE IF EXISTS bookerrata;

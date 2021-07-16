@@ -54,7 +54,7 @@ const Main = () => {
     }
 
     useEffect(()=>{
-      if(localStorage.getItem('username')!='' && localStorage.getItem('cookie')!=''){
+      if(localStorage.getItem('username')!='' && localStorage.getItem('username')!=null){
         setUsername(localStorage.getItem('username'))
         setLoggedin(true)
       }

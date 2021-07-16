@@ -12,10 +12,10 @@ class BooksHandler(val bookRepo: BookRepository){
     return deletedbook;
   }
   
-  suspend fun findbooks():List<Book>{
+  suspend fun findbooks():List<BookTime>{
     println("findBooks")
-    val books:List<Book> = bookRepo.findBooks();
-    println("value of books $books")
+    val books:List<BookTime> = bookRepo.findBooks();
+    println("value of booktime $books")
     return books;
   }
 
@@ -28,14 +28,42 @@ class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun addbook(book: Book):Boolean{
 
-    var booktime = BookTime(book);
+    println("inside addbook handler and value of book $book")
 
-    booktime.book = book
+    var booktime = BookTime()
+
+    booktime.title = book.title
+    booktime.subtitle = book.subtitle
+    booktime.author = book.author
+    booktime.publisher = book.publisher
+    booktime.currentcopyright = book.currentcopyright
+    booktime.bookedition = book.bookedition
+    booktime.uniqueid = book.uniqueid
+    booktime.storyinfo = book.storyinfo
+    booktime.condition = book.condition
+    booktime.isbn = book.isbn
+    booktime.timeordered = 0
+    booktime.timeshipped = 0
+    booktime.incartguest = 0
+    booktime.incartuser = 0
+
+    println("after booktime assignment and value of booktime $booktime")
 
     var bookAdded:Boolean = bookRepo.saveabook(
-      booktime.book.title, booktime.book.subtitle, booktime.book.author, booktime.book.publisher, 
-      booktime.book.currentcopyright, booktime.book.bookedition, 
-      booktime.book.uniqueid, booktime.book.storyinfo, booktime.book.condition, booktime.book.isbn, booktime.timeordered, booktime.timeshipped, booktime.incartguest, booktime.incartuser
+      booktime.title,
+      booktime.subtitle,
+      booktime.author,
+      booktime.publisher,
+      booktime.currentcopyright,
+      booktime.bookedition,
+      booktime.uniqueid,
+      booktime.storyinfo,
+      booktime.condition,
+      booktime.isbn,
+      booktime.timeordered,
+      booktime.timeshipped,
+      booktime.incartguest,
+      booktime.incartuser
     )
     return bookAdded
   }
