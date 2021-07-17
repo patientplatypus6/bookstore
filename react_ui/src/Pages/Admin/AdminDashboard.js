@@ -31,6 +31,7 @@ const AdminDashboard = () => {
     payload.requestType='post'
     handlefetch(payload).then(result=>{
       findbooks()
+      findrevenuecosts()
       setDashmessage(`Book with title ${title} and id ${uniqueid} \n has been deleted from the database...`)
     })
   }
@@ -258,36 +259,43 @@ const AdminDashboard = () => {
           })}
         </table>
         <br/>
-        <div>
-        <div 
-          className='button'
-          style={{
-            display: 'inline-block', 
-            // float: 'left'
-          }}
-          onClick={()=>{
-            if(pagenumberrevenuecost>1){
-              setPagenumberrevenuecost(pagenumberrevenuecost-1)
-            }
-          }}
-        >
-          &#x3c;
-        </div>
-        <span style={{paddingRight: '5px', paddingLeft: '5px'}}>{pageNumberHandler(numberpages, pagenumberrevenuecost, 'revenuecost')}</span>
-        <div 
-          className='button'
+        <div
           style={{
             display: 'inline-block',
-            // float: 'right'
-          }}
-          onClick={()=>{
-            if(pagenumberrevenuecost<numberpages){
-              setPagenumberrevenuecost(pagenumberrevenuecost+1)
-            }
+            padding: '5px', 
+            background: 'grey',
+            border: '2px solid black'
           }}
         >
-          &#x3e;
-        </div>
+          <div 
+            className='button'
+            style={{
+              display: 'inline-block', 
+              // float: 'left'
+            }}
+            onClick={()=>{
+              if(pagenumberrevenuecost>1){
+                setPagenumberrevenuecost(pagenumberrevenuecost-1)
+              }
+            }}
+          >
+            &#x3c;
+          </div>
+          <span style={{paddingRight: '5px', paddingLeft: '5px'}}>{pageNumberHandler(numberpages, pagenumberrevenuecost, 'revenuecost')}</span>
+          <div 
+            className='button'
+            style={{
+              display: 'inline-block',
+              // float: 'right'
+            }}
+            onClick={()=>{
+              if(pagenumberrevenuecost<numberpages){
+                setPagenumberrevenuecost(pagenumberrevenuecost+1)
+              }
+            }}
+          >
+            &#x3e;
+          </div>
         </div>
       </>
     )
@@ -364,7 +372,14 @@ const AdminDashboard = () => {
           })}
         </table>
         <br/>
-        <div>
+        <div
+          style={{
+            display: 'inline-block',
+            padding: '5px', 
+            background: 'grey',
+            border: '2px solid black'
+          }}
+        >
           <div 
             className='button'
             style={{
@@ -507,6 +522,10 @@ const AdminDashboard = () => {
       <br/>
       <div 
         style={{
+          background: 'grey',
+          border: '2px solid black',
+          padding: '5px',
+          display: "inline-block",
           fontWeight: 'bold',
           fontSize: '1.5rem', 
           marginBottom: '20px'
@@ -514,6 +533,7 @@ const AdminDashboard = () => {
       >
         Total Revenue Costs
       </div>
+      <br/>
       <div className='tableHolder'>
         {totalrevenuecostsTable()}
       </div>        
@@ -521,6 +541,10 @@ const AdminDashboard = () => {
       <br/>
       <div 
         style={{
+          background: 'grey',
+          border: '2px solid black',
+          padding: '5px',
+          display: "inline-block",
           fontWeight: 'bold',
           fontSize: '1.5rem', 
           marginBottom: '20px'
@@ -528,6 +552,7 @@ const AdminDashboard = () => {
       >
         Revenue Costs Table
       </div>
+      <br/>
       <div className='tableHolder'>
         {revenuecostlistTable(revenuecostlist)}
       </div>

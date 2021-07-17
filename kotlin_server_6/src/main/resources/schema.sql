@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS pic(
     uniqueid VARCHAR(255) NOT NULL
 );
 
+DROP TABLE IF EXISTS bookz;
 CREATE TABLE IF NOT EXISTS bookz
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,10 +76,11 @@ CREATE TABLE IF NOT EXISTS bookz
     storyinfo VARCHAR(65535) NOT NULL, 
     condition VARCHAR(65535) NOT NULL, 
     isbn VARCHAR(65535) NOT NULL,
-    timeordered BIGINT NOT NULL, 
-    timeshipped BIGINT NOT NULL, 
-    incartguest BIGINT NOT NULL, 
-    incartuser BIGINT NOT NULL
+    timeordered BIGINT NOT NULL DEFAULT 0, 
+    timeshipped BIGINT NOT NULL DEFAULT 0, 
+    incartguest BIGINT NOT NULL DEFAULT 0, 
+    incartuser BIGINT NOT NULL DEFAULT 0,
+    cartholdername VARCHAR(65535)
 );
 
 -- DROP TABLE IF EXISTS bookerrata;

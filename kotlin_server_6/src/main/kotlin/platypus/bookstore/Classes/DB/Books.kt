@@ -12,6 +12,19 @@ data class BookRC(
   var revenuecost: List<RevenueCost>
 )
 
+data class Book(
+  var title: String = "",
+  var subtitle: String = "", 
+  var author: String = "",
+  var publisher: String = "", 
+  var currentcopyright: String = "",
+  var bookedition: String = "", 
+  var uniqueid: String = "",
+  var storyinfo: String = "", 
+  var condition: String = "", 
+  var isbn: String = ""
+)
+
 data class BookTime(
   var title: String = "",
   var subtitle: String = "", 
@@ -28,21 +41,6 @@ data class BookTime(
   var incartguest: Long = 0,
   var incartuser: Long = 0
 )
-
-data class Book(
-  var title: String = "",
-  var subtitle: String = "", 
-  var author: String = "",
-  var publisher: String = "", 
-  var currentcopyright: String = "",
-  var bookedition: String = "", 
-  var uniqueid: String = "",
-  var storyinfo: String = "", 
-  var condition: String = "", 
-  var isbn: String = ""
-)
-
-
 
 data class BookshelfBook(
   var title: String = "",

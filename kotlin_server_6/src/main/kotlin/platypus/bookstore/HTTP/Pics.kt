@@ -52,22 +52,22 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 	}
 
 
-	@PostMapping("/findimagesbybook")
+	@PostMapping("/findpicsbybook")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findimagesbybook(@RequestBody picbookid: PicBookId):List<Pic>{
+	suspend fun findpicsbybook(@RequestBody picbookid: PicBookId):List<Pic>{
 		println("value of picbookid: $picbookid")
 		var picshandler = PicsHandler(picRepo)
-		var coverlist = picshandler.findimagesbybook(picbookid)
+		var coverlist = picshandler.findpicsbybook(picbookid.bookid)
 		return coverlist;
 	}
 
 
-	@PostMapping("/findimagesbybook64")
+	@PostMapping("/findpicsbybook64")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findimagesbybook64(@RequestBody picbookid: PicBookId):List<Pic64>{
+	suspend fun findpicsbybook64(@RequestBody picbookid: PicBookId):List<Pic64>{
 		println("value of picbookid: $picbookid")
 		var picshandler = PicsHandler(picRepo)
-		var coverlist = picshandler.findimagesbybook64(picbookid)
+		var coverlist = picshandler.findpicsbybook64(picbookid)
 		return coverlist;
 	}
 

@@ -134,10 +134,10 @@ const EditBook = () => {
     })
   }
 
-  const findimagesbybook64 = (bookuniqueid) => {
+  const findpicsbybook64 = (bookuniqueid) => {
     var payload = {
       requestType: 'post', 
-      uri: 'pic/findimagesbybook64', 
+      uri: 'pic/findpicsbybook64', 
       body: {
         bookid: bookuniqueid
       }
@@ -212,7 +212,7 @@ const EditBook = () => {
     }else{
       var bookitemuniqueid = history.location.state.bookitem.uniqueid
       findrevenuecosts(bookitemuniqueid)
-      findimagesbybook64(bookitemuniqueid)
+      findpicsbybook64(bookitemuniqueid)
       setbook(history.location.state.bookitem)
     }
   }, [])

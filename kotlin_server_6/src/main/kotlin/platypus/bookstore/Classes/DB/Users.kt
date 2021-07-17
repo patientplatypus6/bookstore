@@ -28,3 +28,7 @@ data class UserBookID(
   var bookuniqueid: String = "",
   var username: String = ""
 )
+
+data class BookUniqueID(
+  var bookuniqueid: String = "",
+)

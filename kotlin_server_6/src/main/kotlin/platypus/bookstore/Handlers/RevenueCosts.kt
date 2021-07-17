@@ -38,6 +38,10 @@ class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
     return true;
   }
 
+  suspend fun deleterevenuecostsbybookid(bookid: String):Boolean{
+    return revenuecostRepo.deletebybookid(bookid)
+  }
+
   suspend fun allrcbyname(rcname: String):List<RevenueCost>{
     var namelist: List<RevenueCost> = 
     revenuecostRepo.allrcbyname(rcname);

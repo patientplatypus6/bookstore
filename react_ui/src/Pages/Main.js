@@ -57,6 +57,9 @@ const Main = () => {
       if(localStorage.getItem('username')!='' && localStorage.getItem('username')!=null){
         setUsername(localStorage.getItem('username'))
         setLoggedin(true)
+      }else{
+        var guestname = "guestname" + Date.now().toString()
+        localStorage.setItem("guestname", guestname)
       }
     }, [])
 
@@ -94,12 +97,17 @@ const Main = () => {
           setModalmessage(`Username or password was not found in database. \n Please register as a new user or retry.`)
           console.log('value of login: ', login)
           console.log('value of loginmodal: ', loginmodal)
+          var guestname = "guestname" + Date.now().toString()
+          localStorage.setItem("guestname", guestname)
+          localStorage.removeItem('username')
+          localStorage.removeItem('cookie')
           setLoginmodal(true)
         }else{
           setLoginmodal(false)
           setLoggedin(true)
           localStorage.setItem('username', username)
           localStorage.setItem('cookie', result.cookie)
+          localStorage.removeItem('guestname')
           setUsername("")
           setPassword("")
         }
@@ -124,12 +132,17 @@ const Main = () => {
           setModalmessage(`Username already in use. \n Please register a new username and password or log in to an existing account.`)
           console.log('value of login: ', login)
           console.log('value of loginmodal: ', loginmodal)
+          var guestname = "guestname" + Date.now().toString()
+          localStorage.setItem("guestname", guestname)
+          localStorage.removeItem('username')
+          localStorage.removeItem('cookie')
           setLoginmodal(true)
         }else{
           setLoginmodal(false)
           setLoggedin(true)
           localStorage.setItem('username', username)
           localStorage.setItem('cookie', result.cookie)
+          localStorage.removeItem('guestname')
           setUsername("")
           setPassword("")
         }
@@ -372,7 +385,7 @@ const Main = () => {
           <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
           <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
           <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
-          <Route exact path="/book" render={()=><Book
+          <Route path="/book/:id" render={()=><Book
             cartbookids={cartbookids}
             updatecartbooks={(newids)=>{updatecartbookids(newids)}}
           />}/>

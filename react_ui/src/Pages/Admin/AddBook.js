@@ -64,6 +64,14 @@ const AddBook = () => {
     })
     setRevenuecostitem([...revenuecostitem])
 
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("value of payload; ", payload)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
     var payload = {
       body: {
         book: {
@@ -83,6 +91,16 @@ const AddBook = () => {
       requestType:"post",
       uri:"book/addbook"
     }
+
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("value of payload for addbook; ", payload)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
     var picturepayload = {
       body: {
         frontcoverindex: picfrontindex, 
@@ -95,6 +113,13 @@ const AddBook = () => {
     }
     console.log('adding book and value of picturepayload: ', picturepayload)
     handlefetch(payload).then(result=>{
+      console.log("*************************")
+      console.log("*************************")
+      console.log("*************************")
+      console.log("value of result from sending payload: ", result)
+      console.log("*************************")
+      console.log("*************************")
+      console.log("*************************")
       resetBookEntries()
       handlefetch(picturepayload).then(result=>{
         resetPicEntries()

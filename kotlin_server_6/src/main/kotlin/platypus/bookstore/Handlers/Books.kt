@@ -3,13 +3,24 @@ package platypus.bookstore.handlers
 import platypus.bookstore.repos.BookRepository
 import platypus.bookstore.classes.db.*
 
-// import java.math.BigInteger
-
 class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun deletebook(bookid: String):Boolean{
     var deletedbook = bookRepo.deletebybookid(bookid)
     return deletedbook;
+  }
+
+  suspend fun findbookbyuniqueid(uniqueid: String):Book{
+    var returnvallist =  bookRepo.findbookbyuniqueid(uniqueid)
+    var returnval = Book()
+    if(returnvallist.size==1){
+      for(returnbook in returnvallist){
+        returnval = returnbook
+      }
+    }
+    println("findbookbyuniqueid returnvallist $returnvallist")
+    println("findbookbyuniqueid returnval $returnval")
+    return returnval
   }
   
   suspend fun findbooks():List<BookTime>{
@@ -76,18 +87,36 @@ class BooksHandler(val bookRepo: BookRepository){
     return bookUpdated
   }
 
-  suspend fun addbooktocartuser(bookuniqueid: String):Boolean{
+  suspend fun findBookIdNotOrderedNotInCart(bookuniqueid: String, milliseconds:Long):List<BookTime>{
+    return bookRepo.findBookIdNotOrderedNotInCart(bookuniqueid, milliseconds)
+  }
+
+  suspend fun addbooktocartuser(bookuniqueid: String, username: String):Boolean{
     var bookupdated = false;
     var milliseconds:Long = System.currentTimeMillis()
-    var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrdered(bookuniqueid)
+    var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrderedNotInCart(bookuniqueid, milliseconds)
+    var foundsize = booknotorderednotcart.size
+    println("foundsize $foundsize")
+    if(foundsize>0){
+      for (book in booknotorderednotcart){
+        println("before addbooktocartuser values are bookuniqueid $bookuniqueid milliseconds $milliseconds username $username")
+        bookupdated = bookRepo.updateBookinCartUser(bookuniqueid, milliseconds, username)
+        println("value of bookupdated in for loop: $bookupdated")
+      }
+      println("value of bookupdated outside for loop: $bookupdated")
+      return bookupdated
+    }else{
+      return false
+    }
+  } 
+
+  suspend fun addbooktocartguest(bookuniqueid: String, username: String):Boolean{
+    var bookupdated = false;
+    var milliseconds:Long = System.currentTimeMillis()
+    var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrderedNotInCart(bookuniqueid, milliseconds)
     if(booknotorderednotcart.size>0){
       for (book in booknotorderednotcart){
-        if(
-          (book.incartguest == 0.toLong() || milliseconds - book.incartguest > 300000.toLong()) &&
-          (book.incartuser == 0.toLong() || milliseconds - book.incartuser > 3600000.toLong())
-        ){
-          bookupdated = bookRepo.updateBookIdinCartUser(bookuniqueid, milliseconds)
-        }
+        bookupdated = bookRepo.updateBookinCartGuest(bookuniqueid, milliseconds, username)
       }
       return bookupdated
     }else{
@@ -95,24 +124,13 @@ class BooksHandler(val bookRepo: BookRepository){
     }
   }
 
-  suspend fun addbooktocartguest(bookuniqueid: String):Boolean{
-    var bookupdated = false;
-    var milliseconds:Long = System.currentTimeMillis()
-    var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrdered(bookuniqueid)
-    if(booknotorderednotcart.size>0){
-      for (book in booknotorderednotcart){
-        if(
-          (book.incartguest == 0.toLong() || milliseconds - book.incartguest > 300000.toLong()) &&
-          (book.incartuser == 0.toLong() || milliseconds - book.incartuser > 3600000.toLong())
-        ){
-          println("inside if statement")
-          bookupdated = bookRepo.updateBookIdinCartGuest(bookuniqueid, milliseconds)
-          println("bookupdated in if and value $bookupdated")
-        }
-      }
-      return bookupdated
-    }else{
-      return false
-    }
+  suspend fun findbooksincartbynameuser(username:String):List<Book>{
+    println("in findbooksincartbynameuser and username: $username")
+    return bookRepo.findbooksincartbynameuser(username, System.currentTimeMillis())
   }
+
+  suspend fun findbooksincartbynameguest(username:String):List<Book>{
+    return bookRepo.findbooksincartbynameguest(username, System.currentTimeMillis())
+  }
+
 } 

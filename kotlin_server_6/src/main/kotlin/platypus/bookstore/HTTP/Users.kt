@@ -75,10 +75,12 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 
 	@PostMapping("/addbooktocartguest")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun addbooktocartguest(@RequestBody bookuniqueid: BookUniqueID):SuccessReturn{
+	suspend fun addbooktocartguest(@RequestBody userbookid: UserBookID):SuccessReturn{
 		var bookhandler = BooksHandler(bookRepo)
 		var successreturn = SuccessReturn()
-		successreturn.result = bookhandler.addbooktocartguest(bookuniqueid.bookuniqueid)
+		var bookuniqueid = userbookid.bookuniqueid;
+		var username = userbookid.username;
+		successreturn.result = bookhandler.addbooktocartguest(bookuniqueid, username)
 		return successreturn
 	}
 
@@ -90,11 +92,35 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 		var usershandler = UsersHandler(userRepo)
 		var successreturn = SuccessReturn()
 		if(usershandler.checkloginredis(userbookid.username, usercookie)){
-			successreturn.result = bookhandler.addbooktocartuser(userbookid.bookuniqueid)
+			println("successfully passed cookie inspection")
+			successreturn.result = bookhandler.addbooktocartuser(userbookid.bookuniqueid, userbookid.username)
 		}else{
 			successreturn.result = false
 		}
 		return successreturn
+	}
+
+	@PostMapping("/findbooksincartbyuser")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbooksincartbyuser(@RequestBody username: Username, @CookieValue(name = "usercookie") usercookie: String):List<Book>{
+		var bookhandler = BooksHandler(bookRepo)
+		var usershandler = UsersHandler(userRepo)
+		if(usershandler.checkloginredis(username.username, usercookie)){
+			var booksincartbyuser =  bookhandler.findbooksincartbynameuser(username.username)
+			var findallbooks = bookhandler.findbooks();
+			println("value of findallbooks: $findallbooks")
+			println("booksincartbyuser $booksincartbyuser")
+			return booksincartbyuser
+		}else{
+			return listOf<Book>()
+		}
+	}
+
+	@PostMapping("/findbooksincartbyguest")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbooksincartbyuser(@RequestBody username: Username):List<Book>{
+		var bookhandler = BooksHandler(bookRepo)
+		return bookhandler.findbooksincartbynameguest(username.username)
 	}
 
 

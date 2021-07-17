@@ -40,3 +40,7 @@ data class SuccessReturn(
 data class BookUniqueID(
   var bookuniqueid: String = ""
 )
+
+data class Username(
+  var username: String = ""
+)

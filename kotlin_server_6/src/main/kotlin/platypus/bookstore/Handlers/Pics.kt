@@ -59,12 +59,12 @@ class PicsHandler(val picRepo: PicRepository){
     return coverlist
   }
 
-  suspend fun findimagesbybook(picbookid: PicBookId): List<Pic>{
-    var piclist = picRepo.findpicsbybook(picbookid.bookid)
+  suspend fun findpicsbybook(bookuniqueid: String): List<Pic>{
+    var piclist = picRepo.findpicsbybook(bookuniqueid)
     return piclist
   }
 
-  suspend fun findimagesbybook64(picbookid: PicBookId): List<Pic64>{
+  suspend fun findpicsbybook64(picbookid: PicBookId): List<Pic64>{
     var piclist = picRepo.findpicsbybook(picbookid.bookid)
     var pic64List:List<Pic64> = listOf<Pic64>()
     for(pic in piclist){

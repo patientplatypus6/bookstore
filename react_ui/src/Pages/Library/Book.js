@@ -3,31 +3,94 @@ import './library.css'
 // import { observer} from "mobx-react-lite";
 // import { toJS } from "mobx"
 
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import {fetchrequest, handlefetch} from '../../api/fetch'
 import './book.css'
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Book = (props) => {
   let history = useHistory();
+  let params = useParams();
 
   const [book, setBook] = useState(null)
+  const [bookuniqueid, setBookuniqueid] = useState(0)
+  const [cartbooks, setCartbooks] = useState([])
   const [translate, setTranslate] = useState(0)
   const [totalprice, setTotalprice] = useState(null)
 
   useEffect(()=>{
-    console.log('value of book: ', book)
     if(book!=null){
+      console.log('value of book: ', book)
+      if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+        checkcartguest()
+      }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+        checkcartuser()
+      }
       setTotalprice(book.userprice+book.usershipping)
     }
   }, [book])
 
-  useEffect(()=>{
-    if(history!=undefined && history.location!=null && history.location.book!=null & history.location.book!=undefined){
-      console.log("value of history: ", history)
-      setBook(history.location.book)
-    }
+  const findbook = () => {
+    var payload = {
+      body:{
+        bookuniqueid
+      }
+    } 
+    payload.requestType = "post"
+    payload.uri = 'book/findbookshelfbookbyuniqueid'
+    handlefetch(payload).then(result=>{
+      console.log('value of result from book/findbookbyuniqueid', result)
+      setBook(result)
+    })
+  }
 
+  useEffect(()=>{
+    if(bookuniqueid!=0){
+      findbook()
+    }
+  }, [bookuniqueid])
+
+  useEffect(()=>{
+    setBookuniqueid(params.id)
   }, [])
+
+
+  const checkcartguest = () => {
+    var payload = {
+      body:{
+        username: localStorage.getItem('guestname')
+      }
+    }    
+    payload.requestType="post"
+    payload.uri = 'user/findbooksincartbyguest'
+    handlefetch(payload).then(result=>{
+      console.log("value of result from checkcartguest: ", result)
+      setCartbooks(result)
+    })
+  }
+
+  const checkcartuser = () => {
+    var payload = {
+      body:{
+        username: localStorage.getItem('username')
+      }
+    }  
+    payload.requestType="postcookie"
+    payload.uri = 'user/findbooksincartbyuser'
+    handlefetch(payload).then(result=>{
+      console.log("&&&&&&&&&&&&&&&&&&&&&")
+      console.log("&&&&&&&&&&&&&&&&&&&&&")
+      console.log("&&&&&&&&&&&&&&&&&&&&&")
+      console.log("value of result from checkcartuser: ", result)
+      console.log("&&&&&&&&&&&&&&&&&&&&&")
+      console.log("&&&&&&&&&&&&&&&&&&&&&")
+      console.log("&&&&&&&&&&&&&&&&&&&&&")  
+      setCartbooks(result)
+    })
+  }
 
   const addcartuser = () => {
     var payload = {
@@ -39,21 +102,31 @@ const Book = (props) => {
     payload.requestType="postcookie"
     payload.uri='user/addbooktocartuser'
     handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
       console.log('value of result from addcartuser: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkcartuser()
     })
   }
 
   const addcartguest = () => {
-    console.log('book.uniqueid: ', book.uniqueid)
     var payload = {
       body: {
-        bookuniqueid: book.uniqueid
+        bookuniqueid: book.uniqueid,
+        username: localStorage.getItem('guestname')
       }
     }
     payload.requestType="post"
     payload.uri='user/addbooktocartguest'
     handlefetch(payload).then(result=>{
       console.log('value of result from addcartguest: ', result)
+      history.push({
+        pathname: "/cart"
+      })
     })
   }
 
@@ -254,7 +327,8 @@ const Book = (props) => {
                 style={{
                   display: 'inline-block',
                   marginRight: '5px', 
-                  float: 'right'
+                  float: 'right',
+                  background: localStorage.getItem('username')==null && cartbooks.length != 0?'red':''
                 }}
                 onClick={()=>{
                   if(localStorage.getItem('username')==null){
@@ -264,7 +338,12 @@ const Book = (props) => {
                   }
                 }}
                 >
-                  {localStorage.getItem('username')==null?'Buy Now':'Add to Cart'}
+                  {localStorage.getItem('username')!=null && cartbooks.length == 0? 
+                  'Add to Cart':null}
+                  {localStorage.getItem('username')==null && cartbooks.length == 0?
+                    'Buy Now':  null}
+                  {localStorage.getItem('username')==null && cartbooks.length != 0?
+                    'Only 1 Item Allowed for Guest': null}
                 </div>
               </div>
             </div> 
@@ -274,7 +353,7 @@ const Book = (props) => {
           <div className='fixedcontainer'>
             <div className='roundedcontainer flowerpattern'>
               <h3 style={{lineHeight: '0'}}>
-                Book condition
+                Book Condition
               </h3> 
               {book!=null?book.condition:""}
             </div> 

@@ -16,6 +16,7 @@ import platypus.bookstore.classes.*
 import platypus.bookstore.classes.db.*
 import platypus.bookstore.handlers.*
 import platypus.bookstore.repos.*
+import platypus.bookstore.classes.db.BookUniqueID
 
 import org.springframework.stereotype.Component
 import platypus.bookstore.utility.*
@@ -30,6 +31,88 @@ import java.util.Base64
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/book")
 public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
+
+	@PostMapping("/findbookbyuniqueid")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbookbyuniqueid(@RequestBody bookuniqueid: BookUniqueID):Book{
+		var bookshandler = BooksHandler(bookRepo)
+		return bookshandler.findbookbyuniqueid(bookuniqueid.bookuniqueid)
+	}
+
+
+	@PostMapping("/findbookshelfbookbyuniqueid")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbookshelfbookbyuniqueid(@RequestBody bookuniqueid: BookUniqueID):BookshelfBook{
+		var bookshelfbook:BookshelfBook = BookshelfBook();
+		var picshandler = PicsHandler(picRepo)
+		var bookshandler = BooksHandler(bookRepo)
+		var revenuecosthandler = RevenueCostsHandler(revenuecostRepo)
+		
+		var milliseconds = System.currentTimeMillis()
+
+		var booktimelist:List<BookTime> = bookshandler.findBookIdNotOrderedNotInCart(bookuniqueid.bookuniqueid, milliseconds)
+
+		var allpicsbybook = picshandler.findpicsbybook(bookuniqueid.bookuniqueid)
+
+		var picnamefront = ""
+		var picnameback = ""
+		var picnamelist: List<String> = listOf<String>()
+
+		for(bookpic in allpicsbybook){
+			if(bookpic.frontcover){
+				picnamefront = bookpic.picname
+			}
+			if(bookpic.backcover){
+				picnameback = bookpic.picname
+			}
+			picnamelist+=bookpic.picname
+		}
+
+
+		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
+		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
+
+		var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(bookuniqueid.bookuniqueid)
+
+		var usershipping = ""
+		var userprice = ""
+
+		for(bookrevenuecost in bookrevenuecosts){
+			if(bookrevenuecost.rcname==shippingstring){
+				usershipping = bookrevenuecost.rcvalue
+			}
+			if(bookrevenuecost.rcname==pricestring){
+				userprice = bookrevenuecost.rcvalue
+			}
+		}
+
+		if(booktimelist.size==1){
+			for(booktime in booktimelist){
+				bookshelfbook = BookshelfBook(
+					title = booktime.title,
+					subtitle = booktime.subtitle,
+					author = booktime.author,
+					publisher = booktime.publisher,
+					currentcopyright = booktime.currentcopyright,
+					bookedition = booktime.bookedition,
+					uniqueid = booktime.uniqueid, 
+					storyinfo = booktime.storyinfo, 
+					condition = booktime.condition, 
+					isbn = booktime.isbn, 
+					userprice = userprice,
+					usershipping = usershipping,
+					allpics = picnamelist,
+					picnamefront = picnamefront,
+					picnameback = picnameback
+				)
+			}
+			return bookshelfbook
+		}else{
+			return bookshelfbook
+		}
+
+	}
+
 
 	@GetMapping("/findbookshelfbooks")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -113,11 +196,13 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	suspend fun deletebook(@RequestBody bookuniqueid: BookId):Boolean{
 		var bookshandler = BooksHandler(bookRepo)
 		var picshandler = PicsHandler(picRepo)
+		var revenuecosthandler = RevenueCostsHandler(revenuecostRepo)
 
-		bookshandler.deletebook(bookuniqueid.bookid)
-		picshandler.deletebookpics(bookuniqueid.bookid)
+		var bool1 = bookshandler.deletebook(bookuniqueid.bookid)
+		var bool2 = picshandler.deletebookpics(bookuniqueid.bookid)
+		var bool3 = revenuecosthandler.deleterevenuecostsbybookid(bookuniqueid.bookid)
 
-		return true;
+		return bool1&&bool2&&bool3;
 	}	
 
 	@GetMapping("/findbooks")
@@ -161,8 +246,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 		return picssaved
 	}
-
-	
 
 	@PostMapping("/addpics")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")

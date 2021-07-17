@@ -86,22 +86,54 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     """
       select * from bookz 
       where 
-      timeordered = 0 and
+      timeordered = 0 
+      and
       uniqueid = :uniqueid
     """    
     )
     suspend fun findBookIdNotOrdered(uniqueid: String):List<BookTime>
 
     @Query(
+      """
+        select * from bookz 
+        where
+        uniqueid = :uniqueid
+      """    
+      )
+      suspend fun findbookbyuniqueid(uniqueid: String):List<Book>
+
+    @Query(
+      """
+        select * from bookz 
+        where 
+        timeordered = 0 
+        and
+        uniqueid = :uniqueid 
+        and
+        (
+          (
+            incartguest = 0 or
+            (:currentmilliseconds - incartguest > 600000)
+          ) and
+          (
+            incartuser = 0 or
+            (:currentmilliseconds - incartuser > 3600000)
+          )
+        ) 
+      """    
+      )
+      suspend fun findBookIdNotOrderedNotInCart(uniqueid: String, currentmilliseconds: Long):List<BookTime>
+
+    @Query(
     """
       select * from bookz where dateordered='' and 
       (
         (
-          incartguest=0 or
-          (:currentmilliseconds - incartguest > 300000)
-        ) or 
+          incartguest = 0 or
+          (:currentmilliseconds - incartguest > 600000)
+        ) and
         (
-          incartuser=0 or
+          incartuser = 0 or
           (:currentmilliseconds - incartuser > 3600000)
         ) 
       )
@@ -109,49 +141,53 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     )
     suspend fun findBooksforsale():List<Book>
 
-    @Modifying
     @Query(
     """
-      update bookz set
-      incartguest=:currentmilliseconds
+      select * from bookz
       where
-      uniqueid=:bookuniqueid
-      and
-      (
-        (
-          incartguest=0 or
-          (:currentmilliseconds - incartguest > 300000)
-        ) or 
-        (
-          incartuser=0 or
-          (:currentmilliseconds - incartuser > 3600000)
-        )   
-      )
+      cartholdername = :cartholdername
+      and 
+      (:currentmilliseconds - incartuser < 3600000)
     """
     )
-    suspend fun updateBookIdinCartGuest(bookuniqueid: String, currentmilliseconds: Long):Boolean
+    suspend fun findbooksincartbynameuser(cartholdername: String, currentmilliseconds: Long):List<Book>
+
+    @Query(
+      """
+        select * from bookz
+        where
+        cartholdername = :cartholdername
+        and 
+        (:currentmilliseconds - incartguest < 600000)
+      """
+      )
+      suspend fun findbooksincartbynameguest(cartholdername: String, currentmilliseconds: Long):List<Book>
 
     @Modifying
     @Query(
     """
       update bookz set
-      incartguest=:currentmilliseconds
+      incartuser = 0,
+      incartguest = :currentmilliseconds,
+      cartholdername = :cartholdername
       where
-      uniqueid=:bookuniqueid
-      and
-      (
-        (
-          incartguest=0 or
-          (:currentmilliseconds - incartguest > 300000)
-        ) or 
-        (
-          incartuser=0 or
-          (:currentmilliseconds - incartuser > 3600000)
-        ) 
-      )
+      uniqueid = :bookuniqueid
     """
     )
-    suspend fun updateBookIdinCartUser(bookuniqueid: String, currentmilliseconds: Long):Boolean
+    suspend fun updateBookinCartGuest(bookuniqueid: String, currentmilliseconds: Long, cartholdername: String):Boolean
+
+    @Modifying
+    @Query(
+    """
+      update bookz set
+      incartuser = :currentmilliseconds,
+      incartguest = 0,
+      cartholdername = :cartholdername
+      where
+      uniqueid = :bookuniqueid
+    """
+    )
+    suspend fun updateBookinCartUser(bookuniqueid: String, currentmilliseconds: Long, cartholdername: String):Boolean
 
     @Modifying
     @Query(
