@@ -494,11 +494,30 @@ const EditBook = () => {
             }}
           />
           <br/>
-          <div style={{fontSize: '0.8rem'}}>
-            Date format must conform to <br/>
-            <span style={{fontWeight: 'bold'}}> ISO-8601 calendar system - format:
-            <br/>
-            YYYY-MM-DDTHH:MI:SS</span>
+          <br/>
+          <div>
+            <div
+              style={{display: 'inline-block', marginRight: '10px'}}
+              className="button"
+              onClick={()=>{
+                var temprevenuecostitem = [...revenuecostitem]
+                temprevenuecostitem[itemindex]['rcdate'] = new Date().toISOString()
+                setRevenuecostitem([...temprevenuecostitem])
+              }}                      
+            >
+              Current Time
+            </div>
+            <div
+              style={{display: 'inline-block', marginRight: '10px'}}
+              className="button"
+              onClick={()=>{
+                var temprevenuecostitem = [...revenuecostitem]
+                temprevenuecostitem[itemindex]['rcdate'] = Date.parse(temprevenuecostitem[itemindex]['rcdate'])
+                setRevenuecostitem([...temprevenuecostitem])
+              }}                      
+            >
+              Parse Milliseconds
+            </div>
           </div>
         </div>  
         <br/>
@@ -710,6 +729,9 @@ const EditBook = () => {
           </div>
           <br/>
           <br/>
+          <div style={{fontSize: '0.75rem', fontWeight: 'bold'}}>
+            Make sure all revenue times are milli parsed before sending!
+          </div>
           <div>
             <div className='button'
               onClick={()=>{

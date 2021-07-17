@@ -270,21 +270,36 @@ const AddRevenueCost = () => {
             }}
           />
           <br/>
-          <div
-            style={{display: 'inline-block'}}
-            className="button"
-            onClick={()=>{
-              var temprevenuecostitem = [...revenuecostitem]
-              temprevenuecostitem[itemindex]['rcdate'] = Date.parse(temprevenuecostitem[itemindex]['rcdate'])
-              setRevenuecostitem([...temprevenuecostitem])
-            }}                      
-          >
-            Parse Milliseconds
+          <br/>
+          <div>
+            <div
+              style={{display: 'inline-block', marginRight: '10px'}}
+              className="button"
+              onClick={()=>{
+                var temprevenuecostitem = [...revenuecostitem]
+                temprevenuecostitem[itemindex]['rcdate'] = new Date().toISOString()
+                setRevenuecostitem([...temprevenuecostitem])
+              }}                      
+            >
+              Current Time
+            </div>
+            <div
+              style={{display: 'inline-block', marginRight: '10px'}}
+              className="button"
+              onClick={()=>{
+                var temprevenuecostitem = [...revenuecostitem]
+                temprevenuecostitem[itemindex]['rcdate'] = Date.parse(temprevenuecostitem[itemindex]['rcdate'])
+                setRevenuecostitem([...temprevenuecostitem])
+              }}                      
+            >
+              Parse Milliseconds
+            </div>
           </div>
         </div>  
         <br/>
         <div>
           <div className='button'
+            style={{background: 'red'}}
             onClick={()=>{
 
               var temprevenuecostitem = [...revenuecostitem]
@@ -405,6 +420,9 @@ const AddRevenueCost = () => {
           </div>
           </div>
           <br/>
+          <div style={{fontSize: '0.75rem', fontWeight: 'bold'}}>
+            Make sure all revenue times are milli parsed before sending!
+          </div>
           <div>
             <div className='button'
               onClick={()=>{
