@@ -62,16 +62,6 @@ CREATE TABLE IF NOT EXISTS pic(
     uniqueid VARCHAR(255) NOT NULL
 );
 
-
-
--- BEGIN TRY  
---     DROP TABLE book;
--- END TRY  
--- BEGIN CATCH
---     DROP TABLE books;  
--- END CATCH;   
-
--- DROP TABLE books;
 CREATE TABLE IF NOT EXISTS bookz
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -113,7 +103,7 @@ CREATE TABLE IF NOT EXISTS messageuser
     messageuseruniqueid VARCHAR(255) NOT NULL
 );
 
--- DROP TABLE IF EXISTS revenuecost;
+DROP TABLE IF EXISTS revenuecost;
 CREATE TABLE IF NOT EXISTS revenuecost
 (
     -- id     INT AUTO_INCREMENT PRIMARY KEY,
@@ -124,7 +114,7 @@ CREATE TABLE IF NOT EXISTS revenuecost
     rcdescription VARCHAR(65535) NOT NULL,
     rcvalue VARCHAR(65535) NOT NULL,
     -- rcdate DATETIME NOT NULL
-    rcdate VARCHAR(255) NOT NULL
+    rcdate BIGINT NOT NULL
 );
 
 -- DROP TABLE IF EXISTS user;

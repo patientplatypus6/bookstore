@@ -83,12 +83,12 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     suspend fun findBooks():List<BookTime>
 
     @Query(
-      """
-        select * from bookz 
-        where 
-        timeordered = 0 and
-        uniqueid = :uniqueid
-      """    
+    """
+      select * from bookz 
+      where 
+      timeordered = 0 and
+      uniqueid = :uniqueid
+    """    
     )
     suspend fun findBookIdNotOrdered(uniqueid: String):List<BookTime>
 

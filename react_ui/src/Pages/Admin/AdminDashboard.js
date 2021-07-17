@@ -245,7 +245,7 @@ const AdminDashboard = () => {
                   {costitemprojected}
                 </td>
                 <td>
-                  {revenuecostitem.rcdate}
+                  {new Date(revenuecostitem.rcdate).toISOString()}
                 </td>
                 <td>
                   {revenuecostitem.bookuniqueid}

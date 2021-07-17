@@ -101,19 +101,6 @@ class BooksHandler(val bookRepo: BookRepository){
     var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrdered(bookuniqueid)
     if(booknotorderednotcart.size>0){
       for (book in booknotorderednotcart){
-        
-        var incartguestzero = (book.incartguest == 0.toLong())
-        println("book.incartguest == 0.toLong() $incartguestzero")
-        var incartguestmilliseconds = (milliseconds - book.incartguest < 300000.toLong())
-        println("milliseconds - book.incartguest < 300000.toLong()  $incartguestmilliseconds")
-
-
-        var incartuserzero = (book.incartuser == 0.toLong())
-        println("book.incartuser ==  0.toLong() $incartuserzero")
-        var incartusermilliseconds = (milliseconds - book.incartuser < 3600000.toLong())
-        println("milliseconds - book.incartuser < 3600000.toLong()  $incartusermilliseconds")
-
-        
         if(
           (book.incartguest == 0.toLong() || milliseconds - book.incartguest > 300000.toLong()) &&
           (book.incartuser == 0.toLong() || milliseconds - book.incartuser > 3600000.toLong())

@@ -270,9 +270,16 @@ const AddRevenueCost = () => {
             }}
           />
           <br/>
-          <div style={{fontSize: '0.8rem'}}>
-            Date format must conform to <br/>
-            <span style={{fontWeight: 'bold'}}>DATETIME - format: YYYY-MM-DD HH:MI:SS</span>
+          <div
+            style={{display: 'inline-block'}}
+            className="button"
+            onClick={()=>{
+              var temprevenuecostitem = [...revenuecostitem]
+              temprevenuecostitem[itemindex]['rcdate'] = Date.parse(temprevenuecostitem[itemindex]['rcdate'])
+              setRevenuecostitem([...temprevenuecostitem])
+            }}                      
+          >
+            Parse Milliseconds
           </div>
         </div>  
         <br/>

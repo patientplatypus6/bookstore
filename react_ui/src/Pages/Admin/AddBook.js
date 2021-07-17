@@ -365,11 +365,16 @@ const AddBook = () => {
             }}
           />
           <br/>
-          <div style={{fontSize: '0.8rem'}}>
-            Date format must conform to <br/>
-            <span style={{fontWeight: 'bold'}}> ISO-8601 calendar system - format:
-            <br/>
-            YYYY-MM-DDTHH:MI:SS</span>
+          <div
+            style={{display: 'inline-block'}}
+            className="button"
+            onClick={()=>{
+              var temprevenuecostitem = [...revenuecostitem]
+              temprevenuecostitem[itemindex]['rcdate'] = Date.parse(temprevenuecostitem[itemindex]['rcdate'])
+              setRevenuecostitem([...temprevenuecostitem])
+            }}                      
+          >
+            Parse Milliseconds
           </div>
         </div>  
         <br/>
