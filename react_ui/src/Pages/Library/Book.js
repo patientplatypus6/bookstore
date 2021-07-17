@@ -58,7 +58,7 @@ const Book = (props) => {
   }
 
   return(
-    <div>
+    <div className=''>
       <div className="wrapper">
         <div className="titlebox">
           <h2 style={{lineHeight: '0'}}>
@@ -125,7 +125,7 @@ const Book = (props) => {
         </div>
         <div className="mainpics">
           <div className='fixedcontainer'>
-            <div className='roundedcontainer'>
+            <div className='roundedcontainer leafpattern'>
               {book!=null?
               <>
               <div style={{
@@ -168,7 +168,7 @@ const Book = (props) => {
         </div>
         <div className="allpicsb">
           <div className='fixedcontainer'>
-            <div className='roundedcontainer'
+            <div className='roundedcontainer leafpattern'
               style={{
                 textAlign: 'left',
                 overflowY: 'auto',
@@ -199,7 +199,7 @@ const Book = (props) => {
         </div>
         <div className="storyinfob">
           <div className='fixedcontainer'>
-            <div className='roundedcontainer'>
+            <div className='roundedcontainer flowerpattern'>
               <h3 style={{lineHeight: '0'}}>
                 Story Information
               </h3>
@@ -209,7 +209,7 @@ const Book = (props) => {
         </div>  
         <div className="pricesbox">
           <div className='fixedcontainer'>
-            <div className='roundedcontainer'>
+            <div className='roundedcontainer wavespattern'>
               <div 
                 style={{float: 'left', width: '60%', marginTop: '5px', textAlign: 'left'}}
               >
@@ -272,7 +272,7 @@ const Book = (props) => {
         </div>
         <div className="condition">
           <div className='fixedcontainer'>
-            <div className='roundedcontainer'>
+            <div className='roundedcontainer flowerpattern'>
               <h3 style={{lineHeight: '0'}}>
                 Book condition
               </h3> 

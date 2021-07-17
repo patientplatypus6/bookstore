@@ -1,7 +1,7 @@
 import React, {Component, useState, useEffect} from 'react';
-import './admin.css'
+import './admindashboard.css'
 import { useHistory } from "react-router-dom";
-import './booklist.css'
+// import './booklist.css'
 import {fetchrequest, handlefetch} from '../../api/fetch'
 
 const AdminDashboard = () => {
@@ -238,10 +238,10 @@ const AdminDashboard = () => {
                 <td style={{color: 'red', fontWeight: 'bold'}}>
                   {costitem}
                 </td>
-                <td style={{color: 'green', fontWeight: 'bold', background:'rgba(0,0,0,0.3)'}}>
+                <td style={{color: 'green', fontWeight: 'bold', background:'rgba(200,200,200,0.3)'}}>
                   {revenueitemprojected}
                 </td>
-                <td style={{color: 'red', fontWeight: 'bold', background:'rgba(0,0,0,0.3)'}}>
+                <td style={{color: 'red', fontWeight: 'bold', background:'rgba(200,200,200,0.3)'}}>
                   {costitemprojected}
                 </td>
                 <td>

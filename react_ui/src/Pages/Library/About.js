@@ -1,5 +1,5 @@
 import React, {Component, useState, useEffect} from 'react';
-import './library.css'
+import './about.css'
 // import { observer} from "mobx-react-lite";
 // import { toJS } from "mobx"
 
@@ -8,7 +8,7 @@ const About = () => {
 
   })
   return(
-    <div>
+    <div className='aboutcontainer'>
       About
     </div>
   )

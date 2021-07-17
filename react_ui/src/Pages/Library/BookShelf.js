@@ -1,5 +1,6 @@
 import React, {Component, useState, useEffect, useRef} from 'react';
 import './library.css'
+import './bookshelf.css'
 import { useSelector, useDispatch } from 'react-redux'
 import {arraybuffertobase64, sleep} from '../../utility/utility'
 
@@ -51,16 +52,23 @@ const BookShelf = (props) => {
         {bookshelfbooks.map((book)=>{
           if (book.picnamefront == ""){
             return(
-              <div key={book.bookuniqueid}>
-                <table style={{width: '100%', background: "lightorange"}}>
-                  <tbody style={{background: "lightorange"}}>
+              <div key={book.bookuniqueid}
+                style={{
+                  marginBottom: '20px',
+                  background: "url('./wood.jpg')"
+                }}
+              >
+                <table style={{width: '100%'}}
+                  className='tablebackground'
+                >
+                  <tbody style={{}}>
                     <br/>
                     <tr
                       style={{fontWeight: 'bold', fontSize: '1.25rem', fontStyle: 'italic'}}
                     >
                       {book.title}
                     </tr>
-                    <tr style={{background: 'lightorange'}}>
+                    <tr style={{}}>
                       <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
                         <img 
                           style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
@@ -98,8 +106,15 @@ const BookShelf = (props) => {
             )
           }else{
             return(
-              <div key={book.bookuniqueid}>
-                <table style={{width: '100%'}}>
+              <div key={book.bookuniqueid}
+                style={{
+                  background: "url('./wood.jpg')",
+                  marginBottom: '20px'
+                }}
+              >
+                <table style={{width: '100%'}}
+                  className='tablebackground'
+                >
                   <tbody>
                     <br/>
                     <tr
@@ -162,7 +177,8 @@ const BookShelf = (props) => {
       <div
         ref={containerref}
         style={{
-          background: 'grey', 
+          // background: 'grey',
+          marginBottom: '40px', 
           minHeight: '1px',
           marginTop: '20px',
           width: '60%', 

@@ -5,6 +5,10 @@ table, td, tc{
   vertical-align: top;
 }
 
+.tablebackground{
+  background: linear-gradient(45deg, rgba(111, 50, 10, 0.884), rgba(78, 49, 10, 0.225)), url('../../images/retina_wood_@2X.png');
+}
+
 table{
   width: 100%
 }
@@ -30,4 +34,13 @@ table{
   display: inline-block;
   text-align: center;
   /* width: 60%; */
+}
+
+.tilebackground{
+  background:linear-gradient(45deg, rgb(111, 50, 10, 0.5), rgb(150, 90, 10, 0.5)), url('../../images/retina_wood_@2X.png');
+}
+
+.woodtexture{
+  background-image: url('../../images/retina_wood_@2X.png')
+  /* background-color: brown; */
 }
