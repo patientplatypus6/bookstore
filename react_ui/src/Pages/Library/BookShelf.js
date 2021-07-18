@@ -144,7 +144,7 @@ const BookShelf = (props) => {
                         <div
                           className='button'
                           onClick={()=>{
-                            var pathname = '/book/'+book.bookuniqueid
+                            var pathname = '/book/'+book.uniqueid
                             console.log("pathname value = ", pathname)
                             history.push({
                               pathname

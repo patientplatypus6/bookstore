@@ -87,8 +87,8 @@ class BooksHandler(val bookRepo: BookRepository){
     return bookUpdated
   }
 
-  suspend fun findBookIdNotOrderedNotInCart(bookuniqueid: String, milliseconds:Long):List<BookTime>{
-    return bookRepo.findBookIdNotOrderedNotInCart(bookuniqueid, milliseconds)
+  suspend fun findBookIdNotOrdered(bookuniqueid: String):List<BookTime>{
+    return bookRepo.findBookIdNotOrdered(bookuniqueid)
   }
 
   suspend fun addbooktocartuser(bookuniqueid: String, username: String):Boolean{

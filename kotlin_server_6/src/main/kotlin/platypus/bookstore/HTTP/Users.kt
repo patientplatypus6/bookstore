@@ -120,7 +120,10 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooksincartbyuser(@RequestBody username: Username):List<Book>{
 		var bookhandler = BooksHandler(bookRepo)
-		return bookhandler.findbooksincartbynameguest(username.username)
+		println("inside findbookincartbyguest and value of username $username")
+		var returnbooklist = bookhandler.findbooksincartbynameguest(username.username)
+		println("value of returnbooklist: $returnbooklist")
+		return returnbooklist
 	}
 
 

@@ -20,6 +20,25 @@ const Book = (props) => {
   const [cartbooks, setCartbooks] = useState([])
   const [translate, setTranslate] = useState(0)
   const [totalprice, setTotalprice] = useState(null)
+  const [bookincart, setBookincart] = useState(false)
+
+
+  useEffect(()=>{
+    if(bookincart){
+      console.log("book in cart: ", bookincart)
+    }
+  }, [bookincart])
+
+  useEffect(()=>{
+    console.log("in cartbooks and value : ", cartbooks)
+    if(cartbooks!=[]){
+      cartbooks.forEach(cartbook=>{
+        if(cartbook.uniqueid==params.id){
+          setBookincart(true)
+        }
+      })
+    }
+  }, [cartbooks])
 
   useEffect(()=>{
     if(book!=null){
@@ -36,7 +55,7 @@ const Book = (props) => {
   const findbook = () => {
     var payload = {
       body:{
-        bookuniqueid
+        bookuniqueid: params.id
       }
     } 
     payload.requestType = "post"
@@ -48,17 +67,12 @@ const Book = (props) => {
   }
 
   useEffect(()=>{
-    if(bookuniqueid!=0){
-      findbook()
-    }
-  }, [bookuniqueid])
-
-  useEffect(()=>{
-    setBookuniqueid(params.id)
+    findbook()
   }, [])
 
 
   const checkcartguest = () => {
+    console.log("localStorage.getItem('guestname')", localStorage.getItem('guestname'))
     var payload = {
       body:{
         username: localStorage.getItem('guestname')
@@ -67,7 +81,13 @@ const Book = (props) => {
     payload.requestType="post"
     payload.uri = 'user/findbooksincartbyguest'
     handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
       console.log("value of result from checkcartguest: ", result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
       setCartbooks(result)
     })
   }
@@ -123,7 +143,13 @@ const Book = (props) => {
     payload.requestType="post"
     payload.uri='user/addbooktocartguest'
     handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
       console.log('value of result from addcartguest: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
       history.push({
         pathname: "/cart"
       })
@@ -207,6 +233,7 @@ const Book = (props) => {
                 margin: "calc(2.5% - 14px)",
                 display:'inline-block', 
                 padding: '5px',
+                background: "rgba(128,128,128,0.5)",
                 border: '2px solid black'
               }}>
                 <img src={`http://localhost:8080/images/`+book.picnamefront} 
@@ -224,6 +251,7 @@ const Book = (props) => {
                 margin: "calc(2.5% - 14px)",
                 display:'inline-block', 
                 padding: '5px',
+                background: "rgba(128,128,128,0.5)",
                 border: '2px solid black'
               }}>
                 <img src={`http://localhost:8080/images/`+book.picnamefront} 
@@ -328,7 +356,7 @@ const Book = (props) => {
                   display: 'inline-block',
                   marginRight: '5px', 
                   float: 'right',
-                  background: localStorage.getItem('username')==null && cartbooks.length != 0?'red':''
+                  background: bookincart?'red':''
                 }}
                 onClick={()=>{
                   if(localStorage.getItem('username')==null){
@@ -338,12 +366,15 @@ const Book = (props) => {
                   }
                 }}
                 >
-                  {localStorage.getItem('username')!=null && cartbooks.length == 0? 
+                  {/* {localStorage.getItem('username')!=null && cartbooks.length == 0? 
                   'Add to Cart':null}
                   {localStorage.getItem('username')==null && cartbooks.length == 0?
                     'Buy Now':  null}
                   {localStorage.getItem('username')==null && cartbooks.length != 0?
-                    'Only 1 Item Allowed for Guest': null}
+                    'Only 1 Item Allowed for Guest': null} */}
+                  {
+                    bookincart?"Remove Book From Cart":"Add To Cart"
+                  }
                 </div>
               </div>
             </div> 

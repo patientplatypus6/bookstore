@@ -57,7 +57,7 @@ const Main = () => {
       if(localStorage.getItem('username')!='' && localStorage.getItem('username')!=null){
         setUsername(localStorage.getItem('username'))
         setLoggedin(true)
-      }else{
+      }else if(localStorage.getItem('guestname')==null || localStorage.getItem('guestname')==''){
         var guestname = "guestname" + Date.now().toString()
         localStorage.setItem("guestname", guestname)
       }

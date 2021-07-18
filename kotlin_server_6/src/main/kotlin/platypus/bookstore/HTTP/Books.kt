@@ -43,6 +43,9 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	@PostMapping("/findbookshelfbookbyuniqueid")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbookshelfbookbyuniqueid(@RequestBody bookuniqueid: BookUniqueID):BookshelfBook{
+
+		println("inside findbookshelfbookbyuniqueid")
+
 		var bookshelfbook:BookshelfBook = BookshelfBook();
 		var picshandler = PicsHandler(picRepo)
 		var bookshandler = BooksHandler(bookRepo)
@@ -50,10 +53,15 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		
 		var milliseconds = System.currentTimeMillis()
 
-		var booktimelist:List<BookTime> = bookshandler.findBookIdNotOrderedNotInCart(bookuniqueid.bookuniqueid, milliseconds)
+		var booktimelist:List<BookTime> = bookshandler.findBookIdNotOrdered(bookuniqueid.bookuniqueid)
 
 		var allpicsbybook = picshandler.findpicsbybook(bookuniqueid.bookuniqueid)
 
+
+		println("milliseconds: $milliseconds")
+		println("booktimelist: $booktimelist")
+		println("allpicsbybook: $allpicsbybook")
+		
 		var picnamefront = ""
 		var picnameback = ""
 		var picnamelist: List<String> = listOf<String>()
@@ -68,11 +76,12 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			picnamelist+=bookpic.picname
 		}
 
-
 		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
 		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
 
 		var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(bookuniqueid.bookuniqueid)
+
+		println("bookrevenuecosts: $bookrevenuecosts")
 
 		var usershipping = ""
 		var userprice = ""
@@ -86,7 +95,11 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			}
 		}
 
-		if(booktimelist.size==1){
+		var booktimelistsize = booktimelist.size
+
+		println("if statement if booktimelist size is == 1 $booktimelist")
+
+		if(booktimelistsize==1){
 			for(booktime in booktimelist){
 				bookshelfbook = BookshelfBook(
 					title = booktime.title,
@@ -106,8 +119,10 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 					picnameback = picnameback
 				)
 			}
+			println("returnvalue of bookshelfbook $bookshelfbook")
 			return bookshelfbook
 		}else{
+			println("returnvalue of bookshelfbook $bookshelfbook")
 			return bookshelfbook
 		}
 
