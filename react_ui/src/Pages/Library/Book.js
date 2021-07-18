@@ -21,7 +21,7 @@ const Book = (props) => {
   const [translate, setTranslate] = useState(0)
   const [totalprice, setTotalprice] = useState(null)
   const [bookincart, setBookincart] = useState(false)
-
+  const [guestcartfull, setGuestcartfull] = useState(false)
 
   useEffect(()=>{
     if(bookincart){
@@ -37,6 +37,12 @@ const Book = (props) => {
           setBookincart(true)
         }
       })
+      console.log("value of guestname: ", localStorage.getItem("guestname"))
+      if(localStorage.getItem('guestname')!=null&&localStorage.getItem('guestname')!=''){
+        if(cartbooks.length == 1 && cartbooks[0]['uniqueid']!=params.id){
+          setGuestcartfull(true)
+        }
+      }
     }
   }, [cartbooks])
 
@@ -70,6 +76,14 @@ const Book = (props) => {
     findbook()
   }, [])
 
+
+  const removecartguest = () => {
+    
+  }
+
+  const removecartuser = () => {
+    
+  }
 
   const checkcartguest = () => {
     console.log("localStorage.getItem('guestname')", localStorage.getItem('guestname'))
@@ -351,31 +365,62 @@ const Book = (props) => {
                   </div>
                 </div>
                 <br/>
+                {(!bookincart&&!guestcartfull)
+                ?
+                  <div className='button'
+                  style={{
+                    display: 'inline-block',
+                    marginRight: '5px', 
+                    float: 'right',
+                    background: bookincart?'red':''
+                  }}
+                  onClick={()=>{
+                    if(
+                      (localStorage.getItem('username')==null || localStorage.getItem('username')=='')&&(localStorage.getItem('guestname')!=null || localStorage.getItem('guestname')!="")
+                    ){
+                      addcartguest()
+                    }else{
+                      addcartuser()
+                    }
+                  }}
+                  >
+                    {
+                      "Add To Cart"
+                    }
+                  </div>
+                :<div/>}
+                {(bookincart&&!guestcartfull)
+                ?
                 <div className='button'
-                style={{
-                  display: 'inline-block',
-                  marginRight: '5px', 
-                  float: 'right',
-                  background: bookincart?'red':''
-                }}
-                onClick={()=>{
-                  if(localStorage.getItem('username')==null){
-                    addcartguest()
-                  }else{
-                    addcartuser()
-                  }
-                }}
-                >
-                  {/* {localStorage.getItem('username')!=null && cartbooks.length == 0? 
-                  'Add to Cart':null}
-                  {localStorage.getItem('username')==null && cartbooks.length == 0?
-                    'Buy Now':  null}
-                  {localStorage.getItem('username')==null && cartbooks.length != 0?
-                    'Only 1 Item Allowed for Guest': null} */}
-                  {
-                    bookincart?"Remove Book From Cart":"Add To Cart"
-                  }
+                  style={{
+                    display: 'inline-block',
+                    marginRight: '5px', 
+                    float: 'right',
+                    background: bookincart?'red':''
+                  }}
+                  onClick={()=>{
+                    if(
+                      (localStorage.getItem('username')==null || localStorage.getItem('username')=='')&&(localStorage.getItem('guestname')!=null || localStorage.getItem('guestname')!="")
+                    ){
+                      removecartguest()
+                    }else{
+                      removecartuser()
+                    }
+                  }}
+                  >
+                    {
+                      "Remove from Cart"
+                    }
                 </div>
+                :<div/>}
+                {guestcartfull
+                ?
+                <div
+                  style={{fontWeight: 'bold', fontSize: "0.75rem"}}
+                >
+                  Guests may have only one item in cart.
+                </div>
+                :<div/>}
               </div>
             </div> 
           </div>

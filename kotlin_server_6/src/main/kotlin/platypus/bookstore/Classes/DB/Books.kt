@@ -57,6 +57,8 @@ data class BookshelfBook(
   var userprice: String = "",
   var picnamefront: String = "",
   var picnameback: String = "",
+  var inyourcart: Boolean = false,
+  var inothercart: Boolean = false,
   var allpics: List<String> = listOf<String>()
 )
 
