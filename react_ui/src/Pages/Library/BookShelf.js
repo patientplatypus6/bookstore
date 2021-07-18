@@ -110,50 +110,63 @@ const BookShelf = (props) => {
               <div key={book.bookuniqueid}
                 style={{
                   background: "url('./wood.jpg')",
-                  marginBottom: '20px'
+                  marginBottom: '20px', 
+                  border: '10px solid darkred', 
+                  borderRadius: '5px'
                 }}
               >
                 <table style={{width: '100%'}}
-                  className='tablebackground'
+                  className='tablebackground tablenoborder'
                 >
+                  <col style={{width:"20%"}}/>
+                  <col style={{width:"80%"}}/>
                   <tbody>
-                    <br/>
                     <tr
+                      className='slightwhite'
                       style={{fontWeight: 'bold', fontSize: '1.25rem', fontStyle: 'italic'}}
                     >
-                      {book.title}
+                      <td colSpan='2' className='tdnoborder'>
+                        {book.title}
+                      </td>
                     </tr>
-                    <tr style={{}}>
-                      <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                        <img 
-                        style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                        src={`http://localhost:8080/images/${book.picnamefront}`}/>    
-                      </div>
-                      <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top', width: "25vw", background: "lightblue", borderRadius: '5px'}}>
-                        <div>
+                    <tr>
+                      <td  className='tdnoborder bluefade'>
+                        <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
+                          <img 
+                          style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
+                          src={`http://localhost:8080/images/${book.picnamefront}`}/>    
+                        </div>
+                      </td>
+                      <td  
+                        colSpan='4'
+                        className='tdnoborder tdnopadding orangefade' style={{background: '', padding: '0px'}}
+                      >
+                        <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top', width: "calc(100% - 10px)", background: "rgba(0,0,0,0)", borderRadius: '5px', float: 'left', fontSize: '2rem'}}>
                           <div>
-                            Book Price  -  {book.userprice}
+                            <div>
+                              Book Price  -  {book.userprice}
+                            </div>
+                            <div>
+                              Shipping Price  -  {book.usershipping}
+                            </div>
+                            <div>
+                              Total Price - {parseFloat(book.userprice)+parseFloat(book.usershipping)}
+                            </div>
                           </div>
-                          <div>
-                            Shipping Price  -  {book.usershipping}
-                          </div>
-                          <div>
-                            Total Price - {parseFloat(book.userprice)+parseFloat(book.usershipping)}
+                          <div
+                            className='button'
+                            onClick={()=>{
+                              var pathname = '/book/'+book.uniqueid
+                              console.log("pathname value = ", pathname)
+                              history.push({
+                                pathname
+                              })
+                            }}
+                          >
+                            View Book
                           </div>
                         </div>
-                        <div
-                          className='button'
-                          onClick={()=>{
-                            var pathname = '/book/'+book.uniqueid
-                            console.log("pathname value = ", pathname)
-                            history.push({
-                              pathname
-                            })
-                          }}
-                        >
-                          View Book
-                        </div>
-                      </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -175,11 +188,10 @@ const BookShelf = (props) => {
         }}
       >
         BookShelf
-      </div>
+      </div>  
       <div
         ref={containerref}
         style={{
-          // background: 'grey',
           marginBottom: '40px', 
           minHeight: '1px',
           marginTop: '20px',
