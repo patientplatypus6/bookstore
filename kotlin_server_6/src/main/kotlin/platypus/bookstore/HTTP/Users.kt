@@ -102,21 +102,49 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 
 	@PostMapping("/findbooksincartbyuser")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findbooksincartbyuser(@RequestBody username: Username, @CookieValue(name = "usercookie") usercookie: String):List<Book>{
+	suspend fun findbooksincartbyuser(@RequestBody username: Username, @CookieValue(name = "usercookie") usercookie: String):List<BookWPrices>{
 		var bookhandler = BooksHandler(bookRepo)
 		var usershandler = UsersHandler(userRepo)
+		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
+
 		if(usershandler.checkloginredis(username.username, usercookie)){
 			var booksincartbyuser =  bookhandler.findbooksincartbynameuser(username.username)
 			println("booksincartbyuser $booksincartbyuser")
-			return booksincartbyuser
+			var uniqueidlist = listOf<String>()
+			for(rbook in booksincartbyuser){
+				uniqueidlist+=rbook.uniqueid
+			}
+			var shippingprices = revenuecostshandler.findshippingpriceprojinlist(uniqueidlist)
+			var salesprices = revenuecostshandler.findsalespriceprojinlist(uniqueidlist)
+			var returnbookwprices = listOf<BookWPrices>()
+			for (rbook in booksincartbyuser){
+				var shippingfound = shippingprices.find{it.bookuniqueid==rbook.uniqueid}
+				var userprice = salesprices.find{it.bookuniqueid==rbook.uniqueid}
+				var tempwprices = BookWPrices(
+					title = rbook.title,
+					subtitle = rbook.subtitle,
+					author = rbook.author,
+					publisher = rbook.publisher,
+					currentcopyright = rbook.currentcopyright,
+					bookedition = rbook.bookedition,
+					uniqueid = rbook.uniqueid,
+					storyinfo = rbook.storyinfo,
+					condition = rbook.condition,
+					isbn = rbook.isbn,
+					usershipping = if(shippingfound!=null) shippingfound.rcvalue else "0",
+					userprice = if(userprice!=null) userprice.rcvalue else "0"
+				)
+				returnbookwprices+=tempwprices
+			}
+			return returnbookwprices
 		}else{
-			return listOf<Book>()
+			return listOf<BookWPrices>()
 		}
 	}
 
 	@PostMapping("/findbooksincartbyguest")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findbooksincartbyguest(@RequestBody username: Username):List<Book>{
+	suspend fun findbooksincartbyguest(@RequestBody username: Username):List<BookWPrices>{
 		var bookhandler = BooksHandler(bookRepo)
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
 		println("inside findbookincartbyguest and value of username $username")
@@ -129,10 +157,30 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 		println("value of uniqueidlist: $uniqueidlist")
 		var shippingprices = revenuecostshandler.findshippingpriceprojinlist(uniqueidlist)
 		var salesprices = revenuecostshandler.findsalespriceprojinlist(uniqueidlist)
+		var returnbookwprices = listOf<BookWPrices>()
+		for (rbook in returnbooklist){
+			var shippingfound = shippingprices.find{it.bookuniqueid==rbook.uniqueid}
+			var userprice = salesprices.find{it.bookuniqueid==rbook.uniqueid}
+			var tempwprices = BookWPrices(
+				title = rbook.title,
+				subtitle = rbook.subtitle,
+				author = rbook.author,
+				publisher = rbook.publisher,
+				currentcopyright = rbook.currentcopyright,
+				bookedition = rbook.bookedition,
+				uniqueid = rbook.uniqueid,
+				storyinfo = rbook.storyinfo,
+				condition = rbook.condition,
+				isbn = rbook.isbn,
+				usershipping = if(shippingfound!=null) shippingfound.rcvalue else "0",
+				userprice = if(userprice!=null) userprice.rcvalue else "0"
+			)
+			returnbookwprices+=tempwprices
+		}
 		println("value of shippingprices $shippingprices")
 		println("value of sales prices $salesprices")
 
-		return returnbooklist
+		return returnbookwprices
 	}
 
 

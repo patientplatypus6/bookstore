@@ -75,27 +75,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			picnamelist+=bookpic.picname
 		}
 
-		//old inefficient way of finding shipping and book price
-
-		// var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
-		// var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
-
-		// var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(uniqueid)
-
-		// var usershipping = ""
-		// var userprice = ""
-
-		// for(bookrevenuecost in bookrevenuecosts){
-		// 	if(bookrevenuecost.rcname==shippingstring){
-		// 		usershipping = bookrevenuecost.rcvalue
-		// 	}
-		// 	if(bookrevenuecost.rcname==pricestring){
-		// 		userprice = bookrevenuecost.rcvalue
-		// 	}
-		// }
-
-		//new way
-
 		var shippingpricebyid:List<RevenueCost> = revenuecosthandler.findshippingpriceprojbyid(uniqueid)
 
 		var salespricebyid:List<RevenueCost> = revenuecosthandler.findsalespriceprojbyid(uniqueid)
@@ -171,11 +150,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		}
 
 		var allpics:List<Pic> = picshandler.findallpics()
-
-		//old way
-
-		// var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
-		// var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
 		
 		var shippingpricelist:List<RevenueCost> = revenuecosthandler.findshippingpriceprojinlist(uniqueidlist)
 
@@ -215,25 +189,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			tempbookshelfbook.picnamefront = frontpicname
 			tempbookshelfbook.picnameback = backpicname
 			tempbookshelfbook.allpics = piclist
-
-			//old way
-
-			// var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(book.uniqueid)
-
-			// var usershipping = ""
-			// var userprice = ""
-
-			// for(bookrevenuecost in bookrevenuecosts){
-			// 	if(bookrevenuecost.rcname==shippingstring){
-			// 		usershipping = bookrevenuecost.rcvalue
-			// 	}
-			// 	if(bookrevenuecost.rcname==pricestring){
-			// 		userprice = bookrevenuecost.rcvalue
-			// 	}
-			// }
-
-			// tempbookshelfbook.usershipping = usershipping
-			// tempbookshelfbook.userprice = userprice
 
 			var shippingtemp = shippingpricelist.find{it.bookuniqueid==book.uniqueid}	
 			tempbookshelfbook.usershipping = if(shippingtemp!=null) shippingtemp.rcvalue else "0"
@@ -313,7 +268,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 
 		return true;
-		// return picssaved
 	}
 
 	@PostMapping("/updatebook")

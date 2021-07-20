@@ -34,6 +34,21 @@ data class BookWCover(
   var coverpicname: String = ""
 )
 
+data class BookWPrices(
+  var title: String = "",
+  var subtitle: String = "", 
+  var author: String = "",
+  var publisher: String = "", 
+  var currentcopyright: String = "",
+  var bookedition: String = "", 
+  var uniqueid: String = "",
+  var storyinfo: String = "", 
+  var condition: String = "", 
+  var isbn: String = "", 
+  var usershipping: String = "", 
+  var userprice: String = ""
+)
+
 data class InCart(
   var inyourcart: Boolean = false, 
   var inothercart: Boolean = false, 
