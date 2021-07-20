@@ -42,9 +42,14 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 	@PostMapping("/findbookshelfbookbyuniqueid")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findbookshelfbookbyuniqueid(@RequestBody bookuniqueid: BookUniqueID):BookshelfBook{
+	suspend fun findbookshelfbookbyuniqueid(@RequestBody cartandbook: HashMap<String,String>):BookshelfBook{
 
 		println("inside findbookshelfbookbyuniqueid")
+		println("value of cartandbook in findbookshelfbookbyuniqueid: $cartandbook")
+
+		var cartholdername:String = cartandbook.get("cartholdername")!!
+		var uniqueid:String = cartandbook.get("uniqueid")!!
+
 
 		var bookshelfbook:BookshelfBook = BookshelfBook();
 		var picshandler = PicsHandler(picRepo)
@@ -53,14 +58,9 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		
 		var milliseconds = System.currentTimeMillis()
 
-		var booktimelist:List<BookTime> = bookshandler.findBookIdNotOrdered(bookuniqueid.bookuniqueid)
-
-		var allpicsbybook = picshandler.findpicsbybook(bookuniqueid.bookuniqueid)
-
-
-		println("milliseconds: $milliseconds")
-		println("booktimelist: $booktimelist")
-		println("allpicsbybook: $allpicsbybook")
+		var booktimelist:List<BookTime> = bookshandler.findBookIdNotOrdered(uniqueid)
+		// var booknameincart:String = bookshandler.findcartholderbybookid(uniqueid, milliseconds)
+		var allpicsbybook = picshandler.findpicsbybook(uniqueid)
 		
 		var picnamefront = ""
 		var picnameback = ""
@@ -79,9 +79,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
 		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
 
-		var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(bookuniqueid.bookuniqueid)
-
-		println("bookrevenuecosts: $bookrevenuecosts")
+		var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(uniqueid)
 
 		var usershipping = ""
 		var userprice = ""
@@ -101,6 +99,16 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 		if(booktimelistsize==1){
 			for(booktime in booktimelist){
+
+				// println("value of booknameincart: $booknameincart")
+				// println("value of cartholdername: $cartholdername")
+				
+				// var inyourcartvar = (booknameincart == cartholdername)
+				// var inothercartvar = (booknameincart!=cartholdername)&&(booknameincart!="")
+
+				// println("value of inyourcart: $inyourcartvar")
+				// println("value of inothercart: $inothercartvar")
+
 				bookshelfbook = BookshelfBook(
 					title = booktime.title,
 					subtitle = booktime.subtitle,
@@ -116,13 +124,15 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 					usershipping = usershipping,
 					allpics = picnamelist,
 					picnamefront = picnamefront,
-					picnameback = picnameback
+					picnameback = picnameback, 
+					// inyourcart = inyourcartvar,
+					// inothercart = inothercartvar
 				)
 			}
-			println("returnvalue of bookshelfbook $bookshelfbook")
+			println("returnvalue of bookshelfbook when size == 1 $bookshelfbook")
 			return bookshelfbook
 		}else{
-			println("returnvalue of bookshelfbook $bookshelfbook")
+			println("returnvalue of bookshelfbook when size != 1 $bookshelfbook")
 			return bookshelfbook
 		}
 

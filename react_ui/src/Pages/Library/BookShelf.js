@@ -21,6 +21,7 @@ const BookShelf = (props) => {
   const forceUpdate = React.useCallback(() => updateState({}), []);
 
   const [coverlist, setCoverlist] = useState([])
+  const [cartbool, setCartbool] = useState(null)
 
   let history = useHistory();
 
@@ -34,8 +35,153 @@ const BookShelf = (props) => {
     })
   }
 
+  const checkCart = () => {
+    var cartholdername = ""
+
+    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+      cartholdername = localStorage.getItem('guestname')
+    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+      cartholdername = localStorage.getItem('username')
+    }
+
+    var payload = {
+      body:{
+        username: cartholdername
+      }
+    }
+    payload.uri = 'user/checkcartmultiple'
+    payload.requestType = "post"
+
+    handlefetch(payload).then(result=>{
+      console.log("value of result from checkcart: ", result)
+      setCartbool(result)
+    })
+  }
+
+  const addcartuser = (cartholdername, bookuniqueid) => {
+    var payload = {
+      body:{
+        bookuniqueid: bookuniqueid, 
+        username: cartholdername
+      }
+    }
+    payload.requestType="postcookie"
+    payload.uri='user/addbooktocartuser'
+    handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      console.log('value of result from addcartuser: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkCart()
+      // retrieveCart(localStorage.getItem("username"), 'user')
+    })
+  }
+
+  const addcartguest = (cartholdername, bookuniqueid) => {
+
+    console.log("***********************************************************")
+    console.log("***********************************************************")
+    console.log("***********************************************************")
+
+    console.log("inside addcartguest and value cartholdername: ", cartholdername)
+    console.log("inside addcartguest and value bookuniqueid: ", bookuniqueid)
+
+    console.log("***********************************************************")
+    console.log("***********************************************************")
+    console.log("***********************************************************")
+
+    var payload = {
+      body: {
+        bookuniqueid: bookuniqueid,
+        username: cartholdername
+      }
+    }
+    payload.requestType="post"
+    payload.uri='user/addbooktocartguest'
+    handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      console.log('value of result from addcartguest: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkCart()
+      // retrieveCart(localStorage.getItem("guestname"), 'guest')
+    })
+  }
+
+  const removecartuser = (cartholder, bookuniqueid) => {
+    var payload = {
+      body:{
+        bookuniqueid: bookuniqueid, 
+        username: cartholder
+      }
+    }
+    payload.requestType="postcookie"
+    payload.uri='user/removebookcartuser'
+    handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      console.log('value of result from addcartuser: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkCart()
+      // retrieveCart(localStorage.getItem("username"), 'user')
+    })
+  }
+
+  const removecartguest = (cartholder, bookuniqueid) => {
+    var payload = {
+      body: {
+        bookuniqueid: bookuniqueid,
+        username: cartholder
+      }
+    }
+    payload.requestType="post"
+    payload.uri='user/removebookcartguest'
+    handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      console.log('value of result from addcartguest: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkCart()
+    })
+  }
+
+  const addcart = (bookuniqueid) => { 
+    var cartholdername = ''
+    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+      cartholdername = localStorage.getItem('guestname')
+      addcartguest(cartholdername, bookuniqueid)
+    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+      cartholdername = localStorage.getItem('username')
+      addcartuser(cartholdername, bookuniqueid)
+    }
+  }
+
+  const removecart = (bookuniqueid) => { 
+    var cartholdername = ''
+    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+      cartholdername = localStorage.getItem('guestname')
+      removecartguest(cartholdername, bookuniqueid)
+    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+      cartholdername = localStorage.getItem('username')
+      removecartuser(cartholdername, bookuniqueid)
+    }
+  }
+
   useEffect(()=>{
     findbooks()
+    checkCart()
   }, [])
 
   const coverhandler = () => {
@@ -50,9 +196,26 @@ const BookShelf = (props) => {
           </div>
         :<div/>}
         {bookshelfbooks.map((book)=>{
+          console.log("value of book: ", book)
+          if(cartbool != null){
+            var cartbookbool = cartbool.find(el=>el.uniqueid==book.uniqueid)
+            if(cartbookbool!=undefined){
+              var inyourcart = cartbookbool.inyourcart
+              var inothercart = cartbookbool.inothercart
+            }else{
+              var inyourcart = false;
+              var inothercart = false;              
+            }
+          }else{
+            var inyourcart = false;
+            var inothercart = false;
+          }
+          console.log("value of bookid: ", book.uniqueid)
+          console.log('value of inyourcart: ', inyourcart)
+          console.log("value of inothercart: ", inothercart)
           if (book.picnamefront == ""){
             return(
-              <div key={book.bookuniqueid}
+              <div key={book.uniqueid}
                 style={{
                   marginBottom: '20px',
                   background: "url('./wood.jpg')"
@@ -87,17 +250,75 @@ const BookShelf = (props) => {
                             Total Price - {parseFloat(book.userprice)+parseFloat(book.usershipping)}
                           </div>
                         </div>
-                        <div
-                          className='button'
-                          onClick={()=>{
-                            var pathname = '/book/'+book.uniqueid
-                            console.log("pathname value = ", pathname)
-                            history.push({
-                              pathname
-                            })
+                        <div 
+                          style={{
+                            display: 'inline-block'
                           }}
                         >
-                          View Book
+                          <div
+                            className='button'
+                            style={{
+                              display: 'inline-block', 
+                              marginRight: '10px'
+                            }}
+                            onClick={()=>{
+                              var pathname = '/book/'+book.uniqueid
+                              console.log("pathname value = ", pathname)
+                              history.push({
+                                pathname
+                              })
+                            }}
+                          >
+                            View Book
+                          </div>
+                          <div
+                            style={{display: 'inline-block'}}
+                          >
+                            {
+                              (inyourcart==false && inothercart==false)?
+                                <div
+                                  className='button'
+                                  style={{
+                                    display: 'inline-block'
+                                  }}
+                                  onClick={()=>{
+                                    addcart(book.uniqueid)
+                                  }}
+                                > 
+                                  Add to Cart
+                                </div>
+                              :<div/>
+                            }
+                            {
+                              (inyourcart==true)?
+                                <div
+                                  className='button'
+                                  style={{
+                                    display: 'inline-block', 
+                                    background: 'red'
+                                  }}
+                                  onClick={()=>{
+                                    removecart(book.uniqueid)
+                                  }}
+                                > 
+                                  Remove from Cart
+                                </div>
+                              :<div/>
+                            }
+                            {
+                              (inothercart==true)?
+                                <div
+                                style={{
+                                  display: 'inline-block', 
+                                  fontSize: '0.75rem',
+                                  fontWeight: 'bold'
+                                }}
+                                > 
+                                  Book currently reserved.
+                                </div>
+                              :<div/>
+                            }
+                          </div>
                         </div>
                       </div>
                     </tr>
@@ -107,7 +328,7 @@ const BookShelf = (props) => {
             )
           }else{
             return(
-              <div key={book.bookuniqueid}
+              <div key={book.uniqueid}
                 style={{
                   background: "url('./wood.jpg')",
                   marginBottom: '20px', 
@@ -153,17 +374,75 @@ const BookShelf = (props) => {
                               Total Price - {parseFloat(book.userprice)+parseFloat(book.usershipping)}
                             </div>
                           </div>
-                          <div
-                            className='button'
-                            onClick={()=>{
-                              var pathname = '/book/'+book.uniqueid
-                              console.log("pathname value = ", pathname)
-                              history.push({
-                                pathname
-                              })
+                          <div 
+                            style={{
+                              display: 'inline-block'
                             }}
                           >
-                            View Book
+                            <div
+                              className='button'
+                              style={{
+                                display: 'inline-block', 
+                                marginRight: '10px'
+                              }}
+                              onClick={()=>{
+                                var pathname = '/book/'+book.uniqueid
+                                console.log("pathname value = ", pathname)
+                                history.push({
+                                  pathname
+                                })
+                              }}
+                            >
+                              View Book
+                            </div>
+                            <div
+                              style={{display: 'inline-block'}}
+                            >
+                              {
+                                (inyourcart==false && inothercart==false)?
+                                  <div
+                                    className='button'
+                                    style={{
+                                      display: 'inline-block'
+                                    }}
+                                    onClick={()=>{
+                                      addcart(book.uniqueid)
+                                    }}
+                                  > 
+                                    Add to Cart
+                                  </div>
+                                :<div/>
+                              }
+                              {
+                                (inyourcart==true)?
+                                  <div
+                                    className='button'
+                                    style={{
+                                      display: 'inline-block', 
+                                      background: 'red'
+                                    }}
+                                    onClick={()=>{
+                                      removecart(book.uniqueid)
+                                    }}
+                                  > 
+                                    Remove from Cart
+                                  </div>
+                                :<div/>
+                              }
+                              {
+                                (inothercart==true)?
+                                  <div
+                                  style={{
+                                    display: 'inline-block', 
+                                    fontSize: '0.75rem',
+                                    fontWeight: 'bold'
+                                  }}
+                                  > 
+                                    Book currently reserved.
+                                  </div>
+                                :<div/>
+                              }
+                            </div>
                           </div>
                         </div>
                       </td>

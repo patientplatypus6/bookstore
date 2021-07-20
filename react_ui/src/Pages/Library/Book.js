@@ -16,6 +16,7 @@ const Book = (props) => {
   let params = useParams();
 
   const [book, setBook] = useState(null)
+  const [cartbool, setCartbool] = useState({inyourcart: false, inothercart: false})
   const [bookuniqueid, setBookuniqueid] = useState(0)
   const [cartbooks, setCartbooks] = useState([])
   const [translate, setTranslate] = useState(0)
@@ -23,106 +24,59 @@ const Book = (props) => {
   const [bookincart, setBookincart] = useState(false)
   const [guestcartfull, setGuestcartfull] = useState(false)
 
-  useEffect(()=>{
-    if(bookincart){
-      console.log("book in cart: ", bookincart)
-    }
-  }, [bookincart])
+  const findbook = (cartholdername) => {
 
-  useEffect(()=>{
-    console.log("in cartbooks and value : ", cartbooks)
-    if(cartbooks!=[]){
-      cartbooks.forEach(cartbook=>{
-        if(cartbook.uniqueid==params.id){
-          setBookincart(true)
-        }
-      })
-      console.log("value of guestname: ", localStorage.getItem("guestname"))
-      if(localStorage.getItem('guestname')!=null&&localStorage.getItem('guestname')!=''){
-        if(cartbooks.length == 1 && cartbooks[0]['uniqueid']!=params.id){
-          setGuestcartfull(true)
-        }
-      }
-    }
-  }, [cartbooks])
+    var cartholdername = ""
+    var nametype = "guest"
 
-  useEffect(()=>{
-    if(book!=null){
-      console.log('value of book: ', book)
-      if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-        checkcartguest()
-      }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-        checkcartuser()
-      }
-      setTotalprice(book.userprice+book.usershipping)
+    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+      cartholdername = localStorage.getItem('guestname')
+    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+      cartholdername = localStorage.getItem('username')
+      nametype = 'user'
     }
-  }, [book])
 
-  const findbook = () => {
     var payload = {
       body:{
-        bookuniqueid: params.id
+        cartholdername: cartholdername,
+        uniqueid: params.id
       }
     } 
     payload.requestType = "post"
     payload.uri = 'book/findbookshelfbookbyuniqueid'
+
     handlefetch(payload).then(result=>{
       console.log('value of result from book/findbookbyuniqueid', result)
+      setTotalprice(result.userprice+result.usershipping)
       setBook(result)
     })
   }
 
   useEffect(()=>{
     findbook()
+    checkCart()
   }, [])
 
+  const checkCart = () => {
+    var cartholdername = ""
 
-  const removecartguest = () => {
-    
-  }
+    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+      cartholdername = localStorage.getItem('guestname')
+    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+      cartholdername = localStorage.getItem('username')
+    }
 
-  const removecartuser = () => {
-    
-  }
-
-  const checkcartguest = () => {
-    console.log("localStorage.getItem('guestname')", localStorage.getItem('guestname'))
     var payload = {
-      body:{
-        username: localStorage.getItem('guestname')
+      body: {
+        bookuniqueid: params.id, 
+        username: cartholdername
       }
-    }    
-    payload.requestType="post"
-    payload.uri = 'user/findbooksincartbyguest'
-    handlefetch(payload).then(result=>{
-      console.log("*****************")
-      console.log("*****************")
-      console.log("*****************")
-      console.log("value of result from checkcartguest: ", result)
-      console.log("*****************")
-      console.log("*****************")
-      console.log("*****************")
-      setCartbooks(result)
-    })
-  }
+    }
+    payload.requestType='post'
+    payload.uri='user/checkcart'
 
-  const checkcartuser = () => {
-    var payload = {
-      body:{
-        username: localStorage.getItem('username')
-      }
-    }  
-    payload.requestType="postcookie"
-    payload.uri = 'user/findbooksincartbyuser'
     handlefetch(payload).then(result=>{
-      console.log("&&&&&&&&&&&&&&&&&&&&&")
-      console.log("&&&&&&&&&&&&&&&&&&&&&")
-      console.log("&&&&&&&&&&&&&&&&&&&&&")
-      console.log("value of result from checkcartuser: ", result)
-      console.log("&&&&&&&&&&&&&&&&&&&&&")
-      console.log("&&&&&&&&&&&&&&&&&&&&&")
-      console.log("&&&&&&&&&&&&&&&&&&&&&")  
-      setCartbooks(result)
+      setCartbool(result)
     })
   }
 
@@ -143,7 +97,8 @@ const Book = (props) => {
       console.log("*****************")
       console.log("*****************")
       console.log("*****************")
-      checkcartuser()
+      checkCart()
+      // retrieveCart(localStorage.getItem("username"), 'user')
     })
   }
 
@@ -164,11 +119,54 @@ const Book = (props) => {
       console.log("*****************")
       console.log("*****************")
       console.log("*****************")
-      history.push({
-        pathname: "/cart"
-      })
+      checkCart()
+      // retrieveCart(localStorage.getItem("guestname"), 'guest')
     })
   }
+
+  const removecartuser = () => {
+    var payload = {
+      body:{
+        bookuniqueid: book.uniqueid, 
+        username: localStorage.getItem('username')
+      }
+    }
+    payload.requestType="postcookie"
+    payload.uri='user/removebookcartuser'
+    handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      console.log('value of result from addcartuser: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkCart()
+      // retrieveCart(localStorage.getItem("username"), 'user')
+    })
+  }
+
+  const removecartguest = () => {
+    var payload = {
+      body: {
+        bookuniqueid: book.uniqueid,
+        username: localStorage.getItem('guestname')
+      }
+    }
+    payload.requestType="post"
+    payload.uri='user/removebookcartguest'
+    handlefetch(payload).then(result=>{
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      console.log('value of result from addcartguest: ', result)
+      console.log("*****************")
+      console.log("*****************")
+      console.log("*****************")
+      checkCart()
+    })
+  }
+
 
   return(
     <div className=''>
@@ -365,62 +363,96 @@ const Book = (props) => {
                   </div>
                 </div>
                 <br/>
-                {(!bookincart&&!guestcartfull)
-                ?
-                  <div className='button'
-                  style={{
-                    display: 'inline-block',
-                    marginRight: '5px', 
-                    float: 'right',
-                    background: bookincart?'red':''
-                  }}
-                  onClick={()=>{
-                    if(
-                      (localStorage.getItem('username')==null || localStorage.getItem('username')=='')&&(localStorage.getItem('guestname')!=null || localStorage.getItem('guestname')!="")
-                    ){
-                      addcartguest()
-                    }else{
-                      addcartuser()
-                    }
-                  }}
-                  >
-                    {
-                      "Add To Cart"
-                    }
-                  </div>
-                :<div/>}
-                {(bookincart&&!guestcartfull)
-                ?
-                <div className='button'
-                  style={{
-                    display: 'inline-block',
-                    marginRight: '5px', 
-                    float: 'right',
-                    background: bookincart?'red':''
-                  }}
-                  onClick={()=>{
-                    if(
-                      (localStorage.getItem('username')==null || localStorage.getItem('username')=='')&&(localStorage.getItem('guestname')!=null || localStorage.getItem('guestname')!="")
-                    ){
+                {
+                  (cartbool.inyourcart&&localStorage.getItem("guestname")!=null)?
+                  <div
+                    className = 'button'
+                    style={{
+                      display: 'inline-block',
+                      marginRight: '5px', 
+                      float: 'right',
+                      background: "red"                      
+                    }}
+                    onClick={()=>{
                       removecartguest()
-                    }else{
-                      removecartuser()
-                    }
-                  }}
+                    }}
                   >
-                    {
-                      "Remove from Cart"
-                    }
-                </div>
-                :<div/>}
-                {guestcartfull
-                ?
-                <div
-                  style={{fontWeight: 'bold', fontSize: "0.75rem"}}
-                >
-                  Guests may have only one item in cart.
-                </div>
-                :<div/>}
+                    Remove From Cart
+                  </div>
+                  :
+                  <div/>
+                }
+                {
+                  (cartbool.inyourcart&&localStorage.getItem("username")!=null)?
+                  <div
+                    className = 'button'
+                    style={{
+                      display: 'inline-block',
+                      marginRight: '5px', 
+                      float: 'right',
+                      background: "red"                      
+                    }}
+                    onClick = {()=>{
+                      removecartuser()
+                    }}
+                  >
+                    Remove From Cart
+                  </div>
+                  :
+                  <div/>
+                }
+                {
+                  (cartbool.inothercart==true)?
+                  <div
+                    className = ''
+                    style={{
+                      display: 'inline-block',
+                      marginRight: '5px', 
+                      float: 'right',
+                      background: "red"                      
+                    }}
+                  >
+                    Book in another cart. Try later.
+                  </div>
+                  :
+                  <div/>
+                }
+                {
+                  (!cartbool.inyourcart&&!cartbool.inothercart&&localStorage.getItem("guestname")!=null)?
+                  <div
+                    className = 'button'
+                    style={{
+                      display: 'inline-block',
+                      marginRight: '5px', 
+                      float: 'right'                    
+                    }}
+                    onClick = {()=>{
+                      addcartguest()
+                    }}
+                  >
+                    Add to Cart
+                  </div>
+                  :
+                  <div/>
+                }
+                {
+                  (!cartbool.inyourcart&&!cartbool.inothercart&&localStorage.getItem("username")!=null)?
+                  <div
+                    className = 'button'
+                    style={{
+                      display: 'inline-block',
+                      marginRight: '5px', 
+                      float: 'right'                    
+                    }}
+                    onClick = {()=>{
+                      addcartuser()
+                    }}
+                  >
+                    Add to Cart
+                  </div>
+                  :
+                  <div/>
+                }
               </div>
             </div> 
           </div>

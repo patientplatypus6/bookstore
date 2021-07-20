@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useState, useReducer} from 'react';
 // import Button from '../Components/SubComponents/Button/Button'
 // import InputBox from '../Components/SubComponents/InputBox/InputBox'
 // import TextBox from '../Components/SubComponents/TextBox/TextBox'
@@ -38,6 +38,8 @@ const Main = () => {
     const[loggedin, setLoggedin] = useState(false)
     const[cartbookids, setCartbookids] = useState([])
 
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
     const updatecartbookids = (updated) => {
       var tempcartbookids = [...cartbookids]; 
       tempcartbookids = updated
@@ -76,6 +78,9 @@ const Main = () => {
         setLoggedin(false)
         localStorage.removeItem('username')
         localStorage.removeItem('cookie')
+        var guestname = "guestname" + Date.now().toString()
+        localStorage.setItem("guestname", guestname)
+        forceUpdate()
       })     
     }
 
@@ -111,6 +116,7 @@ const Main = () => {
           setUsername("")
           setPassword("")
         }
+        forceUpdate()
       })
     }
 
@@ -146,6 +152,7 @@ const Main = () => {
           setUsername("")
           setPassword("")
         }
+        forceUpdate()
       })
     }
 

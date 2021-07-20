@@ -118,7 +118,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 
 	@PostMapping("/findbooksincartbyguest")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-	suspend fun findbooksincartbyuser(@RequestBody username: Username):List<Book>{
+	suspend fun findbooksincartbyguest(@RequestBody username: Username):List<Book>{
 		var bookhandler = BooksHandler(bookRepo)
 		println("inside findbookincartbyguest and value of username $username")
 		var returnbooklist = bookhandler.findbooksincartbynameguest(username.username)
@@ -127,5 +127,111 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 
+	@PostMapping("/removebookcartuser")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun removebookcartuser(@RequestBody userbookid: UserBookID, @CookieValue(name = "usercookie") usercookie: String):SuccessReturn{
+		var bookhandler = BooksHandler(bookRepo)
+		var usershandler = UsersHandler(userRepo)
+		var successreturn = SuccessReturn()
+		successreturn.result = false
+		if(usershandler.checkloginredis(userbookid.username, usercookie)){
+			successreturn.result = bookhandler.removebookcart(userbookid.bookuniqueid)
+			return successreturn
+		}else{
+			return successreturn
+		}
+	}
+
+	@PostMapping("/removebookcartguest")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun findbooksincartbyuser(@RequestBody userbookid: UserBookID):SuccessReturn{
+		var bookhandler = BooksHandler(bookRepo)
+		var successreturn = SuccessReturn()
+		successreturn.result = bookhandler.removebookcart(userbookid.bookuniqueid)
+		return successreturn
+	}
+
+	@PostMapping("/checkcart")
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun checkcart(@RequestBody bookuser: HashMap<String, String>):InCart{
+
+		var username = bookuser.get("username")!!
+		var bookuniqueid = bookuser.get("bookuniqueid")!!
+
+		var bookhandler = BooksHandler(bookRepo)
+
+		var incart = InCart();
+
+		var bookcheckslist:List<BookIDSbyCartholdername> = bookhandler.checkcart(bookuniqueid)
+
+		if(bookcheckslist.size==1){
+			for(bookcheck in bookcheckslist){
+				if(bookcheck.cartholdername == username){
+					incart.inyourcart = true;
+					incart.inothercart = false;
+				}else if (bookcheck.cartholdername != username){
+					incart.inyourcart = false;
+					incart.inothercart = true;
+				}
+			}
+			return incart
+		}else{
+			incart.inyourcart = false;
+			incart.inothercart = false;
+			return incart
+		}
+	}
+
+
+	@PostMapping("/checkcartmultiple")	
+	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	suspend fun checkcartmultiple(@RequestBody user: HashMap<String, String>):List<InCart>{
+
+		println("****************************")
+		println("****************************")
+		println("****************************")
+
+		var username = user.get("username")!!
+		var bookhandler = BooksHandler(bookRepo)
+
+		var incart:List<InCart> = listOf<InCart>()
+		var bookcheckslist:List<BookIDSbyCartholdername> = bookhandler.checkcartmultiple()
+
+		for (bookcheck in bookcheckslist){
+			var tempincart = InCart();
+			tempincart.uniqueid = bookcheck.uniqueid
+			if(bookcheck.cartholdername == username){
+				tempincart.inyourcart = true;
+				tempincart.inothercart = false;
+			}else if (bookcheck.cartholdername != username){
+				tempincart.inyourcart = false;
+				tempincart.inothercart = true;
+			}
+			incart += tempincart
+		}
+
+		println("value of incart: $incart")
+		println("value of username: $username")
+		println("value of bookcheckslist: $bookcheckslist")
+
+		println("****************************")
+		println("****************************")
+		println("****************************")
+
+		return incart;
+
+	}
+
+
 }
   
+
+// @PostMapping("/findbookshelfbookbyuniqueid")
+// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+// suspend fun findbookshelfbookbyuniqueid(@RequestBody cartandbook: HashMap<String,String>):BookshelfBook{
+
+// 	println("inside findbookshelfbookbyuniqueid")
+// 	println("value of cartandbook in findbookshelfbookbyuniqueid: $cartandbook")
+
+// 	var cartholdername:String = cartandbook.get("cartholdername")!!
+// 	var uniqueid:String = cartandbook.get("uniqueid")!!

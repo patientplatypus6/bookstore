@@ -91,6 +91,23 @@ class BooksHandler(val bookRepo: BookRepository){
     return bookRepo.findBookIdNotOrdered(bookuniqueid)
   }
 
+  suspend fun findbookidsbycartholdername():List<BookIDSbyCartholdername>{
+    return bookRepo.findbookidsbycartholdername(System.currentTimeMillis())
+  }
+
+  suspend fun findcartholderbybookid(uniqueid: String, milliseconds: Long):String{
+    var booklist = bookRepo.findcartholderbybookid(uniqueid, milliseconds)
+    if(booklist.size>0){
+      var name: String = "";
+      for(book in booklist){
+        name = book.cartholdername;
+      }
+      return name;
+    }else{
+      return ""
+    }
+  }
+
   suspend fun addbooktocartuser(bookuniqueid: String, username: String):Boolean{
     var bookupdated = false;
     var milliseconds:Long = System.currentTimeMillis()
@@ -131,6 +148,23 @@ class BooksHandler(val bookRepo: BookRepository){
 
   suspend fun findbooksincartbynameguest(username:String):List<Book>{
     return bookRepo.findbooksincartbynameguest(username, System.currentTimeMillis())
+  }
+
+  suspend fun removebookcart(bookuniqueid: String):Boolean{
+    return bookRepo.removebookcart(bookuniqueid)
+  }
+
+  suspend fun checkcart(bookuniqueid: String):List<BookIDSbyCartholdername>{
+    var milliseconds = System.currentTimeMillis()
+    var returnval = bookRepo.findbooksincarts(bookuniqueid, milliseconds)
+    println("value of returnval $returnval")
+    return returnval;
+  }
+
+  suspend fun checkcartmultiple():List<BookIDSbyCartholdername>{
+    var milliseconds = System.currentTimeMillis()
+    var returnval = bookRepo.findbooksincartsmultiple(milliseconds)
+    return returnval;
   }
 
 } 

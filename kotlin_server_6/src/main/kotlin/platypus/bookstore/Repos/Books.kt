@@ -95,34 +95,67 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
 
     @Query(
       """
-        select * from bookz 
-        where
-        uniqueid = :uniqueid
-      """    
-      )
-      suspend fun findbookbyuniqueid(uniqueid: String):List<Book>
+      select * from bookz
+      where
+      uniqueid = :uniqueid
+      and 
+      LENGTH(cartholdername) > 0
+      and 
+      (
+        (:currentmilliseconds - incartguest < 600000)
+        OR
+        (:currentmilliseconds - incartuser < 3600000)
+      ) 
+      """
+    )
+    suspend fun findbooksincarts(uniqueid: String, currentmilliseconds: Long):List<BookIDSbyCartholdername>
 
     @Query(
       """
-        select * from bookz 
-        where 
-        timeordered = 0 
-        and
-        uniqueid = :uniqueid 
-        and
+      select * from bookz
+      where
+      LENGTH(cartholdername) > 0
+      and 
+      (
+        (:currentmilliseconds - incartguest < 600000)
+        OR
+        (:currentmilliseconds - incartuser < 3600000)
+      ) 
+      """
+    )
+    suspend fun findbooksincartsmultiple(currentmilliseconds: Long):List<BookIDSbyCartholdername>
+
+
+    @Query(
+    """
+      select * from bookz 
+      where
+      uniqueid = :uniqueid
+    """    
+    )
+    suspend fun findbookbyuniqueid(uniqueid: String):List<Book>
+
+    @Query(
+    """
+      select * from bookz 
+      where 
+      timeordered = 0 
+      and
+      uniqueid = :uniqueid 
+      and
+      (
         (
-          (
-            incartguest = 0 or
-            (:currentmilliseconds - incartguest > 600000)
-          ) and
-          (
-            incartuser = 0 or
-            (:currentmilliseconds - incartuser > 3600000)
-          )
-        ) 
-      """    
-      )
-      suspend fun findBookIdNotOrderedNotInCart(uniqueid: String, currentmilliseconds: Long):List<BookTime>
+          incartguest = 0 or
+          (:currentmilliseconds - incartguest > 600000) 
+        ) and
+        (
+          incartuser = 0 or
+          (:currentmilliseconds - incartuser > 3600000)
+        )
+      ) 
+    """    
+    )
+    suspend fun findBookIdNotOrderedNotInCart(uniqueid: String, currentmilliseconds: Long):List<BookTime>
 
     @Query(
     """
@@ -140,6 +173,59 @@ interface BookRepository : CoroutineCrudRepository<Book, Long> {
     """
     )
     suspend fun findBooksforsale():List<Book>
+
+    @Query(
+    """
+      select * from bookz
+      where
+      (
+        (
+          incartguest = 0 or
+          (:currentmilliseconds - incartguest > 600000)
+        ) and
+        (
+          incartuser = 0 or
+          (:currentmilliseconds - incartuser > 3600000)
+        ) 
+      )
+    """
+    )
+    suspend fun findbookidsbycartholdername(milliseconds: Long):List<BookIDSbyCartholdername>
+
+
+    @Query(
+    """
+      select * from bookz
+      where
+      uniqueid = :uniqueid
+      and
+      (
+        (
+          incartguest = 0 or
+          (:currentmilliseconds - incartguest > 600000)
+        ) and
+        (
+          incartuser = 0 or
+          (:currentmilliseconds - incartuser > 3600000)
+        ) 
+      )
+    """
+    )
+    suspend fun findcartholderbybookid(uniqueid: String, currentmilliseconds: Long):List<CartholdernameByUID>
+
+    @Modifying
+    @Query(
+    """
+      update bookz set
+      timeordered = 0, 
+      timeshipped = 0, 
+      incartguest = 0, 
+      incartuser = 0
+      where
+      uniqueid = :uniqueid
+    """
+    ) 
+    suspend fun removebookcart(uniqueid: String):Boolean
 
     @Query(
     """

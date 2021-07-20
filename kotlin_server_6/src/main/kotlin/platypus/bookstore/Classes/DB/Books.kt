@@ -1,11 +1,6 @@
-
-
 package platypus.bookstore.classes.db
 
-
-
 import platypus.bookstore.classes.db.RevenueCost
-// import art.kotlin_server.model.RevenueCost
 
 data class BookRC(
   var book: Book,
@@ -25,6 +20,12 @@ data class Book(
   var isbn: String = ""
 )
 
+data class InCart(
+  var inyourcart: Boolean = false, 
+  var inothercart: Boolean = false, 
+  var uniqueid: String = ""
+)
+
 data class BookTime(
   var title: String = "",
   var subtitle: String = "", 
@@ -40,6 +41,15 @@ data class BookTime(
   var timeshipped: Long = 0,
   var incartguest: Long = 0,
   var incartuser: Long = 0
+)
+
+data class BookIDSbyCartholdername(
+  var uniqueid: String = "",
+  var cartholdername: String = ""
+)
+
+data class CartholdernameByUID(
+  var cartholdername: String = ""
 )
 
 data class BookshelfBook(
@@ -71,4 +81,13 @@ data class ShelfBook(
 
 data class BookId(
   var bookid: String = ""
+)
+
+data class BookUniqueID(
+  var bookuniqueid: String = "",
+)
+
+data class CartNameandBookID(
+  var cartholdername: String = "",
+  var uniqueid: String = ""
 )
