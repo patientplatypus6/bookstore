@@ -29,6 +29,68 @@ interface RevenueCostRepository : CoroutineCrudRepository<RevenueCost, Long> {
 
     @Query(
     """
+      select * from revenuecost
+      where
+      rcname = 'REVENUE - BOOK SHIPPING (PROJECTED)'
+    """
+    )
+    suspend fun findallshippingpriceproj():List<RevenueCost>
+
+    @Query(
+    """
+      select * from revenuecost
+      where
+      rcname = 'REVENUE - BOOK PRICE (PROJECTED)'
+    """
+    )
+    suspend fun findallsalespriceproj():List<RevenueCost>
+
+    @Query(
+      """
+        select * from revenuecost
+        where
+        rcname = 'REVENUE - BOOK SHIPPING (PROJECTED)'
+        and
+        bookuniqueid = :uniqueid
+      """
+      )
+      suspend fun findshippingpriceprojbyid(uniqueid: String):List<RevenueCost>
+  
+      @Query(
+      """
+        select * from revenuecost
+        where
+        rcname = 'REVENUE - BOOK PRICE (PROJECTED)'
+        and
+        bookuniqueid = :uniqueid
+      """
+      )
+      suspend fun findsalespriceprojbyid(uniqueid: String):List<RevenueCost>
+
+    @Query(
+    """
+      select * from revenuecost
+      where
+      rcname = 'REVENUE - BOOK SHIPPING (PROJECTED)'
+      and
+      bookuniqueid in (:uniqueidlist)
+    """
+    )
+    suspend fun findshippingpriceprojinlist(uniqueidlist: List<String>):List<RevenueCost>
+
+    @Query(
+    """
+      select * from revenuecost
+      where
+      rcname = 'REVENUE - BOOK PRICE (PROJECTED)'
+      and
+      bookuniqueid in (:uniqueidlist)
+    """
+    )
+    suspend fun findsalespriceprojinlist(uniqueidlist: List<String>):List<RevenueCost>
+
+    @Query(
+    """
       select * from revenuecost where bookuniqueid = :bookuniqueid 
     """
     )

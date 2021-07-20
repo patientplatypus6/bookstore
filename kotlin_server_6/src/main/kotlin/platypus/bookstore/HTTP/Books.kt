@@ -59,7 +59,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 		var milliseconds = System.currentTimeMillis()
 
 		var booktimelist:List<BookTime> = bookshandler.findBookIdNotOrdered(uniqueid)
-		// var booknameincart:String = bookshandler.findcartholderbybookid(uniqueid, milliseconds)
 		var allpicsbybook = picshandler.findpicsbybook(uniqueid)
 		
 		var picnamefront = ""
@@ -76,22 +75,48 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			picnamelist+=bookpic.picname
 		}
 
-		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
-		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
+		//old inefficient way of finding shipping and book price
 
-		var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(uniqueid)
+		// var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
+		// var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
 
-		var usershipping = ""
-		var userprice = ""
+		// var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(uniqueid)
 
-		for(bookrevenuecost in bookrevenuecosts){
-			if(bookrevenuecost.rcname==shippingstring){
-				usershipping = bookrevenuecost.rcvalue
-			}
-			if(bookrevenuecost.rcname==pricestring){
-				userprice = bookrevenuecost.rcvalue
-			}
+		// var usershipping = ""
+		// var userprice = ""
+
+		// for(bookrevenuecost in bookrevenuecosts){
+		// 	if(bookrevenuecost.rcname==shippingstring){
+		// 		usershipping = bookrevenuecost.rcvalue
+		// 	}
+		// 	if(bookrevenuecost.rcname==pricestring){
+		// 		userprice = bookrevenuecost.rcvalue
+		// 	}
+		// }
+
+		//new way
+
+		var shippingpricebyid:List<RevenueCost> = revenuecosthandler.findshippingpriceprojbyid(uniqueid)
+
+		var salespricebyid:List<RevenueCost> = revenuecosthandler.findsalespriceprojbyid(uniqueid)
+
+		var usershipping = "0"
+		var userprice = "0"
+
+		if(shippingpricebyid.size==1){
+			var revenuecostshipping = shippingpricebyid[0]
+			usershipping = revenuecostshipping.rcvalue
+		}else{
+			usershipping = "0"
 		}
+
+		if(salespricebyid.size==1){
+			var revenuecostsales = salespricebyid[0]
+			userprice = revenuecostsales.rcvalue
+		}else{
+			userprice = "0"
+		}
+
 
 		var booktimelistsize = booktimelist.size
 
@@ -99,15 +124,6 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 		if(booktimelistsize==1){
 			for(booktime in booktimelist){
-
-				// println("value of booknameincart: $booknameincart")
-				// println("value of cartholdername: $cartholdername")
-				
-				// var inyourcartvar = (booknameincart == cartholdername)
-				// var inothercartvar = (booknameincart!=cartholdername)&&(booknameincart!="")
-
-				// println("value of inyourcart: $inyourcartvar")
-				// println("value of inothercart: $inothercartvar")
 
 				bookshelfbook = BookshelfBook(
 					title = booktime.title,
@@ -124,9 +140,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 					usershipping = usershipping,
 					allpics = picnamelist,
 					picnamefront = picnamefront,
-					picnameback = picnameback, 
-					// inyourcart = inyourcartvar,
-					// inothercart = inothercartvar
+					picnameback = picnameback
 				)
 			}
 			println("returnvalue of bookshelfbook when size == 1 $bookshelfbook")
@@ -149,15 +163,25 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 		var booklist:List<BookTime> = bookshandler.findbooks()
 		var picbookids = PicBookIds()	
+		var uniqueidlist = listOf<String>()
 
 		for(book in booklist){
 			picbookids.bookids+=book.uniqueid
+			uniqueidlist+=book.uniqueid
 		}
 
 		var allpics:List<Pic> = picshandler.findallpics()
-		var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
-		var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
+
+		//old way
+
+		// var shippingstring = "REVENUE - BOOK SHIPPING (PROJECTED)"
+		// var pricestring = "REVENUE - BOOK PRICE (PROJECTED)"
 		
+		var shippingpricelist:List<RevenueCost> = revenuecosthandler.findshippingpriceprojinlist(uniqueidlist)
+
+		var salespricelist:List<RevenueCost> = revenuecosthandler.findsalespriceprojinlist(uniqueidlist)
+
+
 		for(book in booklist){
 			var tempbookshelfbook = BookshelfBook()
 
@@ -192,22 +216,30 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 			tempbookshelfbook.picnameback = backpicname
 			tempbookshelfbook.allpics = piclist
 
-			var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(book.uniqueid)
+			//old way
 
-			var usershipping = ""
-			var userprice = ""
+			// var bookrevenuecosts:List<RevenueCost> = revenuecosthandler.findrevenuecostsbybook(book.uniqueid)
 
-			for(bookrevenuecost in bookrevenuecosts){
-				if(bookrevenuecost.rcname==shippingstring){
-					usershipping = bookrevenuecost.rcvalue
-				}
-				if(bookrevenuecost.rcname==pricestring){
-					userprice = bookrevenuecost.rcvalue
-				}
-			}
+			// var usershipping = ""
+			// var userprice = ""
 
-			tempbookshelfbook.usershipping = usershipping
-			tempbookshelfbook.userprice = userprice
+			// for(bookrevenuecost in bookrevenuecosts){
+			// 	if(bookrevenuecost.rcname==shippingstring){
+			// 		usershipping = bookrevenuecost.rcvalue
+			// 	}
+			// 	if(bookrevenuecost.rcname==pricestring){
+			// 		userprice = bookrevenuecost.rcvalue
+			// 	}
+			// }
+
+			// tempbookshelfbook.usershipping = usershipping
+			// tempbookshelfbook.userprice = userprice
+
+			var shippingtemp = shippingpricelist.find{it.bookuniqueid==book.uniqueid}	
+			tempbookshelfbook.usershipping = if(shippingtemp!=null) shippingtemp.rcvalue else "0"
+			
+			var salestemp = salespricelist.find{it.bookuniqueid==book.uniqueid}	
+			tempbookshelfbook.userprice = if(salestemp!=null) salestemp.rcvalue else "0"
 			
 			bookshelfbooks+=tempbookshelfbook
 

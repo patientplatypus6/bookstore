@@ -20,6 +20,20 @@ data class Book(
   var isbn: String = ""
 )
 
+data class BookWCover(
+  var title: String = "",
+  var subtitle: String = "", 
+  var author: String = "",
+  var publisher: String = "", 
+  var currentcopyright: String = "",
+  var bookedition: String = "", 
+  var uniqueid: String = "",
+  var storyinfo: String = "", 
+  var condition: String = "", 
+  var isbn: String = "",
+  var coverpicname: String = ""
+)
+
 data class InCart(
   var inyourcart: Boolean = false, 
   var inothercart: Boolean = false, 

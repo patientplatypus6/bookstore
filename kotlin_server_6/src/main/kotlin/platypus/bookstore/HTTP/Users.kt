@@ -31,7 +31,7 @@ import platypus.bookstore.utility.*
 @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/user")
 @SessionAttributes("userlogin")
-public class RequestUser(private val userRepo: UserRepository, private val bookRepo: BookRepository){
+public class RequestUser(private val userRepo: UserRepository, private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository){
 
 	@PostMapping("/logout")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
@@ -107,8 +107,6 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 		var usershandler = UsersHandler(userRepo)
 		if(usershandler.checkloginredis(username.username, usercookie)){
 			var booksincartbyuser =  bookhandler.findbooksincartbynameuser(username.username)
-			var findallbooks = bookhandler.findbooks();
-			println("value of findallbooks: $findallbooks")
 			println("booksincartbyuser $booksincartbyuser")
 			return booksincartbyuser
 		}else{
@@ -120,9 +118,20 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooksincartbyguest(@RequestBody username: Username):List<Book>{
 		var bookhandler = BooksHandler(bookRepo)
+		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
 		println("inside findbookincartbyguest and value of username $username")
 		var returnbooklist = bookhandler.findbooksincartbynameguest(username.username)
 		println("value of returnbooklist: $returnbooklist")
+		var uniqueidlist = listOf<String>()
+		for(rbook in returnbooklist){	
+			uniqueidlist+=rbook.uniqueid
+		}
+		println("value of uniqueidlist: $uniqueidlist")
+		var shippingprices = revenuecostshandler.findshippingpriceprojinlist(uniqueidlist)
+		var salesprices = revenuecostshandler.findsalespriceprojinlist(uniqueidlist)
+		println("value of shippingprices $shippingprices")
+		println("value of sales prices $salesprices")
+
 		return returnbooklist
 	}
 
@@ -187,10 +196,6 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun checkcartmultiple(@RequestBody user: HashMap<String, String>):List<InCart>{
 
-		println("****************************")
-		println("****************************")
-		println("****************************")
-
 		var username = user.get("username")!!
 		var bookhandler = BooksHandler(bookRepo)
 
@@ -210,28 +215,9 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 			incart += tempincart
 		}
 
-		println("value of incart: $incart")
-		println("value of username: $username")
-		println("value of bookcheckslist: $bookcheckslist")
-
-		println("****************************")
-		println("****************************")
-		println("****************************")
-
 		return incart;
 
 	}
 
 
 }
-  
-
-// @PostMapping("/findbookshelfbookbyuniqueid")
-// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
-// suspend fun findbookshelfbookbyuniqueid(@RequestBody cartandbook: HashMap<String,String>):BookshelfBook{
-
-// 	println("inside findbookshelfbookbyuniqueid")
-// 	println("value of cartandbook in findbookshelfbookbyuniqueid: $cartandbook")
-
-// 	var cartholdername:String = cartandbook.get("cartholdername")!!
-// 	var uniqueid:String = cartandbook.get("uniqueid")!!

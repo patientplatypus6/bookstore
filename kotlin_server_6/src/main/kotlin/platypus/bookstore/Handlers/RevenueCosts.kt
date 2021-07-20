@@ -48,4 +48,28 @@ class RevenueCostsHandler(val revenuecostRepo: RevenueCostRepository){
     return namelist;
   }
 
+  suspend fun findallshippingpriceproj():List<RevenueCost>{
+    return revenuecostRepo.findallshippingpriceproj()
+  }
+
+  suspend fun findallsalespriceproj():List<RevenueCost>{
+    return revenuecostRepo.findallsalespriceproj()
+  }
+
+  suspend fun findshippingpriceprojinlist(uniqueidlist: List<String>):List<RevenueCost>{
+    return revenuecostRepo.findshippingpriceprojinlist(uniqueidlist)
+  }
+
+  suspend fun findsalespriceprojinlist(uniqueidlist: List<String>):List<RevenueCost>{
+    return revenuecostRepo.findsalespriceprojinlist(uniqueidlist)
+  }
+
+  suspend fun findshippingpriceprojbyid(uniqueid: String):List<RevenueCost>{
+    return revenuecostRepo.findshippingpriceprojbyid(uniqueid)
+  }
+
+  suspend fun findsalespriceprojbyid(uniqueid: String):List<RevenueCost>{
+    return revenuecostRepo.findsalespriceprojbyid(uniqueid)
+  }
+
 } 

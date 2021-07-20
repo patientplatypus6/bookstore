@@ -47,7 +47,7 @@ const Book = (props) => {
 
     handlefetch(payload).then(result=>{
       console.log('value of result from book/findbookbyuniqueid', result)
-      setTotalprice(result.userprice+result.usershipping)
+      setTotalprice(parseFloat(result.userprice)+parseFloat(result.usershipping))
       setBook(result)
     })
   }
