@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   const [revenuecostlist, setRevenuecostlist] = useState([])
   const [pagenumberbook, setPagenumberbook] = useState(1)
   const [pagenumberrevenuecost, setPagenumberrevenuecost] = useState(1)
-  const [displayper, setDisplayper] = useState(25)
+  const [displayper, setDisplayper] = useState(10)
   const [dashmessage, setDashmessage] = useState("Welcome to the Administator dashboard! \n Action messages will appear hear from state changes in the database \n Thank you!")
 
   const [totalcost, setTotalcost] = useState(0)
