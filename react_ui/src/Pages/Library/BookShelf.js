@@ -58,6 +58,10 @@ const BookShelf = (props) => {
     })
   }
 
+  useEffect(()=>{
+    checkCart()
+  }, [props.refresh])
+
   const addcartuser = (cartholdername, bookuniqueid) => {
     var payload = {
       body:{

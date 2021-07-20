@@ -38,7 +38,15 @@ const Main = () => {
     const[loggedin, setLoggedin] = useState(false)
     const[cartbookids, setCartbookids] = useState([])
 
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    // const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    const [refresh, setRefresh] = useState(0)
+
+    const updaterefresh = () => {
+      var temprefresh = refresh;
+      temprefresh+=1
+      setRefresh(temprefresh)
+    }
+
 
     const updatecartbookids = (updated) => {
       var tempcartbookids = [...cartbookids]; 
@@ -80,7 +88,7 @@ const Main = () => {
         localStorage.removeItem('cookie')
         var guestname = "guestname" + Date.now().toString()
         localStorage.setItem("guestname", guestname)
-        forceUpdate()
+        updaterefresh()
       })     
     }
 
@@ -116,7 +124,7 @@ const Main = () => {
           setUsername("")
           setPassword("")
         }
-        forceUpdate()
+        updaterefresh()
       })
     }
 
@@ -152,7 +160,7 @@ const Main = () => {
           setUsername("")
           setPassword("")
         }
-        forceUpdate()
+        updaterefresh()
       })
     }
 
@@ -385,22 +393,36 @@ const Main = () => {
       <Switch>
           <Route exact path="/" render={()=><BookShelf
             cartbookids={cartbookids}
+            refresh={refresh}
             updatecartbooks={(newids)=>{updatecartbookids(newids)}}
           />}/>
-          <Route exact path="/about" render={()=><About/>}/>
-          <Route exact path="/admin/addbook" render={()=><AddBook/>}/>
-          <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost/>}/>
-          <Route exact path="/admin/dashboard" render={()=><AdminDashboard/>}/>
-          <Route exact path="/admin/editbook" render={()=><EditBook/>}/>
+          <Route exact path="/about" render={()=><About
+            refresh={refresh}
+          />}/>
+          <Route exact path="/admin/addbook" render={()=><AddBook
+            refresh={refresh}
+          />}/>
+          <Route exact path="/admin/addrevenuecost" render={()=><AddRevenueCost
+            refresh={refresh}
+          />}/>
+          <Route exact path="/admin/dashboard" render={()=><AdminDashboard
+            refresh={refresh}
+          />}/>
+          <Route exact path="/admin/editbook" render={()=><EditBook
+            refresh={refresh}
+          />}/>
           <Route path="/book/:id" render={()=><Book
+            refresh={refresh}
             cartbookids={cartbookids}
             updatecartbooks={(newids)=>{updatecartbookids(newids)}}
           />}/>
           <Route exact path="/cart" render={()=><Cart
+            refresh={refresh}
             cartbookids={cartbookids}
             updatecartbooks={(newids)=>{updatecartbookids(newids)}}
           />}/>
           <Route exact path="/purchase" render={()=><Purchase
+            refresh={refresh}
             cartbookids={cartbookids}
             updatecartbooks={(newids)=>{updatecartbookids(newids)}}
           />}/>

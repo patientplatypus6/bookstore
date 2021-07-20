@@ -53,6 +53,10 @@ const Book = (props) => {
   }
 
   useEffect(()=>{
+    checkCart()
+  }, [props.refresh])
+
+  useEffect(()=>{
     findbook()
     checkCart()
   }, [])
