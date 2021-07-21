@@ -22,6 +22,45 @@ suspend fun convertdatetime(input:String):LocalDateTime{
   return returndatetime
 }
 
+//variable depth hashmap
+// https://stackoverflow.com/questions/26536599/accessing-deeply-nested-hashmaps-in-java
+//consider learning in kotlin at some point
+
+// class NestedMap<K, V> {
+
+//   private final HashMap<K, NestedMap> child;
+//   private V value;
+
+//   public NestedMap() {
+//       child = new HashMap<>();
+//       value = null;
+//   }
+
+//   public boolean hasChild(K k) {
+//       return this.child.containsKey(k);
+//   }
+
+//   public NestedMap<K, V> getChild(K k) {
+//       return this.child.get(k);
+//   }
+
+//   public void makeChild(K k) {
+//       this.child.put(k, new NestedMap());
+//   }
+
+//   public V getValue() {
+//       return value;
+//   }
+
+//   public void setValue(V v) {
+//       value = v;
+//   }
+// }
+
+//also
+
+// https://stackoverflow.com/questions/51367466/accept-arbitrary-json-as-requestbody-in-spring
+
 // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/to-byte-array.html
 
 class ByteArrayHandler(){

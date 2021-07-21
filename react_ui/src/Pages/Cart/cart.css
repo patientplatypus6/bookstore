@@ -7,3 +7,25 @@
   font-style: italic;
   font-size: 1.5rem;
 }
+
+.cartinput{
+  color: black;
+  float: left;
+  font-size: 20px;
+  border: none;
+  background: darkgray;
+}
+
+.cartinput::placeholder{
+  color: black;
+  border: none;
+}
+
+.cartinput::-moz-focus-inner{
+  border: none;
+}
+
+.cartinput:focus{
+  border: none;
+  outline: none;
+}

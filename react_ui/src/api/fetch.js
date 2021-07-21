@@ -10,7 +10,12 @@ const handlefetch = (payload) => {
 
 
 const fetchrequest = (payload) => { 
- var url = "http://localhost:8080/"
+ if(payload.url == null || payload.url == undefined){
+  var url = "http://localhost:8080/"
+ }else{
+  var url = payload.url
+ }
+
  var urlfull = url + payload.uri;
  console.log('inside fetchrequest and value of payload: ',
  payload

@@ -8,6 +8,38 @@ client.on('connect', function() {
   console.log('Connected!');
 });
 
+const stripe = require('stripe')('sk_test_51JFN40GiGVLhVoutEne6ab4h7EJQrkQW6YmkPPZtkcrNYLEzOxBZ2VuN4VcLfSZAwa8IBnucgehFRpVk7edZSYF500nu8GV4Nh');
+
+// https://stripe.com/docs/payments/integration-builder
+
+// router.post("/create-payment-intent", async (req, res) => {
+//   const { items } = req.body;
+//   // Create a PaymentIntent with the order amount and currency
+//   const paymentIntent = await stripe.paymentIntents.create({
+//     amount: calculateOrderAmount(items),
+//     currency: "usd"
+//   });
+//   res.send({
+//     clientSecret: paymentIntent.client_secret
+//   });
+// });
+
+router.post("/create-payment-intent", async (req, res)=>{
+  console.log('value of req.body.amount: ', req.body.amount*100)
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: req.body.amount*100,
+    currency: "usd"
+  });
+  res.send({
+    client_secret: paymentIntent.client_secret
+  });
+})
+
+// app.get('/secret', async (req, res) => {
+//   const intent = 
+//   res.json({client_secret: intent.client_secret});
+// });
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
