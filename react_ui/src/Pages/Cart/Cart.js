@@ -51,19 +51,9 @@ const CheckoutForm = (props) => {
 
   useEffect(()=>{
 
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    console.log('value of modalstatus: ', modalstatus)
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-
-
     //set overflow of body
 
     if(modalstatus=='closed'){
-      setModalmessage("Now double checking cart status...")
       document.getElementById("body").style.overflow  = "visible" 
     }else{
       document.getElementById("body").style.overflow = "hidden"
@@ -72,6 +62,7 @@ const CheckoutForm = (props) => {
     //http call by status
 
     if(modalstatus=='checkcart'){
+      setModalmessage("Now double checking cart status...")
       props.checkCartCallback()
     }else if(modalstatus=='attemptpayment'){
       setModalmessage("Now submitting payment details...")
@@ -131,6 +122,7 @@ const CheckoutForm = (props) => {
                 }}
                 onClick={()=>{
                   setModalstatus('closed')
+                  props.resetCartStatus()
                 }}
               >
                 x
@@ -809,6 +801,10 @@ const Cart = (props) => {
   }, 
   [cart])
 
+  const resetCartStatus = () => {
+    setCheckcartstatus('notchecked')
+  }
+
   const checkCartCallback = () => {
     retrieveCart('check')
   }
@@ -845,12 +841,17 @@ const Cart = (props) => {
     payload.requestType = 'post'
     payload.uri = "user/findbooksincartbyguest"
     handlefetch(payload).then(result=>{
+      console.log('value of result from retrieveCartGuest: ', result)
+      console.log('result.length: ', result.length)
+      console.log('cart.length: ', cart!=null?cart.length:'null')
       if(status == 'initial'){
         setCart(result)
       }else if(status == 'check'){
         if(result.length == cart.length){
+          console.log('inside setCheckcartstatus and equality')
           setCheckcartstatus("passed")
         }else{
+          console.log('inside setCheckcartstatus and else')
           setCheckcartstatus("failed")
           retrieveCartGuest(cartholdername, 'initial')
         }
@@ -1076,6 +1077,7 @@ const Cart = (props) => {
             <div>
               <Elements stripe={stripePromise}>
                 <CheckoutForm 
+                  resetCartStatus={()=>{resetCartStatus()}}
                   checkcartstatus={checkcartstatus}
                   checkCartCallback={()=>{checkCartCallback()}}
                   amount={parseFloat(shippingsum) + parseFloat(pricesum)}
