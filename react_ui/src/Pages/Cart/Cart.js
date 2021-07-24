@@ -12,8 +12,6 @@ import {
 
 import {loadStripe} from '@stripe/stripe-js';
 
-
-
 const CheckoutForm = (props) => {
 
   const [city, setCity] = useState("")
@@ -31,45 +29,153 @@ const CheckoutForm = (props) => {
   const [firstname, setFirstname] = useState("")
   const [lastname, setLastname] = useState("")
 
+  const [modalstatus, setModalstatus] = useState("closed")
+  const [modalmessage, setModalmessage] = useState("Now double checking cart status...")
+
+
   const stripe = useStripe();
   const elements = useElements();
 
-
-  const submitStripeUser = (paymentMethod, cartholder) => {
-    var payload = {
-      paymentMethod: paymentMethod, 
-      cartholder: cartholder
+  useEffect(()=>{
+    console.log('props.checkcartstatus: ', props.checkcartstatus)
+    if(props.checkcartstatus=='passed'){
+      setTimeout(() => {
+        setModalstatus('attemptpayment')        
+      }, 1000);
+    }else if(props.checkcartstatus=='failed'){
+      setTimeout(() => {
+        setModalstatus('cartfail')  
+      }, 1000);
     }
-    payload.requestType = "postcookie"
-    payload.uri = "user/userstripepayment"
-    handlefetch(payload).then(result=>{
+  }, [props.checkcartstatus])
 
-    })
-  }
+  useEffect(()=>{
 
-  const submitStripeGuest = (paymentMethod, cartholder) => {
-    var payload = {
-      paymentMethod: paymentMethod, 
-      cartholder: cartholder
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log('value of modalstatus: ', modalstatus)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
+
+    //set overflow of body
+
+    if(modalstatus=='closed'){
+      setModalmessage("Now double checking cart status...")
+      document.getElementById("body").style.overflow  = "visible" 
+    }else{
+      document.getElementById("body").style.overflow = "hidden"
     }
-    payload.requestType = "post"
-    payload.uri = "user/gueststripepayment"
-    handlefetch(payload).then(result=>{
+
+    //http call by status
+
+    if(modalstatus=='checkcart'){
+      props.checkCartCallback()
+    }else if(modalstatus=='attemptpayment'){
+      setModalmessage("Now submitting payment details...")
+      handleSubmitPayment()
+    }else if(modalstatus=='paymentsuccess'){
       
-    })
-  }
+    }else if(modalstatus=='cartfail'){
+      setModalmessage("Cart not up to date. Please check updated cart.")
+    }else if(modalstatus=='paymentfail'){
 
-  const submitStripe = (paymentMethod) => {
-    var cartholdername = ""
-
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-      submitStripeGuest(paymentMethod, cartholdername)
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-      submitStripeUser(paymentMethod, cartholdername)
     }
 
+  }, [modalstatus])
+
+  const renderPaymentModal = () => {
+
+    if(modalstatus!='closed'){
+      return(
+        <div
+          style={{
+            position: 'fixed',
+            top: 0, left: 0, bottom: 0, right: 0, 
+            zIndex: '999',
+            background: 'rgba(0,0,0,0.6)'
+          }}
+        >
+          <div
+            style={{
+              width: '100%', 
+              height: '100%', 
+              position: 'relative'
+            }}
+          >
+            <div
+              style={{
+                width: '50vw', 
+                marginLeft: '25vw', 
+                marginRight: '25vw', 
+                background: 'grey',
+                color: 'black',
+                borderRadius: '5px', 
+                border: '2px solid blue', 
+                marginTop: '20vh', 
+                padding: '10px', 
+                textAlign: 'center', 
+                position: 'relative'
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute', 
+                  top: '0px', 
+                  right: '5px', 
+                  fontSize: '1rem', 
+                  fontWeight: 'bold', 
+                  cursor: 'pointer'
+                }}
+                onClick={()=>{
+                  setModalstatus('closed')
+                }}
+              >
+                x
+              </div>
+              <div
+                style={{
+                  padding: '10px'
+                }}
+              >
+                <div
+                  style={{
+                    height: '40px', 
+                    width: '40px', 
+                    marginRight: '20px',
+                    display: 'inline-block'
+                  }}
+                >
+                  {!(modalstatus.includes('fail')||modalstatus.includes('success'))?
+                    <img 
+                    src={process.env.PUBLIC_URL+"/loading.gif"}
+                    style={{width: '100%', height: '100%'}}
+                    />  
+                  :<div/>}
+                  {modalstatus.includes('fail')?
+                    <img 
+                    src={process.env.PUBLIC_URL+"/exclamation.png"}
+                    style={{width: '100%', height: '100%'}}
+                    />   
+                  :<div/>}
+                </div>
+                <div
+                  style={{
+                    display: 'inline-block', 
+                    verticalAlign:'top', 
+                    paddingTop: '10px'
+                  }}
+                >
+                  {modalmessage}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 
   const asyncpay = async (client_secret) => {
@@ -90,31 +196,50 @@ const CheckoutForm = (props) => {
       }
     });
     if (result.error) {
-      console.log('error!: ', result.error.message)
+      setTimeout(() => {
+        setModalmessage(result.error.message)
+        setModalstatus('paymentfail')
+      }, 1000);
     } else {
-      console.log("success!")
+      setTimeout(() => {
+        setModalmessage(result.error.message)
+        setModalstatus('paymentsuccess')
+      }, 1000);
     }
   }
 
   const paymentIntent = () => {
     console.log('value of props: ', props.amount)
-    var payload = {
-      body:{
-        amount: props.amount
+
+    if(props.amount==0){
+      setTimeout(() => {  
+        setModalmessage('Amount to charge is $0! Please check your cart.')
+        setModalstatus('paymentfail')
+      }, 1000);
+    }else{
+      var payload = {
+        body:{
+          amount: props.amount
+        }
       }
+      payload.uri = "/create-payment-intent"
+      payload.url = "http://localhost:4000"
+      payload.requestType = "post"
+      handlefetch(payload).then(result=>{
+        console.log("value of result: ", result)
+        asyncpay(result.client_secret)
+      }).catch(e=>{
+        console.log('there was an error in paymentIntent: ', e)
+        setTimeout(() => {  
+          setModalmessage(JSON.stringify(e))
+          setModalstatus('paymentfail')
+        }, 1000);
+      })
     }
-    payload.uri = "/create-payment-intent"
-    payload.url = "http://localhost:4000"
-    payload.requestType = "post"
-    handlefetch(payload).then(result=>{
-      console.log("value of result: ", result)
-      asyncpay(result.client_secret)
-    }).catch(e=>{
-      console.log('there was an error in paymentIntent: ', e)
-    })
+
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmitPayment = async (event) => {
 
     let getcard = elements.getElement(CardElement)
     console.log('value of getcard: ', getcard)
@@ -134,6 +259,11 @@ const CheckoutForm = (props) => {
 
     if((error==undefined||error==null)&&(paymentMethod!=undefined||paymentMethod!=null)){
       paymentIntent()
+    }else{
+      setTimeout(() => {
+        setModalmessage(error.message)
+        setModalstatus('paymentfail')
+      }, 1000);
     }
 
   };
@@ -146,6 +276,25 @@ const CheckoutForm = (props) => {
         width: '50vw'        
       }}
     >
+      {renderPaymentModal()}
+      <div
+        style={{
+          fontWeight: 'bold', 
+          color: 'black', 
+          display: 'inline-block', 
+          fontSize: '0.75rem', 
+          marginTop: '5px', 
+          background: 'darkgrey', 
+          padding: '10px', 
+          textAlign: 'left', 
+          width: 'calc(100% - 7px)',
+          borderRadius: '5px',
+          border: '2px solid black',
+          textAlign: 'center'
+        }}
+      >
+        Please be aware that cart items are only reserved for a limited time (longer for registered users) in order to give everyone the chance to consider a purchase. To check that your cart is up to date you might want to refresh the page. When purchasing, cart items are double checked to be current, and, if not, the purchase will not go through and a notification will display.
+      </div>
       <div
         style={{
           fontWeight: 'bold',
@@ -582,12 +731,17 @@ const CheckoutForm = (props) => {
         <div
           style={{width: '100%', textAlign: "right"}}
         >
+          <div style={{fontWeight: 'bold', fontSize: '1.5rem', textDecoration: 'underline', marginRight: '40px', marginBottom: '10px', marginTop: '10px'}}>
+            The total cost of your purchase is ${props.amount}.
+          </div>
           <div className='button'
             style={{
               background: 'red', display: 'inline-block', marginRight: '40px', 
               fontSize: '20px'
             }}
-            onClick={(e)=>{handleSubmit(e)}}
+            onClick={(e)=>{
+              setModalstatus("checkcart")
+            }}
           >
             Pay Now
           </div>
@@ -603,6 +757,7 @@ const Cart = (props) => {
   const [cart, setCart] = useState(null)
   const [shippingsum, setShippingsum] = useState(0)
   const [pricesum, setPricesum] = useState(0)
+  const [checkcartstatus, setCheckcartstatus] = useState('notchecked')
 
   const stripePromise = loadStripe('pk_test_51JFN40GiGVLhVoutsxeWSbq2uvly5CkxsJjI8xDuyHYdWwyfen9wAgfdcnU8j5VEzwXIkMUpUIuM3KFwjRv3yiq900fwWuF1lW');
 
@@ -640,6 +795,7 @@ const Cart = (props) => {
 
   useEffect(()=>{
     if(cart!=null){
+      console.log('before findcovers and value of cart: ', cart)
       findCovers()
       let tempshippingsum = shippingsum;
       let temppricesum = pricesum;
@@ -653,7 +809,11 @@ const Cart = (props) => {
   }, 
   [cart])
 
-  const retrieveCartUser = (cartholdername) => {
+  const checkCartCallback = () => {
+    retrieveCart('check')
+  }
+
+  const retrieveCartUser = (cartholdername, status) => {
     var payload = {
       body: {
         username: cartholdername
@@ -662,33 +822,54 @@ const Cart = (props) => {
     payload.requestType = 'postcookie'
     payload.uri = "user/findbooksincartbyuser"
     handlefetch(payload).then(result=>{
-      setCart(result)
+      if(status == 'initial'){
+        setCart(result)
+      }else if(status == 'check'){
+        if(result.length == cart.length){
+          setCheckcartstatus("passed")
+        }else{
+          setCheckcartstatus("failed")
+          retrieveCartUser(cartholdername, 'initial')
+        }
+      }
     })
   }
 
-  const retrieveCartGuest = (cartholdername) => {
+  const retrieveCartGuest = (cartholdername, status) => {
+    console.log("inside retrieveCartGuest")
     var payload = {
       body: {
         username: cartholdername
       }
     }
-    payload.requestType = 'postcookie'
+    payload.requestType = 'post'
     payload.uri = "user/findbooksincartbyguest"
     handlefetch(payload).then(result=>{
-      setCart(result)
+      if(status == 'initial'){
+        setCart(result)
+      }else if(status == 'check'){
+        if(result.length == cart.length){
+          setCheckcartstatus("passed")
+        }else{
+          setCheckcartstatus("failed")
+          retrieveCartGuest(cartholdername, 'initial')
+        }
+      }
     })
   }
 
-  const retrieveCart = () => {
+  const retrieveCart = (status) => {
     var cartholdername = ""
-    setPricesum(0)
-    setShippingsum(0)
+    if(status=='initial'){
+      setPricesum(0)
+      setShippingsum(0)
+    }
     if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
       cartholdername = localStorage.getItem('guestname')
-      retrieveCartGuest(cartholdername)
+      retrieveCartGuest(cartholdername, status)
     }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
       cartholdername = localStorage.getItem('username')
-      retrieveCartUser(cartholdername)
+      retrieveCartUser(cartholdername, status)
     }
   }
 
@@ -709,7 +890,7 @@ const Cart = (props) => {
       console.log("*****************")
       console.log("*****************")
       console.log("*****************")
-      retrieveCart()
+      retrieveCart('initial')
       // retrieveCart(localStorage.getItem("username"), 'user')
     })
   }
@@ -731,13 +912,13 @@ const Cart = (props) => {
       console.log("*****************")
       console.log("*****************")
       console.log("*****************")
-      retrieveCart()
+      retrieveCart('initial')
     })
   }
 
   useEffect(()=>{
     var cartholdername = ""
-    retrieveCart()
+    retrieveCart('initial')
   }, [])
   
   return(
@@ -894,7 +1075,11 @@ const Cart = (props) => {
             </table>
             <div>
               <Elements stripe={stripePromise}>
-                <CheckoutForm amount={parseFloat(shippingsum) + parseFloat(pricesum)}/>
+                <CheckoutForm 
+                  checkcartstatus={checkcartstatus}
+                  checkCartCallback={()=>{checkCartCallback()}}
+                  amount={parseFloat(shippingsum) + parseFloat(pricesum)}
+                />
               </Elements>
             </div>
           </div>
@@ -919,3 +1104,42 @@ const Cart = (props) => {
 }
 
 export default Cart;
+
+
+
+// const submitStripeUser = (paymentMethod, cartholder) => {
+//   var payload = {
+//     paymentMethod: paymentMethod, 
+//     cartholder: cartholder
+//   }
+//   payload.requestType = "postcookie"
+//   payload.uri = "user/userstripepayment"
+//   handlefetch(payload).then(result=>{
+
+//   })
+// }
+
+// const submitStripeGuest = (paymentMethod, cartholder) => {
+//   var payload = {
+//     paymentMethod: paymentMethod, 
+//     cartholder: cartholder
+//   }
+//   payload.requestType = "post"
+//   payload.uri = "user/gueststripepayment"
+//   handlefetch(payload).then(result=>{
+    
+//   })
+// }
+
+// const submitStripe = (paymentMethod) => {
+//   var cartholdername = ""
+
+//   if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
+//     cartholdername = localStorage.getItem('guestname')
+//     submitStripeGuest(paymentMethod, cartholdername)
+//   }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
+//     cartholdername = localStorage.getItem('username')
+//     submitStripeUser(paymentMethod, cartholdername)
+//   }
+
+// }

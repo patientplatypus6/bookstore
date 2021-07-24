@@ -10,20 +10,6 @@ client.on('connect', function() {
 
 const stripe = require('stripe')('sk_test_51JFN40GiGVLhVoutEne6ab4h7EJQrkQW6YmkPPZtkcrNYLEzOxBZ2VuN4VcLfSZAwa8IBnucgehFRpVk7edZSYF500nu8GV4Nh');
 
-// https://stripe.com/docs/payments/integration-builder
-
-// router.post("/create-payment-intent", async (req, res) => {
-//   const { items } = req.body;
-//   // Create a PaymentIntent with the order amount and currency
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: calculateOrderAmount(items),
-//     currency: "usd"
-//   });
-//   res.send({
-//     clientSecret: paymentIntent.client_secret
-//   });
-// });
-
 router.post("/create-payment-intent", async (req, res)=>{
   console.log('value of req.body.amount: ', req.body.amount*100)
   const paymentIntent = await stripe.paymentIntents.create({
@@ -34,11 +20,6 @@ router.post("/create-payment-intent", async (req, res)=>{
     client_secret: paymentIntent.client_secret
   });
 })
-
-// app.get('/secret', async (req, res) => {
-//   const intent = 
-//   res.json({client_secret: intent.client_secret});
-// });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -55,6 +36,14 @@ router.post("/retrieve", function(req, res, next){
   console.log('and value of key: ', req.body.key)
   client.get(req.body.key, function(err, reply) {
     console.log(reply); // ReactJS
+    if(reply==null){
+      console.log(`
+        key not found, reply null setting as null string, "null" to prevent 
+        null pointer exception in java - 
+        MAKE SURE TO PREVENT NULL BEING PASSED AS STRING IN PRODUCTION
+      `)
+      reply = "null"
+    }
     res.send({reply})
   });
 })

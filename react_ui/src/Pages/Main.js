@@ -1,8 +1,5 @@
 import React, {Component, useEffect, useState, useReducer} from 'react';
-// import Button from '../Components/SubComponents/Button/Button'
-// import InputBox from '../Components/SubComponents/InputBox/InputBox'
-// import TextBox from '../Components/SubComponents/TextBox/TextBox'
-// import { observer, useObserver} from "mobx-react";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -38,7 +35,6 @@ const Main = () => {
     const[loggedin, setLoggedin] = useState(false)
     const[cartbookids, setCartbookids] = useState([])
 
-    // const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const [refresh, setRefresh] = useState(0)
 
     const updaterefresh = () => {
@@ -47,6 +43,13 @@ const Main = () => {
       setRefresh(temprefresh)
     }
 
+    useEffect(()=>{
+      if(loginmodal){
+        document.getElementById("body").style.overflow = "hidden"
+      }else{
+        document.getElementById("body").style.overflow  = "visible"
+      }
+    }, [loginmodal])
 
     const updatecartbookids = (updated) => {
       var tempcartbookids = [...cartbookids]; 
@@ -173,8 +176,7 @@ const Main = () => {
               position: 'fixed',
               top: 0, left: 0, bottom: 0, right: 0, 
               zIndex: '999',
-              background: 'rgba(0,0,0,0.6)', 
-              color: 'white'
+              background: 'rgba(0,0,0,0.6)'
             }}
           >
             <div
@@ -195,9 +197,25 @@ const Main = () => {
                   border: '2px solid blue', 
                   marginTop: '20vh', 
                   padding: '10px', 
-                  textAlign: 'center'
+                  textAlign: 'center', 
+                  position: 'relative'
                 }}
               >
+                <div
+                  style={{
+                    position: 'absolute', 
+                    top: '0px', 
+                    right: '5px', 
+                    fontSize: '1rem', 
+                    fontWeight: 'bold', 
+                    cursor: 'pointer'
+                  }}
+                  onClick={()=>{
+                    setLoginmodal(false)
+                  }}
+                >
+                  x
+                </div>
                 <br/>
                 {modalmessage}
                 <br/><br/>

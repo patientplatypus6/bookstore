@@ -163,28 +163,24 @@ const AdminDashboard = () => {
       <>
         <table>
           <tr>
-            <td className='columnHeaders'>
-              
-            </td>
+            <td className='columnHeaders'/>
+            <td className='columnHeaders'/>
             <td className='columnHeaders' colSpan='2'>
               Actual
             </td>
             <td className='columnHeaders' colSpan='2'>
               Projected
             </td>
-            <td className='columnHeaders'>
-              
-            </td>
-            <td className='columnHeaders'>
-
-            </td>
-            <td className='columnHeaders'>
-              
-            </td>
+            <td className='columnHeaders'/>
+            <td className='columnHeaders'/>
+            <td className='columnHeaders'/>
           </tr>
           <tr>
             <td className='columnHeaders'>
               Description
+            </td>
+            <td className='columnHeaders'>
+              Name
             </td>
             <td className='columnHeaders'>
               Revenue
@@ -232,6 +228,9 @@ const AdminDashboard = () => {
               <tr key={key}>
                 <td>
                   {revenuecostitem.rcdescription}
+                </td>
+                <td>
+                  {revenuecostitem.rcname}
                 </td>
                 <td style={{color: 'green', fontWeight: 'bold'}}>
                   {revenueitem}

@@ -103,11 +103,15 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	@PostMapping("/findbooksincartbyuser")
 	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooksincartbyuser(@RequestBody username: Username, @CookieValue(name = "usercookie") usercookie: String):List<BookWPrices>{
+
+		println("inside /findbooksincartbyuser")
+
 		var bookhandler = BooksHandler(bookRepo)
 		var usershandler = UsersHandler(userRepo)
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
 
 		if(usershandler.checkloginredis(username.username, usercookie)){
+			println("inside checkloginredis check")
 			var booksincartbyuser =  bookhandler.findbooksincartbynameuser(username.username)
 			println("booksincartbyuser $booksincartbyuser")
 			var uniqueidlist = listOf<String>()
@@ -133,7 +137,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 					isbn = rbook.isbn,
 					usershipping = if(shippingfound!=null) shippingfound.rcvalue else "0",
 					userprice = if(userprice!=null) userprice.rcvalue else "0"
-				)
+				)	
 				returnbookwprices+=tempwprices
 			}
 			return returnbookwprices
@@ -266,6 +270,10 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 		return incart;
 
 	}
+
+	// @PostMapping("/userstripepayment")
+	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	// suspend fun userstripepayment(@RequestBody)
 
 
 }
