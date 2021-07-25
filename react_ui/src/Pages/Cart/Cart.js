@@ -68,11 +68,16 @@ const CheckoutForm = (props) => {
       setModalmessage("Now submitting payment details...")
       handleSubmitPayment()
     }else if(modalstatus=='paymentsuccess'){
-      
+      setModalmessage(`
+        Payment succeeded! \n 
+        You will receive an email notification shortly.
+      `)
     }else if(modalstatus=='cartfail'){
       setModalmessage("Cart not up to date. Please check updated cart.")
     }else if(modalstatus=='paymentfail'){
-
+      //errors handled in callbacks
+    }else if(modalstatus=='requiresaction'){
+      setModalmessage("Cart requires 3-D authentication, please follow prompts...")
     }
 
   }, [modalstatus])
@@ -98,7 +103,7 @@ const CheckoutForm = (props) => {
           >
             <div
               style={{
-                width: '50vw', 
+                width: 'calc(50vw - 8px)', 
                 marginLeft: '25vw', 
                 marginRight: '25vw', 
                 background: 'grey',
@@ -157,7 +162,8 @@ const CheckoutForm = (props) => {
                   style={{
                     display: 'inline-block', 
                     verticalAlign:'top', 
-                    paddingTop: '10px'
+                    paddingTop: '10px',
+                    whiteSpace: 'pre-line'
                   }}
                 >
                   {modalmessage}
@@ -193,10 +199,19 @@ const CheckoutForm = (props) => {
         setModalstatus('paymentfail')
       }, 1000);
     } else {
-      setTimeout(() => {
-        setModalmessage(result.error.message)
-        setModalstatus('paymentsuccess')
-      }, 1000);
+      console.log('value of result in paymentsuccess for asyncpay: ', result)
+      if(result.paymentIntent.status=='succeeded'){
+        setTimeout(() => {
+          setModalmessage(result.message)
+          setModalstatus('paymentsuccess')
+        }, 1000);
+      }
+      else if(result.paymentIntent.status=='requires_action'){
+        setTimeout(() => {
+          setModalmessage(result.message)
+          setModalstatus('requiresaction')
+        }, 1000);
+      }
     }
   }
 
@@ -222,9 +237,17 @@ const CheckoutForm = (props) => {
         asyncpay(result.client_secret)
       }).catch(e=>{
         console.log('there was an error in paymentIntent: ', e)
-        setTimeout(() => {  
-          setModalmessage(JSON.stringify(e))
-          setModalstatus('paymentfail')
+        setTimeout(() => {
+          if(JSON.stringify(e).includes("email")){
+            setModalmessage("Email is invalid.")
+            setModalstatus('paymentfail')
+          }else if(JSON.stringify(e).includes('phone')){
+            setModalmessage("Phone number is invalid.")
+            setModalstatus('paymentfail')
+          }else{
+            setModalmessage("An error occurred. Please try again.")
+            setModalstatus('paymentfail')
+          }
         }, 1000);
       })
     }
@@ -389,6 +412,7 @@ const CheckoutForm = (props) => {
             <input
               style={{width: '100%'}}
               value={phone}
+              autocomplete="off"
               className='cartinput'
               onChange={(e)=>{
                 // if(e.target.value)
@@ -1106,42 +1130,3 @@ const Cart = (props) => {
 }
 
 export default Cart;
-
-
-
-// const submitStripeUser = (paymentMethod, cartholder) => {
-//   var payload = {
-//     paymentMethod: paymentMethod, 
-//     cartholder: cartholder
-//   }
-//   payload.requestType = "postcookie"
-//   payload.uri = "user/userstripepayment"
-//   handlefetch(payload).then(result=>{
-
-//   })
-// }
-
-// const submitStripeGuest = (paymentMethod, cartholder) => {
-//   var payload = {
-//     paymentMethod: paymentMethod, 
-//     cartholder: cartholder
-//   }
-//   payload.requestType = "post"
-//   payload.uri = "user/gueststripepayment"
-//   handlefetch(payload).then(result=>{
-    
-//   })
-// }
-
-// const submitStripe = (paymentMethod) => {
-//   var cartholdername = ""
-
-//   if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-//     cartholdername = localStorage.getItem('guestname')
-//     submitStripeGuest(paymentMethod, cartholdername)
-//   }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-//     cartholdername = localStorage.getItem('username')
-//     submitStripeUser(paymentMethod, cartholdername)
-//   }
-
-// }

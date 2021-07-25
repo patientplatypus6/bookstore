@@ -23,7 +23,6 @@ import AddRevenueCost from './Admin/AddRevenueCost';
 import {fetchrequest} from '../api/fetch'
 
 import './main.css'
-import { render } from '@vue/runtime-dom';
 
 const Main = () => {
 
