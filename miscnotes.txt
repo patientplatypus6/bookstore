@@ -8,3 +8,8 @@ curl -i -H 'Accept: application/json' http://localhost:8080/api/articles
 https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
 
 docker system prune -a
+
+https://maximorlov.com/4-reasons-why-your-docker-containers-cant-talk-to-each-other/
+
+# With containerA already running, test if containerA can connect to containerB by using its name
+docker exec [containerA] ping [containerB] -c2

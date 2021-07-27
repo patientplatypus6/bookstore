@@ -12,16 +12,17 @@ const handlefetch = (payload) => {
 const fetchrequest = (payload) => { 
  if(payload.url == null || payload.url == undefined){
   // var url = "http://localhost:8080/"
-  var url=process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT
+  var url="http://"+process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT
  }else{
   var url = payload.url
  }
 
- var urlfull = url + payload.uri;
- console.log('inside fetchrequest and value of payload: ',
- payload
- )
+ var urlfull = url + "/" + payload.uri;
+ console.log('inside fetchrequest and value of payload: ', payload)
  console.log("payload.requestType: ", payload.requestType)
+ console.log("value of url: ", url)
+ console.log("value of payload.url: ", payload.url)
+ console.log("value of urlfull: ", urlfull)
  if(payload.requestType=='postpic'){
    const formData = new FormData();
    formData.append('fileupload', payload.pic)
