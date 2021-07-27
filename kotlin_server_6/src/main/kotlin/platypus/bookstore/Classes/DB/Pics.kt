@@ -1,10 +1,8 @@
 
-
 package platypus.bookstore.classes.db
 
 
 import org.springframework.web.multipart.MultipartFile
-
 
 data class Pic(
   var picname:String = "",

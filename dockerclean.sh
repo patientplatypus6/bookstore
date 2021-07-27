@@ -1,9 +1,10 @@
 #!/bin/bash
 
-yes | docker image prune
+docker image prune -f
+
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
-yes | docker system prune
+docker system prune --volumes -f
 
 
 ## echo below works but use above for testing purposes

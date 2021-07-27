@@ -357,9 +357,16 @@ const BookShelf = (props) => {
                     <tr>
                       <td  className='tdnoborder bluefade'>
                         <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
+                          {/* <img 
+                          style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
+                          src={`http://localhost:8080/images/${book.picnamefront}`}/>     */}
+
                           <img 
                           style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                          src={`http://localhost:8080/images/${book.picnamefront}`}/>    
+                          src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+book.picnamefront}/>    
+
+
+                          {/* process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images" */}
                         </div>
                       </td>
                       <td  

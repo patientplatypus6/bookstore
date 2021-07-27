@@ -28,13 +28,13 @@ import platypus.bookstore.repos.*
 import platypus.bookstore.utility.*
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/user")
 @SessionAttributes("userlogin")
 public class RequestUser(private val userRepo: UserRepository, private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository){
 
 	@PostMapping("/logout")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun userlogout(@RequestBody userlogout: UserLogin):Loggedin{
 		val usershandler = UsersHandler(userRepo)
 		usershandler.logoutuser(userlogout)
@@ -45,7 +45,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}	
   
 	@PostMapping("/login")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun userlogin(@RequestBody userlogin: UserLogin):Loggedin{
 		println("value of userlogin; $userlogin")
 		val usershandler = UsersHandler(userRepo)	
@@ -60,7 +60,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/register")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun userregister(@RequestBody userlogin: UserLogin):Loggedin{
 		val usershandler = UsersHandler(userRepo)
 		var loggedin = Loggedin()
@@ -74,7 +74,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/addbooktocartguest")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbooktocartguest(@RequestBody userbookid: UserBookID):SuccessReturn{
 		var bookhandler = BooksHandler(bookRepo)
 		var successreturn = SuccessReturn()
@@ -85,7 +85,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/addbooktocartuser")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbooktocartuser(@RequestBody userbookid: UserBookID, @CookieValue(name = "usercookie") usercookie: String):SuccessReturn{
 		println("value of cookie: $usercookie")
 		var bookhandler = BooksHandler(bookRepo)
@@ -101,7 +101,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/findbooksincartbyuser")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooksincartbyuser(@RequestBody username: Username, @CookieValue(name = "usercookie") usercookie: String):List<BookWPrices>{
 
 		println("inside /findbooksincartbyuser")
@@ -147,7 +147,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/findbooksincartbyguest")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooksincartbyguest(@RequestBody username: Username):List<BookWPrices>{
 		var bookhandler = BooksHandler(bookRepo)
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
@@ -189,7 +189,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 
 
 	@PostMapping("/removebookcartuser")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun removebookcartuser(@RequestBody userbookid: UserBookID, @CookieValue(name = "usercookie") usercookie: String):SuccessReturn{
 		var bookhandler = BooksHandler(bookRepo)
 		var usershandler = UsersHandler(userRepo)
@@ -204,7 +204,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/removebookcartguest")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooksincartbyuser(@RequestBody userbookid: UserBookID):SuccessReturn{
 		var bookhandler = BooksHandler(bookRepo)
 		var successreturn = SuccessReturn()
@@ -213,7 +213,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	@PostMapping("/checkcart")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun checkcart(@RequestBody bookuser: HashMap<String, String>):InCart{
 
 		var username = bookuser.get("username")!!
@@ -245,7 +245,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 
 
 	@PostMapping("/checkcartmultiple")	
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun checkcartmultiple(@RequestBody user: HashMap<String, String>):List<InCart>{
 
 		var username = user.get("username")!!
@@ -272,7 +272,7 @@ public class RequestUser(private val userRepo: UserRepository, private val bookR
 	}
 
 	// @PostMapping("/userstripepayment")
-	// @CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	// @CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	// suspend fun userstripepayment(@RequestBody)
 
 

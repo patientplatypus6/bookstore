@@ -28,12 +28,12 @@ import java.util.Base64
 
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/revenuecost")
 public class RequestRevenueCost(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
 	@PostMapping("/allrcbyname")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun allrcbyname(@RequestBody rcname: RevenueCostBookName):List<RevenueCost>{
 		var revenuecostname:String = rcname.rcname;
 		var revenuecostHandler = RevenueCostsHandler(revenuecostRepo)
@@ -44,7 +44,7 @@ public class RequestRevenueCost(private val bookRepo: BookRepository, private va
 	}
 
 	@GetMapping("/allrevenuecosts")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")	
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")	
 	suspend fun allrevenuecosts():List<RevenueCost>{
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo)
 		var revenuecosts:List<RevenueCost> = revenuecostshandler.findrevenuecosts()
@@ -52,7 +52,7 @@ public class RequestRevenueCost(private val bookRepo: BookRepository, private va
 	}
 
 	@PostMapping("/addrevenuecosts")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")	
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")	
 	suspend fun addrevenuecosts(@RequestBody revenuecostlist: RevenueCostList):DefaultReturn{
 		println("value of revenuecosts: $revenuecostlist")
 		var updatedBool = false;

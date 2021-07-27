@@ -252,9 +252,14 @@ const Book = (props) => {
                 background: "rgba(128,128,128,0.5)",
                 border: '2px solid black'
               }}>
-                <img src={`http://localhost:8080/images/`+book.picnamefront} 
+                {/* <img src={`http://localhost:8080/images/`+book.picnamefront} 
+                  style={{height: 'auto', width: '100%', display: 'inline-block'}}
+                /> */}
+                {/* process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images" */}
+                <img src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+book.picnamefront} 
                   style={{height: 'auto', width: '100%', display: 'inline-block'}}
                 />
+
                 <div 
                   style={{ display: 'inline-block', fontWeight: 'bold', marginTop: '5px'}}
                 >
@@ -270,7 +275,11 @@ const Book = (props) => {
                 background: "rgba(128,128,128,0.5)",
                 border: '2px solid black'
               }}>
-                <img src={`http://localhost:8080/images/`+book.picnamefront} 
+                {/* process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images" */}
+                {/* <img src={`http://localhost:8080/images/`+book.picnamefront} 
+                  style={{height: 'auto', width: '100%'}}
+                /> */}
+                <img src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+book.picnamefront} 
                   style={{height: 'auto', width: '100%'}}
                 />
                 <div 
@@ -303,7 +312,11 @@ const Book = (props) => {
                   {book.allpics.map((pic,index)=>{
                     return(
                       <div style={{height: '60%', display: 'inline-block', margin: '5px'}}>
-                        <img src={`http://localhost:8080/images/`+pic} 
+                        {/* process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images" */}
+                        {/* <img src={`http://localhost:8080/images/`+pic} 
+                          style={{height: '100%', width: 'auto'}}
+                        /> */}
+                        <img src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+pic} 
                           style={{height: '100%', width: 'auto'}}
                         />
                       </div>

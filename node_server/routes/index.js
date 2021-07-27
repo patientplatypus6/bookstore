@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const redis = require('redis');
-const client = redis.createClient({host: 'redis'});
+var client = redis.createClient({host: process.env.REDIS_HOST});
 
 client.on('connect', function() {
   console.log('Connected!');

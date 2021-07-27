@@ -26,14 +26,15 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.*  
 import java.util.Base64
   
+// const REACT_CROSSORIGIN = System.getEnv("REACT_CROSSORIGIN")
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+@CrossOrigin(maxAge=3600, allowCredentials = "true", originPatterns = ["*"])
 @RequestMapping("/book")
 public class RequestBook(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
 	@PostMapping("/findbookbyuniqueid")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbookbyuniqueid(@RequestBody bookuniqueid: BookUniqueID):Book{
 		var bookshandler = BooksHandler(bookRepo)
 		return bookshandler.findbookbyuniqueid(bookuniqueid.bookuniqueid)
@@ -41,7 +42,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 
 	@PostMapping("/findbookshelfbookbyuniqueid")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbookshelfbookbyuniqueid(@RequestBody cartandbook: HashMap<String,String>):BookshelfBook{
 
 		println("inside findbookshelfbookbyuniqueid")
@@ -133,7 +134,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 
 
 	@GetMapping("/findbookshelfbooks")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(maxAge=3600, allowCredentials = "true", originPatterns=["*"])
 	suspend fun findbookshelfbooks():List<BookshelfBook>{
 		var bookshelfbooks:List<BookshelfBook> = listOf<BookshelfBook>()
 		var picshandler = PicsHandler(picRepo)
@@ -204,7 +205,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}
 
 	@PostMapping("/deletebook")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun deletebook(@RequestBody bookuniqueid: BookId):Boolean{
 		var bookshandler = BooksHandler(bookRepo)
 		var picshandler = PicsHandler(picRepo)
@@ -218,7 +219,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}	
 
 	@GetMapping("/findbooks")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findbooks():List<Book>{
 		var bookshandler = BooksHandler(bookRepo)
 		var totalbooks: List<BookTime> = bookshandler.findbooks()
@@ -241,7 +242,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}
 
 	@PostMapping("/findrevenuecosts")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findrevenuecosts(@RequestBody bookuniqueid: BookId):List<RevenueCost>{
 		println("value of bookuniqueid in 					findrevenuecosts: $bookuniqueid")
 		var revenuecostHandler = RevenueCostsHandler(revenuecostRepo)
@@ -250,7 +251,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}
 
 	@PostMapping("/updatepics")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun updatepics(@RequestBody picdata:Picdata):Boolean{
 
 		var picshandler = PicsHandler(picRepo)
@@ -260,7 +261,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}
 
 	@PostMapping("/addpics")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun addpics(@RequestBody picdata:Picdata):Boolean{
 
 		var picshandler = PicsHandler(picRepo)
@@ -271,7 +272,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}
 
 	@PostMapping("/updatebook")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun updatebook(@RequestBody bookrc: BookRC): Boolean {
 		var bookshandler = BooksHandler(bookRepo);
 		var revenuecostshandler = RevenueCostsHandler(revenuecostRepo);
@@ -294,7 +295,7 @@ public class RequestBook(private val bookRepo: BookRepository, private val reven
 	}
 
   @PostMapping("/addbook")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun addbook(@RequestBody bookrc: BookRC): Boolean {
     println("value of bookrc $bookrc")
 		println("test reload second")

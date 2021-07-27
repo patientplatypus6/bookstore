@@ -230,7 +230,8 @@ const CheckoutForm = (props) => {
         }
       }
       payload.uri = "/create-payment-intent"
-      payload.url = "http://localhost:4000"
+      // payload.url = "http://localhost:4000"
+      payload.url=process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT
       payload.requestType = "post"
       handlefetch(payload).then(result=>{
         console.log("value of result: ", result)
@@ -1015,9 +1016,12 @@ const Cart = (props) => {
                           border: 'none'
                         }}
                       >
-                        <img src={'http://localhost:8080/images/'+cartitem.covername} 
+                        {/* <img src={'http://localhost:8080/images/'+cartitem.covername} 
                             style={{width: '100%', height: 'auto'}}
-                          />
+                          /> */}
+                        <img src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+cartitem.covername} 
+                          style={{width: '100%', height: 'auto'}}
+                        />
                       </td>
                       <td 
                         style={{

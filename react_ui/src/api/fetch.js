@@ -11,7 +11,8 @@ const handlefetch = (payload) => {
 
 const fetchrequest = (payload) => { 
  if(payload.url == null || payload.url == undefined){
-  var url = "http://localhost:8080/"
+  // var url = "http://localhost:8080/"
+  var url=process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT
  }else{
   var url = payload.url
  }
@@ -107,8 +108,6 @@ const fetchrequest = (payload) => {
   });
 
   payload.files.forEach((file, index)=>{
-    //get filenames from redux
-    //append bookname to selected 'front cover', 'back cover', etc
     var filename = 'files' + index
     data.append(filename, file)
     console.log('value of data in foreach: ', data)
@@ -119,10 +118,6 @@ const fetchrequest = (payload) => {
   console.log("data blob: ", data.get('document'))
   console.log("file 0: ", data.get('files0'))
   console.log('value of urlfull in imagepost: ', urlfull)
-
-  // let testdata = new FormData()
-  // testdata.append('file0', payload.files[0])
-  // testdata.append('file1', payload.files[1])
 
   return fetch(urlfull, {
     method: 'post', 

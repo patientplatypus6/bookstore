@@ -27,12 +27,12 @@ import java.util.Base64
   
 
 @RestController
-@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 @RequestMapping("/pic")
 public class RequestPic(private val bookRepo: BookRepository, private val revenuecostRepo: RevenueCostRepository, private val picRepo: PicRepository){
 
 	@PostMapping("/uploadtest")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun uploadtest(@RequestBody pictest: PicTest):Boolean{
 
 		val cleaned64 = pictest.pic64.split(",")[1]
@@ -43,7 +43,7 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 	}
 
 	@PostMapping("/findcovers")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findcovers(@RequestBody picbookids: PicBookIds):List<Pic>{
 		println("value of picbookid: $picbookids")
 		var picshandler = PicsHandler(picRepo)
@@ -53,7 +53,7 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 
 
 	@PostMapping("/findpicsbybook")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findpicsbybook(@RequestBody picbookid: PicBookId):List<Pic>{
 		println("value of picbookid: $picbookid")
 		var picshandler = PicsHandler(picRepo)
@@ -63,7 +63,7 @@ public class RequestPic(private val bookRepo: BookRepository, private val revenu
 
 
 	@PostMapping("/findpicsbybook64")
-	@CrossOrigin(origins = ["http://localhost:3000"], maxAge=3600, allowCredentials = "true")
+	@CrossOrigin(originPatterns = ["*"], maxAge=3600, allowCredentials = "true")
 	suspend fun findpicsbybook64(@RequestBody picbookid: PicBookId):List<Pic64>{
 		println("value of picbookid: $picbookid")
 		var picshandler = PicsHandler(picRepo)
