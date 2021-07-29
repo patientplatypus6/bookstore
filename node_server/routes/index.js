@@ -1,13 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-const redis = require('redis');
-var client = redis.createClient({host: process.env.REDIS_HOST});
-
-client.on('connect', function() {
-  console.log('Connected!');
-});
-
 const stripe = require('stripe')('sk_test_51JFN40GiGVLhVoutEne6ab4h7EJQrkQW6YmkPPZtkcrNYLEzOxBZ2VuN4VcLfSZAwa8IBnucgehFRpVk7edZSYF500nu8GV4Nh');
 
 router.post("/create-payment-intent", async (req, res)=>{
@@ -19,6 +12,24 @@ router.post("/create-payment-intent", async (req, res)=>{
   res.send({
     client_secret: paymentIntent.client_secret
   });
+})
+
+router.post('/bookordered', function(req,res,next){
+  var io = req.app.get('socketio')
+  io.emit('bookordered', req.body.bookuniqueid)
+  res.send({socket: 'book ordered emitted'})
+})
+
+router.post('/bookincart', function(req,res,next){
+  var io = req.app.get('socketio')
+  io.emit('bookincart', req.body.bookuniqueid)
+  res.send({socket: 'book in cart emitted'})
+})
+
+router.get("/testsocket", function(req,res,next){
+  var io = req.app.get('socketio');
+  io.emit("socketio functional")
+  res.render('index', { title: 'Testing Socket (check console)' });
 })
 
 /* GET home page. */

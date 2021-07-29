@@ -1,8 +1,47 @@
 #!/bin/bash
 
 echo "WELCOME TO DOCKER RUNNER"
+echo "------------------------------------------------"
+echo "There are three modes to deploy the application"
+echo "Production, development, and minimal"
+echo "------------------------------------------------"
+echo "1)*Production* uses production builds with docker containers"
+echo "2)*Development* uses development runs with docker containers"
+echo "3)*Minimal* uses only minimal docker configuration and runs manually otherwise"
+echo "------------------------------------------------"
+echo "Please enter number of desired configuration"
 
-echo "value of passed argument $1"
+read -p 'Configuration: ' configurationnumber
+echo
+echo 
+echo
+
+if [[ $configurationnumber == "1" ]]
+then
+  configuration="production"
+elif [[ $configurationnumber == "2" ]]
+then
+  configuration="development"
+elif [[ $configurationnumber == "3" ]]
+then
+  configuration="minimal"
+fi
+
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "Now using the *$configuration* configuration"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+
+echo
+echo 
+echo
 
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
@@ -38,13 +77,22 @@ cd ./redis
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-echo "NOW RUNNING NODE_SERVER"
+echo "NOW RUNNING nodeserver"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 
 cd ../node_server
-./runnode.sh $1
+./runnode.sh $configuration
+
+# if [[ $configuration == "minimal" ]]
+# then
+#   cd ../nodeserver
+#   ./run.sh
+# else
+#   cd ../nodeserver
+#   ./runnode.sh $configuration
+# fi
 
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
@@ -54,8 +102,15 @@ echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 
-cd ../react_ui
-./runreact.sh $1
+if [[ $configuration == "minimal" ]]
+then
+  cd ../react_ui
+  pm2 stop all
+  pm2 start npm -- start
+else
+  cd ../react_ui
+  ./runreact.sh $configuration
+fi
 
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
@@ -65,8 +120,14 @@ echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 
-cd ../kotlin_server_6
-./runkotlinserver.sh $1
+if [[ $configuration == "minimal" ]]
+then
+  cd ../kotlin_server_6
+  ./run.sh
+else
+  cd ../kotlin_server_6
+  ./runkotlinserver.sh $configuration 
+fi
 
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"

@@ -11,6 +11,9 @@ RUN npm install
 # Bundle app source
 
 
-EXPOSE 4000
+#node app port
+EXPOSE 4000 
+#socket.io port
+EXPOSE 5000
 
 CMD ["npm", "start"]

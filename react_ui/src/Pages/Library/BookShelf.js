@@ -7,6 +7,8 @@ import {arraybuffertobase64, sleep} from '../../utility/utility'
 import {fetchrequest, handlefetch} from '../../api/fetch'
 import { useHistory } from "react-router-dom";
 
+import io from "socket.io-client";
+
 const BookShelf = (props) => {
 
   const focushandlerref = useRef(null);
@@ -135,8 +137,11 @@ const BookShelf = (props) => {
       console.log("*****************")
       console.log("*****************")
       console.log("*****************")
+      if(result==false){
+        // might use this if I want to dynamically update the addtocart button
+        // setAddcartmessage(`Another user has already added this item to their cart`)
+      }
       checkCart()
-      // retrieveCart(localStorage.getItem("username"), 'user')
     })
   }
 
@@ -157,6 +162,10 @@ const BookShelf = (props) => {
       console.log("*****************")
       console.log("*****************")
       console.log("*****************")
+      if(result==false){
+        // might use this if I want to dynamically update the addtocart button
+        // setAddcartmessage(`Another user has already added this item to their cart`)
+      }
       checkCart()
     })
   }
@@ -183,9 +192,33 @@ const BookShelf = (props) => {
     }
   }
 
+  const socketHandler = () => {
+    console.log('inside socketHandler')
+    const socket = io("http://localhost:5000", {
+      withCredentials: true,
+      extraHeaders:{
+        "socket.io": "bookshelf"
+      }
+    });
+    socket.on("connect", ()=>{
+      console.log("^^^SOCKET CONNECTED^^^")
+      socket.on("bookincart", (data)=>{
+        console.log('value of data from bookincart: ', data)
+        // let jsondata = JSON.parse(data)
+        // console.log('value of jsondata (bookincart): ', jsondata)
+      })
+      socket.on("bookordered", (data)=>{
+        console.log('value of data from bookordered: ', data)
+        // let jsondata = JSON.parse(data)
+        // console.log('value of jsondata (bookordered): ', jsondata)
+      })
+    })
+  }
+
   useEffect(()=>{
     findbooks()
     checkCart()
+    socketHandler()
   }, [])
 
   const coverhandler = () => {
@@ -357,16 +390,9 @@ const BookShelf = (props) => {
                     <tr>
                       <td  className='tdnoborder bluefade'>
                         <div style={{padding: '5px', display: 'inline-block', verticalAlign: 'top'}}>
-                          {/* <img 
-                          style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                          src={`http://localhost:8080/images/${book.picnamefront}`}/>     */}
-
                           <img 
                           style={{height: '20vh', width: 'auto', marginBottom: '10px'}}
-                          src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+book.picnamefront}/>    
-
-
-                          {/* process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images" */}
+                          src={"http://localhost:8080/images/"+book.picnamefront}/>
                         </div>
                       </td>
                       <td  

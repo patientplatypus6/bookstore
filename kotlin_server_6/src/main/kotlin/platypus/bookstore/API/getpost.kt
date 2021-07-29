@@ -16,21 +16,17 @@ suspend fun hashmapbuilder(response: String):HashMap<String, String>{
 }
 
 suspend fun getrequest(uristring: String):HashMap<String, String>{
-
-
   val client = HttpClient.newBuilder().build();
   val request = HttpRequest.newBuilder()
       .uri(URI.create(uristring))
       .build();
-       
+        
   val response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
   return hashmapbuilder(response.body())
 }
 
 suspend fun postrequest(map: HashMap<String, String>, uristring: String):HashMap<String, String>{
-
-  
   val objectMapper = ObjectMapper()
   var requestBody:String = objectMapper
     .writerWithDefaultPrettyPrinter()

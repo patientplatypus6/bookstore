@@ -21,6 +21,9 @@ repositories {
 	// url "https://kotlin.bintray.com/kotlinx"
 }
 
+// NOTE - repository of all spring framework packages
+// https://mvnrepository.com/
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
@@ -34,6 +37,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+	implementation("org.springframework.boot:spring-boot-starter-mail:2.5.3")
 	implementation("org.json:json:20210307")
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("dev.miku:r2dbc-mysql")

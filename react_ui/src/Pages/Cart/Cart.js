@@ -32,7 +32,6 @@ const CheckoutForm = (props) => {
   const [modalstatus, setModalstatus] = useState("closed")
   const [modalmessage, setModalmessage] = useState("Now double checking cart status...")
 
-
   const stripe = useStripe();
   const elements = useElements();
 
@@ -68,12 +67,12 @@ const CheckoutForm = (props) => {
       setModalmessage("Now submitting payment details...")
       handleSubmitPayment()
     }else if(modalstatus=='paymentsuccess'){
-      setModalmessage(`
-        Payment succeeded! \n 
-        You will receive an email notification shortly.
+      var amount = props.amount
+      setModalmessage(`Your payment of $${amount} was successful!
+        You will receive an email notification with the details of your purchase shortly.
       `)
     }else if(modalstatus=='cartfail'){
-      setModalmessage("Cart not up to date. Please check updated cart.")
+      setModalmessage("Cart not up to date. Please refresh the page to update your cart.")
     }else if(modalstatus=='paymentfail'){
       //errors handled in callbacks
     }else if(modalstatus=='requiresaction'){
@@ -81,6 +80,24 @@ const CheckoutForm = (props) => {
     }
 
   }, [modalstatus])
+
+  const clearData = () => {
+    setCity("")
+    setState("")
+    setStreet1("")
+    setStreet2("")
+    setCityshipping("")
+    setStateshipping("")
+    setStreet1shipping("")
+    setStreet2shipping("")
+    setEmail("")
+    setPhone("")
+    setFirstname("")
+    setLastname("")
+    setModalstatus("closed")
+    setModalmessage("Now double checking cart status...")
+    props.clearDataCallback()
+  }
 
   const renderPaymentModal = () => {
 
@@ -157,6 +174,12 @@ const CheckoutForm = (props) => {
                     style={{width: '100%', height: '100%'}}
                     />   
                   :<div/>}
+                  {modalstatus.includes('paymentsuccess')?
+                    <img 
+                    src={process.env.PUBLIC_URL+"/dollarsign.png"}
+                    style={{width: '100%', height: '100%'}}
+                    />  
+                  :<div/>}
                 </div>
                 <div
                   style={{
@@ -167,6 +190,38 @@ const CheckoutForm = (props) => {
                   }}
                 >
                   {modalmessage}
+                  <br/>
+                  {modalstatus.includes('fail')?
+                   <div className="button"
+                      style={{
+                        background: 'red',
+                        display: 'inline-block', 
+                        marginTop: '10px'
+                      }}
+                      onClick={()=>{
+                        setModalstatus('closed')
+                        props.resetCartStatus()
+                      }}
+                    >
+                      OK!
+                    </div> 
+                  :<div/>}
+                  {modalstatus.includes('paymentsuccess')?
+                    <div className="button"
+                      style={{
+                        background: 'green',
+                        display: 'inline-block', 
+                        marginTop: '10px'
+                      }}
+                      onClick={()=>{
+                        setModalstatus('closed')
+                        props.resetCartStatus()
+                        clearData()
+                      }}
+                    >
+                      OK!
+                    </div> 
+                  :<div/>}
                 </div>
               </div>
             </div>
@@ -229,9 +284,8 @@ const CheckoutForm = (props) => {
           amount: props.amount
         }
       }
-      payload.uri = "/create-payment-intent"
-      // payload.url = "http://localhost:4000"
-      payload.url=process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT
+      payload.uri = "create-payment-intent"
+      payload.url = "http://localhost:4000"
       payload.requestType = "post"
       handlefetch(payload).then(result=>{
         console.log("value of result: ", result)
@@ -775,9 +829,29 @@ const Cart = (props) => {
   const [shippingsum, setShippingsum] = useState(0)
   const [pricesum, setPricesum] = useState(0)
   const [checkcartstatus, setCheckcartstatus] = useState('notchecked')
+  const [paymentsuccessmessage, setPaymentsuccessmessage] = useState("")
+  const [cartmessage, setCartmessage] = useState("")
 
   const stripePromise = loadStripe('pk_test_51JFN40GiGVLhVoutsxeWSbq2uvly5CkxsJjI8xDuyHYdWwyfen9wAgfdcnU8j5VEzwXIkMUpUIuM3KFwjRv3yiq900fwWuF1lW');
 
+  const clearDataCallback = () => {
+    setCartcover(null)
+    setCart(null)
+    setShippingsum(0)
+    setPricesum(0)
+    setCheckcartstatus('notchecked')
+    setCartmessage(`
+      Your payment was successful!
+      Thank you for your purchase.
+      Please check your email for followup details.
+    `)
+  }
+
+  useEffect(()=>{
+    if(cart!=null&&cart.length==0){
+      setCartmessage("There are currently no items in your cart.")
+    }
+  }, [cart])
 
   const findCovers = () => {
     var bookids = []
@@ -850,7 +924,7 @@ const Cart = (props) => {
           setCheckcartstatus("passed")
         }else{
           setCheckcartstatus("failed")
-          retrieveCartUser(cartholdername, 'initial')
+          // retrieveCartUser(cartholdername, 'initial')
         }
       }
     })
@@ -878,7 +952,6 @@ const Cart = (props) => {
         }else{
           console.log('inside setCheckcartstatus and else')
           setCheckcartstatus("failed")
-          retrieveCartGuest(cartholdername, 'initial')
         }
       }
     })
@@ -917,7 +990,6 @@ const Cart = (props) => {
       console.log("*****************")
       console.log("*****************")
       retrieveCart('initial')
-      // retrieveCart(localStorage.getItem("username"), 'user')
     })
   }
 
@@ -1016,12 +1088,9 @@ const Cart = (props) => {
                           border: 'none'
                         }}
                       >
-                        {/* <img src={'http://localhost:8080/images/'+cartitem.covername} 
+                        <img src={'http://localhost:8080/images/'+cartitem.covername} 
                             style={{width: '100%', height: 'auto'}}
-                          /> */}
-                        <img src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images"+cartitem.covername} 
-                          style={{width: '100%', height: 'auto'}}
-                        />
+                          />
                       </td>
                       <td 
                         style={{
@@ -1108,13 +1177,14 @@ const Cart = (props) => {
                   resetCartStatus={()=>{resetCartStatus()}}
                   checkcartstatus={checkcartstatus}
                   checkCartCallback={()=>{checkCartCallback()}}
+                  clearDataCallback={()=>{clearDataCallback()}}
                   amount={parseFloat(shippingsum) + parseFloat(pricesum)}
                 />
               </Elements>
             </div>
           </div>
         :<div/>}
-        {(cartcover!=null&&cartcover.length == 0)?
+        {cartmessage.length>0?
         <div
           style={{
             background: 'grey',
@@ -1125,7 +1195,7 @@ const Cart = (props) => {
             marginLeft: 'calc(25vw - 20px)'
           }}
         >
-          There are currently no items in your cart.
+          {cartmessage}
         </div>
         :<div/>}
       </div>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $1 = 'production' ]
+if [[ $1 == "production" ]]
 then
   echo 'kotlin production build'
   echo 'building kotlin_server_6...'

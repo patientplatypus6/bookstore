@@ -13,3 +13,10 @@ https://maximorlov.com/4-reasons-why-your-docker-containers-cant-talk-to-each-ot
 
 # With containerA already running, test if containerA can connect to containerB by using its name
 docker exec [containerA] ping [containerB] -c2
+
+docker exec -t -i kotlin_server_6 /bin/bash
+
+
+sudo netstat -tanl | grep 8080
+
+ps

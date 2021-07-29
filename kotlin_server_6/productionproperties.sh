@@ -17,8 +17,8 @@ cat << EOF > ./src/main/resources/application.properties
   spring.web.resources.static-locations[0]=file:src/main/resources/static/
   spring.web.resources.static-locations[1]=classpath:/static/
 
-  spring.datasource.NODE_SERVER_URL=node_server
-  spring.datasource.NODE_SERVER_PORT=4000
+  spring.datasource.nodeserver_URL=nodeserver
+  spring.datasource.nodeserver_PORT=4000
 
   spring.datasource.REACT_SERVER_URL=react_server
   spring.datasource.REACT_SERVER_PORT=3000

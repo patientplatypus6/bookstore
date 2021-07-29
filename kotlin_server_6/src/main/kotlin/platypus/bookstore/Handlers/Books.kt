@@ -2,6 +2,8 @@ package platypus.bookstore.handlers
 
 import platypus.bookstore.repos.BookRepository
 import platypus.bookstore.classes.db.*
+import platypus.bookstore.api.postrequest
+import platypus.bookstore.api.getrequest
 
 class BooksHandler(val bookRepo: BookRepository){
 
@@ -113,14 +115,15 @@ class BooksHandler(val bookRepo: BookRepository){
     var milliseconds:Long = System.currentTimeMillis()
     var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrderedNotInCart(bookuniqueid, milliseconds)
     var foundsize = booknotorderednotcart.size
-    println("foundsize $foundsize")
     if(foundsize>0){
       for (book in booknotorderednotcart){
-        println("before addbooktocartuser values are bookuniqueid $bookuniqueid milliseconds $milliseconds username $username")
         bookupdated = bookRepo.updateBookinCartUser(bookuniqueid, milliseconds, username)
-        println("value of bookupdated in for loop: $bookupdated")
       }
-      println("value of bookupdated outside for loop: $bookupdated")
+      if(bookupdated){
+        val posthash:HashMap<String,String> = HashMap<String, String>()
+        posthash.put("bookuniqueid", bookuniqueid)
+        postrequest(posthash, "http://nodeserver:4000/socket/bookincart")
+      }
       return bookupdated
     }else{
       return false
@@ -128,12 +131,22 @@ class BooksHandler(val bookRepo: BookRepository){
   } 
 
   suspend fun addbooktocartguest(bookuniqueid: String, username: String):Boolean{
+    println("inside addbooktocartguest")
     var bookupdated = false;
     var milliseconds:Long = System.currentTimeMillis()
     var booknotorderednotcart:List<BookTime> = bookRepo.findBookIdNotOrderedNotInCart(bookuniqueid, milliseconds)
+    println("value of booknotrorderednotcart: $booknotorderednotcart")
     if(booknotorderednotcart.size>0){
+      println("inside size > 0")
       for (book in booknotorderednotcart){
         bookupdated = bookRepo.updateBookinCartGuest(bookuniqueid, milliseconds, username)
+        println("value of bookupdated: $bookupdated")
+      }
+      if(bookupdated){
+        val posthash:HashMap<String,String> = HashMap<String, String>()
+        posthash.put("bookuniqueid", bookuniqueid)
+        postrequest(posthash, "http://nodeserver:4000/bookincart")
+        // getrequest("http://nodeserver:4000/test")
       }
       return bookupdated
     }else{

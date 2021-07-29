@@ -5,11 +5,30 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
+const http = require('http');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+const server = http.createServer(app);
+
+const { Server } = require("socket.io");
+// const io = new Server(server);
+// const io = require("socket.io")(server, {
+//   cors: {
+//     origin: "*"
+//   }
+// });
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["socket.io"],
+    credentials: true
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,6 +58,23 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.set('socketio', io)
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+//   console.log('value of socket: ', socket)
+// });
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+server.listen(5000, () => {
+  console.log('listening on *:5000');
 });
 
 module.exports = app;
