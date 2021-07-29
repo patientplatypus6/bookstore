@@ -122,7 +122,9 @@ class BooksHandler(val bookRepo: BookRepository){
       if(bookupdated){
         val posthash:HashMap<String,String> = HashMap<String, String>()
         posthash.put("bookuniqueid", bookuniqueid)
-        postrequest(posthash, "http://nodeserver:4000/socket/bookincart")
+        posthash.put("username: ", username)
+        posthash.put("time: ", "3600000")
+        postrequest(posthash, "http://nodeserver:4000/bookincart")
       }
       return bookupdated
     }else{
@@ -145,8 +147,9 @@ class BooksHandler(val bookRepo: BookRepository){
       if(bookupdated){
         val posthash:HashMap<String,String> = HashMap<String, String>()
         posthash.put("bookuniqueid", bookuniqueid)
+        posthash.put("username", username)
+        posthash.put("time", "600000")
         postrequest(posthash, "http://nodeserver:4000/bookincart")
-        // getrequest("http://nodeserver:4000/test")
       }
       return bookupdated
     }else{

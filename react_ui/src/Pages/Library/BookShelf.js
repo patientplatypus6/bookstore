@@ -203,14 +203,10 @@ const BookShelf = (props) => {
     socket.on("connect", ()=>{
       console.log("^^^SOCKET CONNECTED^^^")
       socket.on("bookincart", (data)=>{
-        console.log('value of data from bookincart: ', data)
-        // let jsondata = JSON.parse(data)
-        // console.log('value of jsondata (bookincart): ', jsondata)
+        console.log('value of data from bookincart: ', JSON.parse(data))
       })
       socket.on("bookordered", (data)=>{
         console.log('value of data from bookordered: ', data)
-        // let jsondata = JSON.parse(data)
-        // console.log('value of jsondata (bookordered): ', jsondata)
       })
     })
   }

@@ -124,7 +124,6 @@ const Book = (props) => {
       console.log("*****************")
       console.log("*****************")
       checkCart()
-      // retrieveCart(localStorage.getItem("guestname"), 'guest')
     })
   }
 
@@ -146,7 +145,6 @@ const Book = (props) => {
       console.log("*****************")
       console.log("*****************")
       checkCart()
-      // retrieveCart(localStorage.getItem("username"), 'user')
     })
   }
 
@@ -303,13 +301,9 @@ const Book = (props) => {
                   {book.allpics.map((pic,index)=>{
                     return(
                       <div style={{height: '60%', display: 'inline-block', margin: '5px'}}>
-                        {/* process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images" */}
                         <img src={`http://localhost:8080/images/`+pic} 
                           style={{height: '100%', width: 'auto'}}
                         />
-                        {/* <img src={process.env.REACT_APP_KOTLIN_SERVER_6_URL+":"+process.env.REACT_APP_KOTLIN_SERVER_6_PORT+"/images/"+pic} 
-                          style={{height: '100%', width: 'auto'}}
-                        /> */}
                       </div>
                     )
                   })}

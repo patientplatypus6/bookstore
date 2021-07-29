@@ -22,7 +22,14 @@ router.post('/bookordered', function(req,res,next){
 
 router.post('/bookincart', function(req,res,next){
   var io = req.app.get('socketio')
-  io.emit('bookincart', req.body.bookuniqueid)
+  var payload = {
+    bookuniqueid: req.body.bookuniqueid, 
+    username: req.body.username,
+    time: req.body.time
+  }
+  console.log('value of payload to emit: ', payload)
+  var jsonifiedpayload = JSON.stringify(payload)
+  io.emit('bookincart', jsonifiedpayload)
   res.send({socket: 'book in cart emitted'})
 })
 
