@@ -145,6 +145,7 @@ class BooksHandler(val bookRepo: BookRepository){
         println("value of bookupdated: $bookupdated")
       }
       if(bookupdated){
+        println("inside if statement for bookupdated")
         val posthash:HashMap<String,String> = HashMap<String, String>()
         posthash.put("bookuniqueid", bookuniqueid)
         posthash.put("username", username)

@@ -120,14 +120,19 @@ echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 
-if [[ $configuration == "minimal" ]]
-then
-  cd ../kotlin_server_6
-  ./run.sh
-else
-  cd ../kotlin_server_6
-  ./runkotlinserver.sh $configuration 
-fi
+# minimal configuration cannot connect to node_server on network
+
+# if [[ $configuration == "minimal" ]]
+# then
+#   cd ../kotlin_server_6
+#   ./run.sh
+# else
+#   cd ../kotlin_server_6
+#   ./runkotlinserver.sh $configuration 
+# fi
+
+cd ../kotlin_server_6
+./runkotlinserver.sh $configuration 
 
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
 echo "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"

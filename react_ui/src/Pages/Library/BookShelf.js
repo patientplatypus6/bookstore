@@ -7,6 +7,8 @@ import {arraybuffertobase64, sleep} from '../../utility/utility'
 import {fetchrequest, handlefetch} from '../../api/fetch'
 import { useHistory } from "react-router-dom";
 
+import { cartholdername, cartholderloggedin } from '../../utility/localstorage';
+
 import io from "socket.io-client";
 
 const BookShelf = (props) => {
@@ -38,19 +40,13 @@ const BookShelf = (props) => {
   }
 
   const checkCart = () => {
-    var cartholdername = ""
-
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-    }
 
     var payload = {
       body:{
-        username: cartholdername
+        username: cartholdername()
       }
     }
+
     payload.uri = 'user/checkcartmultiple'
     payload.requestType = "post"
 
@@ -64,11 +60,11 @@ const BookShelf = (props) => {
     checkCart()
   }, [props.refresh])
 
-  const addcartuser = (cartholdername, bookuniqueid) => {
+  const addcartuser = (bookuniqueid) => {
     var payload = {
       body:{
         bookuniqueid: bookuniqueid, 
-        username: cartholdername
+        username: cartholdername()
       }
     }
     payload.requestType="postcookie"
@@ -86,13 +82,13 @@ const BookShelf = (props) => {
     })
   }
 
-  const addcartguest = (cartholdername, bookuniqueid) => {
+  const addcartguest = (bookuniqueid) => {
 
     console.log("***********************************************************")
     console.log("***********************************************************")
     console.log("***********************************************************")
 
-    console.log("inside addcartguest and value cartholdername: ", cartholdername)
+    console.log("inside addcartguest and value cartholdername: ", cartholdername())
     console.log("inside addcartguest and value bookuniqueid: ", bookuniqueid)
 
     console.log("***********************************************************")
@@ -102,7 +98,7 @@ const BookShelf = (props) => {
     var payload = {
       body: {
         bookuniqueid: bookuniqueid,
-        username: cartholdername
+        username: cartholdername()
       }
     }
     payload.requestType="post"
@@ -120,11 +116,11 @@ const BookShelf = (props) => {
     })
   }
 
-  const removecartuser = (cartholder, bookuniqueid) => {
+  const removecartuser = (bookuniqueid) => {
     var payload = {
       body:{
         bookuniqueid: bookuniqueid, 
-        username: cartholder
+        username: cartholdername()
       }
     }
     payload.requestType="postcookie"
@@ -145,11 +141,11 @@ const BookShelf = (props) => {
     })
   }
 
-  const removecartguest = (cartholder, bookuniqueid) => {
+  const removecartguest = (bookuniqueid) => {
     var payload = {
       body: {
         bookuniqueid: bookuniqueid,
-        username: cartholder
+        username: cartholdername()
       }
     }
     payload.requestType="post"
@@ -171,24 +167,18 @@ const BookShelf = (props) => {
   }
 
   const addcart = (bookuniqueid) => { 
-    var cartholdername = ''
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-      addcartguest(cartholdername, bookuniqueid)
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-      addcartuser(cartholdername, bookuniqueid)
+    if(cartholderloggedin()){
+      addcartuser(bookuniqueid)
+    }else{
+      addcartguest(bookuniqueid)
     }
   }
 
   const removecart = (bookuniqueid) => { 
-    var cartholdername = ''
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-      removecartguest(cartholdername, bookuniqueid)
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-      removecartuser(cartholdername, bookuniqueid)
+    if(cartholderloggedin()){
+      removecartuser(bookuniqueid)
+    }else{
+      removecartguest(bookuniqueid)
     }
   }
 
@@ -204,6 +194,9 @@ const BookShelf = (props) => {
       console.log("^^^SOCKET CONNECTED^^^")
       socket.on("bookincart", (data)=>{
         console.log('value of data from bookincart: ', JSON.parse(data))
+        jsondata = JSON.parse(data)
+        
+        // if(jsondata.username!=)
       })
       socket.on("bookordered", (data)=>{
         console.log('value of data from bookordered: ', data)

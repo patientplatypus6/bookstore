@@ -7,6 +7,8 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import {fetchrequest, handlefetch} from '../../api/fetch'
 import './book.css'
 
+import { cartholdername, cartholderloggedin } from '../../utility/localstorage';
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -26,19 +28,9 @@ const Book = (props) => {
 
   const findbook = (cartholdername) => {
 
-    var cartholdername = ""
-    var nametype = "guest"
-
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-      nametype = 'user'
-    }
-
     var payload = {
       body:{
-        cartholdername: cartholdername,
+        cartholdername: cartholdername(),
         uniqueid: params.id
       }
     } 
@@ -62,18 +54,11 @@ const Book = (props) => {
   }, [])
 
   const checkCart = () => {
-    var cartholdername = ""
-
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-    }
-
+   
     var payload = {
       body: {
         bookuniqueid: params.id, 
-        username: cartholdername
+        username: cartholdername()
       }
     }
     payload.requestType='post'
@@ -88,7 +73,7 @@ const Book = (props) => {
     var payload = {
       body:{
         bookuniqueid: book.uniqueid, 
-        username: localStorage.getItem('username')
+        username: cartholdername()
       }
     }
     payload.requestType="postcookie"
@@ -102,7 +87,6 @@ const Book = (props) => {
       console.log("*****************")
       console.log("*****************")
       checkCart()
-      // retrieveCart(localStorage.getItem("username"), 'user')
     })
   }
 
@@ -110,7 +94,7 @@ const Book = (props) => {
     var payload = {
       body: {
         bookuniqueid: book.uniqueid,
-        username: localStorage.getItem('guestname')
+        username: cartholdername()
       }
     }
     payload.requestType="post"
@@ -131,7 +115,7 @@ const Book = (props) => {
     var payload = {
       body:{
         bookuniqueid: book.uniqueid, 
-        username: localStorage.getItem('username')
+        username: cartholdername()
       }
     }
     payload.requestType="postcookie"
@@ -152,7 +136,7 @@ const Book = (props) => {
     var payload = {
       body: {
         bookuniqueid: book.uniqueid,
-        username: localStorage.getItem('guestname')
+        username: cartholdername()
       }
     }
     payload.requestType="post"

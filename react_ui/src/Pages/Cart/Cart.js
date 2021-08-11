@@ -3,6 +3,8 @@ import { handlefetch } from '../../api/fetch';
 import './cart.css'
 import usstates from '../../utility/states';
 
+import { cartholdername, cartholderloggedin } from '../../utility/localstorage';
+
 import {
   CardElement,
   Elements,
@@ -908,10 +910,10 @@ const Cart = (props) => {
     retrieveCart('check')
   }
 
-  const retrieveCartUser = (cartholdername, status) => {
+  const retrieveCartUser = (status) => {
     var payload = {
       body: {
-        username: cartholdername
+        username: cartholdername()
       }
     }
     payload.requestType = 'postcookie'
@@ -930,11 +932,11 @@ const Cart = (props) => {
     })
   }
 
-  const retrieveCartGuest = (cartholdername, status) => {
+  const retrieveCartGuest = (status) => {
     console.log("inside retrieveCartGuest")
     var payload = {
       body: {
-        username: cartholdername
+        username: cartholdername()
       }
     }
     payload.requestType = 'post'
@@ -958,17 +960,14 @@ const Cart = (props) => {
   }
 
   const retrieveCart = (status) => {
-    var cartholdername = ""
     if(status=='initial'){
       setPricesum(0)
       setShippingsum(0)
     }
-    if(localStorage.getItem("username") == null && localStorage.getItem("guestname")!= null){
-      cartholdername = localStorage.getItem('guestname')
-      retrieveCartGuest(cartholdername, status)
-    }else if(localStorage.getItem("guestname") == null && localStorage.getItem("username")!= null){
-      cartholdername = localStorage.getItem('username')
-      retrieveCartUser(cartholdername, status)
+    if(cartholderloggedin()){
+      retrieveCartUser(status)
+    }else{
+      retrieveCartGuest(status)
     }
   }
 
@@ -976,7 +975,7 @@ const Cart = (props) => {
     var payload = {
       body:{
         bookuniqueid: uniqueid, 
-        username: localStorage.getItem('username')
+        username: cartholdername()
       }
     }
     payload.requestType="postcookie"
@@ -997,7 +996,7 @@ const Cart = (props) => {
     var payload = {
       body: {
         bookuniqueid: uniqueid,
-        username: localStorage.getItem('guestname')
+        username: cartholdername()
       }
     }
     payload.requestType="post"
@@ -1136,10 +1135,9 @@ const Cart = (props) => {
                             background: 'red'
                           }}
                           onClick={()=>{
-                            if(localStorage.getItem("username")!=null){
+                            if(cartholderloggedin()){
                               removecartuser(cartitem.uniqueid)
-                            }
-                            if(localStorage.getItem('guestname')!=null){
+                            }else{
                               removecartguest(cartitem.uniqueid)
                             }
                           }}
